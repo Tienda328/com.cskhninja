@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainCustomerScreen  from '../screens/mainCustomer';
+import MainScreen  from '../screens/main';
 import ProfileScreen  from '../screens/profile';
 import CopyrightManagementScreen  from '../screens/copyrightManagement';
 import AddKeyScreen from '../screens/addKey';
@@ -26,8 +26,8 @@ class TabNavigator extends React.Component {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused
-              ? 'account-group'
-              : 'account-group';
+              ? 'home'
+              : 'home';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'account' : 'account';
           }else if (route.name === 'CopyrightManagement'){
@@ -43,7 +43,7 @@ class TabNavigator extends React.Component {
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}>
-        <Tab.Screen name="Home" component={MainCustomerScreen} />
+        <Tab.Screen name="Home" component={MainScreen} />
         <Tab.Screen name="CopyrightManagement" component={CopyrightManagementScreen} />
         <Tab.Screen name="AddKey" component={AddKeyScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />

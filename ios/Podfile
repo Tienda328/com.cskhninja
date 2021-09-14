@@ -20,6 +20,8 @@ target 'cskhninja' do
 
   pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'cskhninjaTests' do
     inherit! :complete
     # Pods for testing

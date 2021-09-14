@@ -36,7 +36,7 @@ class NaviHerderFull extends React.Component {
           style={styles.bntEdit}
         >{buttonRightIcon ?
           <Text style={styles.TxtEdit}>Sửa</Text> :
-          <MaterialCommunityIcons name={'account-plus'} size={25} style={styles.iconAdd} />
+          <MaterialCommunityIcons name={'bell'} size={25} style={styles.iconAdd} />
           }
 
         </TouchableOpacity> : <View />

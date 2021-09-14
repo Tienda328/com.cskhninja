@@ -51,7 +51,9 @@ class LoginScreen extends Component {
     loginRequest.addParam(LoginRequest.Keys.TYPE, 2);
     console.log('dsdsd', login(loginRequest))
   }
-
+  onLogin= () =>{
+    this.props.navigation.navigate('TabNavigator')
+  }
 
   render() {
     return (

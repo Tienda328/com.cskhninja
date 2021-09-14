@@ -5,35 +5,40 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import ItemFlexRow from './itemFlexRow'
 
-export default function ItemCustomer({ nameLoai, onPress }) {
+export default function ItemCustomer({ nameLoai, onPress, navigation }) {
+    
+    const clickItem =()=>{
+        navigation.navigate('DetailCustomerScreen')
+    }
+
     return (
-        <View 
-        style={styles.containerAll}
-        onPress={onPress}>
-            <View>
-               
-                <ItemFlexRow txtName={'Email'} txtValue ={'hoatv@ninjateam.vn'} />
-                <ItemFlexRow txtName={'Số Điện Thoại'} txtValue ={'0979090897'} />
-                <ItemFlexRow txtName={'DateCreate'} txtValue ={'5/5/2018'} />
-                <ItemFlexRow txtName={'Point'} txtValue ={'1000000'} />
-                <ItemFlexRow txtName={'Token'} txtValue ={'E7B2C2EC6FF08CEEC753855DD18B6D8C'} style={{width:130}} />
-                <ItemFlexRow txtName={'Status'} txtValue ={'Active'} />
+        <TouchableOpacity
+            style={styles.containerAll}
+            onPress={clickItem}>
+            <View style={styles.containerText}>
+                <View>
+                    <Text style={styles.txtLeft}>Nguyenx Van chien</Text>
+                    <Text style={styles.txtLeft}>62348</Text>
+                </View>
+                <View>
+                    <Text style={styles.txtRight}>Email@gmail.com</Text>
+                    <Text style={styles.txtRight}>0358748718</Text>
+                </View>
             </View>
-            
-        </View>
+
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     containerAll: {
-        backgroundColor:'red',
-        marginTop:10,
-        flex:1,
-        marginHorizontal:20,
-        borderRadius:20,
-        borderColor: '#fff',
+        backgroundColor: '#fff',
+        marginTop: 10,
+        flex: 1,
+        marginHorizontal: 20,
+        borderRadius: 10,
+        // borderColor: '#fff',
         shadowColor: '#000',
         shadowRadius: 6,
         shadowOpacity: 0.16,
@@ -41,8 +46,24 @@ const styles = StyleSheet.create({
             width: 0,
             height: 5,
         },
-        elevation: 8,
+        elevation: 3,
 
     },
+    txtLeft: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginLeft: 20,
+        paddingVertical: 5,
+    },
+    txtRight: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginRight: 20,
+        paddingVertical: 5,
+    },
+    containerText: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    }
 
 })

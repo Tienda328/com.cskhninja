@@ -11,20 +11,21 @@ import {
 import ItemFlexRow from '../components/itemFlexRow';
 import NaviHerderFull from '../components/naviHerderFull';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import colors from '../constants/colors';
 
-export default class DetailKey extends React.Component {
+export default class DetailCustomer extends React.Component {
     goBack = () => {
         this.props.navigation.goBack()
     };
     clickEdit = () => {
-        this.props.navigation.navigate('EditKeyScreen')
+        this.props.navigation.navigate('EditCustomerScreen')
     };
     render() {
 
         return (
             <View
                 style={styles.containerAll}>
-                <NaviHerderFull title={'CHI TIẾT KEY'}
+                <NaviHerderFull title={'Trần Văn Hòa'}
                     onPressBack={this.goBack}
                     buttonLeft={true} buttonRight={true}
                     onPressRight={this.clickEdit}
@@ -35,33 +36,33 @@ export default class DetailKey extends React.Component {
                         style={{ width: '100%', height: '100%', position: 'absolute' }}
                         source={require('../resource/image/background-login.png')}
                     />
+
+
                     <View style={styles.container}>
-                        <ItemFlexRow txtName={'Mã KH'} txtValue={'250885'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Bán'} txtValue={'9/6/2021 11:27:22 AM'} 
-                        styleColour={styles.txtColour}/>
-                        <ItemFlexRow txtName={'Họ Tên'} txtValue={'Trần Văn Hòa'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Email'} txtValue={'hoatv@ninjateam.vn'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Số Điện Thoại'} txtValue={'0979090897'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Sản Phẩm'} txtValue={'Phần Mềm Ninja Care'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Người Bán'} txtValue={'Tran Van Hoa'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Kết Thúc'} txtValue={'12/5/2021 11:27:22 AM'}
-                        styleColour={styles.txtColour}/>
-                        <ItemFlexRow txtName={'Còn Lại'} txtValue={'84 ngày'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Giá Tiền'} txtValue={'0.00'}
-                        styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Thanh Toán'} txtValue={'Tài khoản Vietcombank'} 
-                        style={{ width: 160 }} styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ghi Chú'} txtValue={'TEST NHÂN VIÊN'}
-                        styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Mã KH'}
+                            txtValue={'250885'}
+                            styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Email'}
+                            txtValue={'hoatv@ninjateam.vn'}
+                            styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Số Điện Thoại'}
+                            txtValue={'0979090897'}
+                            styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'DateCreate'}
+                            txtValue={'5/5/2018 8:04:24 AM'}
+                            styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Point'}
+                            txtValue={'1000000'}
+                            styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Token'}
+                            txtValue={'E7B2C2EC6FF08CEEC753855DD18B6D8C'}
+                            style={{ width: 160 }} styleColour={styles.txtColour} />
+                        <ItemFlexRow txtName={'Status'} txtValue={'Active'}
+                            styleColour={styles.txtColour} />
                     </View>
-                    <View style={styles.containerButton}>
+                    <View style={styles.containerAll} >
+                        <View style={styles.containerAll} />
+                        <View style={styles.containerButton}>
                         <TouchableOpacity style={styles.btnCall}>
                             <View style={styles.containerCall}>
                                 <MaterialCommunityIcons name={'phone'} size={25} style={styles.iconCall} />
@@ -70,12 +71,12 @@ export default class DetailKey extends React.Component {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnDuyet}>
-                            <View style={styles.containerCall}>
-                                <MaterialCommunityIcons name={'checkbox-blank-outline'} size={25} style={styles.iconCall} />
-                                <Text style={styles.txtGoi}>DUYỆT</Text>
-                                <View style={{ width: 30 }} />
+                            <View style={styles.containerReset}>
+
+                                <Text style={styles.txtGoi}>RESET MẬT KHẨU</Text>
                             </View>
                         </TouchableOpacity>
+                        </View>
                     </View>
                     <TouchableOpacity style={styles.containerDelete}>
                         <MaterialCommunityIcons name={'delete-circle-outline'} size={50} style={{ color: '#FE2E2E' }} />
@@ -92,9 +93,9 @@ export default class DetailKey extends React.Component {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: '#fff'
     },
     container: {
+        marginTop: 25,
     },
     txtColour: {
         fontSize: 18,
@@ -109,6 +110,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         paddingVertical: 15,
         fontWeight: '600'
+    },
+    containerReset: {
+        justifyContent: 'center',
+        alignItems: 'center'
+
     },
     btnCall: {
         flex: 1,
@@ -128,10 +134,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerDelete: {
-        alignItems: 'flex-end',
         justifyContent: 'center',
         flexDirection: 'row',
-        marginBottom: 15
+        marginBottom: 20
     },
     viewDelete: {
         flex: 1,
@@ -145,10 +150,8 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     containerButton: {
-        flex: 1,
         flexDirection: 'row',
-        marginTop: 20,
-
+        marginBottom:20,
     }
 
 })
