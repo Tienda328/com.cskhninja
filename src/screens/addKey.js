@@ -51,63 +51,66 @@ class AddKey extends React.Component {
     render() {
         const { email, CustomerCode, phoneNumber, CustomerName, modalVisible } = this.state;
         return (
-            <ScrollView>
-                <View style={[styles.containerAll]}>
-                    <NaviHerderFull title={'THÊM KEY'} />
+            <View>
+                <NaviHerderFull title={'THÊM KEY'} />
+                <ScrollView>
                     <View style={[styles.containerAll]}>
-                        <Image
-                            style={{ width: '100%', height: '100%', position: 'absolute' }}
-                            source={require('../resource/image/background-login.png')}
-                        />
-                        <View style={styles.bottomKey} />
-                        <TextInputKey
-                            onChangeText={(text) => this.onChangeTextEmail(text)}
-                            placeholder="Nhập Email khách hàng"
-                            nameText={'Email khách hàng'}
-                            value={email}
-                            isError={true}
-                            statusError={'sai  roi'}
-                        />
-                        <TextInputKey
-                            onChangeText={(text) => this.onChangeTextCustomerCode(text)}
-                            placeholder="0"
-                            nameText={'Mã khách hàng'}
-                            value={CustomerCode}
-                        />
-                        <TextInputKey
-                            onChangeText={(text) => this.onChangeTextCustomerName(text)}
-                            placeholder="Tên khách hàng"
-                            nameText={'Tên khách hàng'}
-                            value={CustomerName}
-                        />
-                        <TextInputKey
-                            onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
-                            placeholder="Số điện thoại"
-                            nameText={'Số điện thoại'}
-                            value={phoneNumber}
-                        />
-                        <TextInputModal
-                            nameTitle={'Loại bản quyền'}
-                            isError={true}
-                            placeholder={'Chọn loại bản quyền'} />
-                        <TextInputModal
-                            nameTitle={'Phần mềm'}
-                            isError={true}
-                            placeholder={'Phần mềm'} />
-                        <TextInputModal
-                            nameTitle={'Gói bản quyền'}
-                            isError={true}
-                            placeholder={'Gói bản quyền'} />
 
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() => this.props.navigation.navigate('AddKeyStep2Screen')}
-                            style={styles.btnContinue}>
-                            <Text style={styles.txtDangNhap}>Tiếp tục</Text>
-                        </TouchableOpacity>
+                        <View style={[styles.containerAll]}>
+                            <Image
+                                style={{ width: '100%', height: '100%', position: 'absolute' }}
+                                source={require('../resource/image/background-login.png')}
+                            />
+                            <View style={styles.bottomKey} />
+                            <TextInputKey
+                                onChangeText={(text) => this.onChangeTextEmail(text)}
+                                placeholder="Nhập Email khách hàng"
+                                nameText={'Email khách hàng'}
+                                value={email}
+                                isError={true}
+                                statusError={'sai  roi'}
+                            />
+                            <TextInputKey
+                                onChangeText={(text) => this.onChangeTextCustomerCode(text)}
+                                placeholder="0"
+                                nameText={'Mã khách hàng'}
+                                value={CustomerCode}
+                            />
+                            <TextInputKey
+                                onChangeText={(text) => this.onChangeTextCustomerName(text)}
+                                placeholder="Tên khách hàng"
+                                nameText={'Tên khách hàng'}
+                                value={CustomerName}
+                            />
+                            <TextInputKey
+                                onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
+                                placeholder="Số điện thoại"
+                                nameText={'Số điện thoại'}
+                                value={phoneNumber}
+                            />
+                            <TextInputModal
+                                nameTitle={'Loại bản quyền'}
+                                isError={true}
+                                placeholder={'Chọn loại bản quyền'} />
+                            <TextInputModal
+                                nameTitle={'Phần mềm'}
+                                isError={true}
+                                placeholder={'Phần mềm'} />
+                            <TextInputModal
+                                nameTitle={'Gói bản quyền'}
+                                isError={true}
+                                placeholder={'Gói bản quyền'} />
+
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => this.props.navigation.navigate('AddKeyStep2Screen')}
+                                style={styles.btnContinue}>
+                                <Text style={styles.txtDangNhap}>Tiếp tục</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         )
     }
 

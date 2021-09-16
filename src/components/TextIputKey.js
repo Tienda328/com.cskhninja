@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     input: {
         height: windowHeight / 21,
-        color: 'gray',
+        color: '#000000',
         fontSize: 14,
         fontWeight:'300'
     },

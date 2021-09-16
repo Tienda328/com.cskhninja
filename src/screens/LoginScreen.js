@@ -14,10 +14,8 @@ import DismissKeyboardView from '../components/DismissKeyboard';
 import NaviHeaderComponent from '../components/NaviHeaderComponent'
 import { AuthContext } from '../context/AuthContext';
 import Entypo from 'react-native-vector-icons/Entypo';
-import strings from '../resource/strings';
+import Guest from '../api/guest';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { login } from '../repositories/remote/service/authService';
-import LoginRequest from '../repositories/remote/request/auth/LoginRequest';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -45,13 +43,22 @@ class LoginScreen extends Component {
     });
   };
   onForgorPass = async () => {
-    const loginRequest = new LoginRequest();
-    loginRequest.addParam(LoginRequest.Keys.EMAIL, 'datnt@tienngay.vn');
-    loginRequest.addParam(LoginRequest.Keys.PASSWORD, '12345678');
-    loginRequest.addParam(LoginRequest.Keys.TYPE, 2);
-    console.log('dsdsd', login(loginRequest))
+    const objPost = {
+          email:"demo@ninjateam.vn",
+          password:"0979090897",
+          function:"login",
+          time:"1",
+          token:"cb71566ad373420f41af4f951ac34aba"
+    };
+    try {
+      const response = await Guest.login(objPost);
+      console.log('lstMyFollow', response);
+    } catch (e) {
+      console.log(e);
+    }
+  
   }
-  onLogin= () =>{
+  onLogin = () => {
     this.props.navigation.navigate('TabNavigator')
   }
 
@@ -72,7 +79,7 @@ class LoginScreen extends Component {
             <Image
               style={loginStyle.iconLogin}
               source={{
-                uri: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-virtual-reality-glasses-ninja-logo-png-image_4264511.jpg',
+                uri: 'https://www.phanmemninja.com/wp-content/uploads/2021/05/LOGO-NINJA-nen.png',
               }}
             />
           </View>
@@ -171,11 +178,12 @@ const loginStyle = StyleSheet.create({
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   iconLogin: {
     height: 200,
     width: 200,
+    resizeMode: 'contain'
   },
   textInput: {
     flex: 1,
@@ -201,7 +209,7 @@ const loginStyle = StyleSheet.create({
   viewInput: {
     flexDirection: 'row',
     marginTop: 10,
-    height: 70,
+    height: 60,
     borderWidth: 1,
     borderColor: '#fff',
     backgroundColor: '#0040FF',

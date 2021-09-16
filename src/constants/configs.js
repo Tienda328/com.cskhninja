@@ -1,5 +1,5 @@
 const configs = {
-  HOST: 'https://sandboxappnb.tienngay.vn/',
+  HOST: 'http://ninjagroup.rest/api/app/graphql',
   // HOST: 'https://appnb.tienngay.vn/',
   development: true,
 };

@@ -21,7 +21,7 @@ class SplashScreen extends React.Component {
         <Image
           style={styles.iconLogin}
           source={{
-            uri: 'https://png.pngtree.com/png-clipart/20190520/original/pngtree-virtual-reality-glasses-ninja-logo-png-image_4264511.jpg',
+            uri: 'https://www.phanmemninja.com/wp-content/uploads/2021/05/LOGO-NINJA-nen.png',
           }}
         />
       </View>
@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
   iconLogin:{
     height:200,
     width:200,
+    resizeMode:'contain'
   }
 });

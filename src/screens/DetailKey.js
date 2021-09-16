@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 50,
         borderRadius: 20,
-        backgroundColor: '#2E64FE',
+        backgroundColor: '#0080FF',
         marginLeft: 20,
         marginRight: 10,
     },
