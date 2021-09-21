@@ -7,11 +7,12 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from '../context/AuthContext';
 import PropTypes from 'prop-types';
-import {BadgeContext} from '../context/BadgeContext';
 import StackNavigator from './StackNavigator';
 import AuthNavigator from './AuthNavigator';
 import SplashScreen from '../components/SplashScreen';
 import {connect} from 'react-redux';
+import {getLocale} from '../repositories/local/appLocale';
+import LOCALE_KEY from '../repositories/local/appLocale';
 import LoadingComponent from '../components/LoadingComponent';
 const styles = StyleSheet.create({
   container: {
@@ -24,9 +25,25 @@ export let navigationRef = React.createRef();
 class MainNavigator extends React.Component {
   constructor(props) {
     super(props);
+    this.toggleLoggedIn = async () => {
+      const accessToken = await getLocale(LOCALE_KEY.access_token);
+      const isLoggedIn = accessToken !== null;
+      this.refreshLocation(isLoggedIn);
+      this.setState((state) => ({
+        auth: {
+          isLoggedIn: isLoggedIn,
+          toggleLoggedIn: state.auth.toggleLoggedIn,
+        },
+      }));
+    };
     this.state = {
+      auth: {
+        isLoggedIn: null,
+        toggleLoggedIn: this.toggleLoggedIn,
+      },
       openApp: false,
     };
+
     setTimeout(
       function () {
         this.setState({openApp: true});
@@ -35,9 +52,32 @@ class MainNavigator extends React.Component {
     );
   }
 
+  refreshLocation = (isLoggedIn) => {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+
+    if (!isLoggedIn) {
+      return;
+    }
+  };
+  async componentDidMount() {
+    const accessToken = await getLocale(LOCALE_KEY.access_token);
+    const isLoggedIn = accessToken !== null;
+    this.refreshLocation(isLoggedIn);
+    this.setState((state) => ({
+      auth: {
+        isLoggedIn: isLoggedIn,
+        toggleLoggedIn: state.auth.toggleLoggedIn,
+      },
+    }));
+  }
 
   renderNavigator = () => {
-    return true ? (
+    return this.state.auth.isLoggedIn !== true &&
+    this.state.auth.isLoggedIn !== false ? (
+    <></>
+  ) : this.state.auth.isLoggedIn  ? (
       <StackNavigator />
     ) : (
       <AuthNavigator />
@@ -54,8 +94,7 @@ class MainNavigator extends React.Component {
       return <SplashScreen />;
     }
     return (
-      // <AuthContext.Provider value={this.state.auth}>
-        <BadgeContext.Provider value={this.state.badge}>
+      <AuthContext.Provider value={this.state.auth}>
           <NavigationContainer ref={navigationRef}>
             <StatusBar barStyle="dark-content" backgroundColor="white" />
             {this.renderNavigator()}
@@ -65,8 +104,7 @@ class MainNavigator extends React.Component {
             /> */}
             {/* {this.renderLoading()} */}
           </NavigationContainer>
-        </BadgeContext.Provider>
-      // </AuthContext.Provider>
+      </AuthContext.Provider>
     );
   }
 }

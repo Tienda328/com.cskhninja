@@ -125,7 +125,7 @@ class Main extends React.Component {
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
           buttonRight={true}
-          buttonRightIcon={false} />
+          nameIcon={'bell'} />
         <View style={styles.containerAll}>
           <Image
             style={{ width: '100%', height: '100%', position: 'absolute' }}

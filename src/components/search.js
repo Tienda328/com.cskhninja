@@ -10,7 +10,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-export default function Search({ value, onChangeText, style, onPressFilter }) {
+export default function Search({ value,showFilter, onChangeText, style, onPressFilter,clickSearch }) {
     return (
         <View style={[styles.containerALL, style]}>
           
@@ -21,11 +21,13 @@ export default function Search({ value, onChangeText, style, onPressFilter }) {
                 value={value}
                 placeholder={'Tìm kiếm ...'}
             />
+              <TouchableOpacity onPress={clickSearch}>
               <MaterialCommunityIcons name={'magnify'} size={25} style={styles.iconSearch} />
+              </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.containerFilter} onPress={onPressFilter}>
+       {showFilter ?  <TouchableOpacity style={styles.containerFilter} onPress={onPressFilter}>
         <MaterialCommunityIcons name={'filter-menu-outline'} size={25} style={styles.iconBoLoc} />
-        </TouchableOpacity>
+        </TouchableOpacity>:<View/>}
         </View>
     );
 }

@@ -3,6 +3,7 @@ import actionTypes from '../actions/actionTypes';
 const initializedState = {
   isLoading: false,
   fcmRegistered: false,
+  isUserInFo:null,
 };
 
 const appStateReducer = (state = initializedState, action) => {
@@ -17,6 +18,11 @@ const appStateReducer = (state = initializedState, action) => {
         ...state,
         isLoading: false,
       };
+    case actionTypes.USER_INFOR:
+        return {
+          ...state,
+          isUserInFo: action.payload,
+        };
     default:
       return state;
   }

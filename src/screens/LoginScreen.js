@@ -13,28 +13,34 @@ import {
 import DismissKeyboardView from '../components/DismissKeyboard';
 import NaviHeaderComponent from '../components/NaviHeaderComponent'
 import { AuthContext } from '../context/AuthContext';
+import common  from '../utils/common';
+import LOCALE_KEY, {
+  getLocale,
+  setLocale,
+  clearLocale,
+} from '../repositories/local/appLocale';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {
+  getUserInFor,
+} from '../redux/actions';
+import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
+import {connect} from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      password:'',
+      email:'',
       secureTextEntry: true,
+      storageInfor: false,
       iconstorageInfor: 'checkbox-blank-outline',
       iconShowPass: 'eye',
     };
   }
 
-  async componentDidMount() {
-    const icon = false
-      ? 'checkbox-intermediate'
-      : 'checkbox-blank-outline';
-    this.setState({
-      iconstorageInfor: icon,
-    });
-  }
   onIconClick = () => {
     let iconName = this.state.secureTextEntry ? 'eye-with-line' : 'eye';
     this.setState({
@@ -43,29 +49,90 @@ class LoginScreen extends Component {
     });
   };
   onForgorPass = async () => {
-    const objPost = {
-          email:"demo@ninjateam.vn",
-          password:"0979090897",
-          function:"login",
-          time:"1",
-          token:"cb71566ad373420f41af4f951ac34aba"
-    };
-    try {
-      const response = await Guest.login(objPost);
-      console.log('lstMyFollow', response);
-    } catch (e) {
-      console.log(e);
+  }
+
+  async componentDidMount() {
+    const email = await getLocale(LOCALE_KEY.email);
+    const password = await getLocale(LOCALE_KEY.pass_word);
+    const save_infor =
+      (await getLocale(LOCALE_KEY.storage_infor)) === '1' ? true : false;
+    const icon = save_infor
+      ? 'checkbox-intermediate'
+      : 'checkbox-blank-outline';
+    this.setState({
+      email: email,
+      storageInfor: save_infor,
+      iconstorageInfor: icon,
+      password:password
+    });
+    if (Platform.OS === 'android') {
+    
     }
+  }
   
-  }
-  onLogin = () => {
-    this.props.navigation.navigate('TabNavigator')
-  }
+  onUserSaveClick = () => {
+    let iconName = this.state.storageInfor
+      ? 'checkbox-blank-outline'
+      : 'checkbox-intermediate';
+    let value = !this.state.storageInfor ? '1' : '0';
+    setLocale(LOCALE_KEY.storage_infor, value);
+    this.setState({
+      storageInfor: !this.state.storageInfor,
+      iconstorageInfor: iconName,
+    });
+  };
+
+  onLoginClick = async (toggleLoggedIn) => { 
+    const {password,email } =this.state;
+    if(password===''||email===''){
+      Alert.alert(
+        "Thông báo",
+        "Email hoặc mật khẩu không được để trống",
+        [
+          { text: "OK", onPress: () => {} }
+        ]
+      );
+    }else{
+      // const md5 = stringMd5('0979090897');
+      const md5 = stringMd5(password);
+      const timeStamp =common.timeStamp();
+      const token = stringMd5('16518b38c0234509b38a34f6ca091e8686'+timeStamp);
+      // demo@ninjateam.vn
+      const objPost = {
+            email:email,
+            password:md5,
+            function:"login",
+            time:'1',
+            token:'d1ff52a77a2965156cb8e7e67d4ac931'
+      };
+      try {
+        const response = await Guest.login(objPost);
+        const userinfo= JSON.parse(response.data);
+        if(response.status===true){
+          if (this.state.storageInfor === true) {
+            setLocale(LOCALE_KEY.email, email);
+            setLocale(LOCALE_KEY.pass_word, password);
+            setLocale(LOCALE_KEY.phone_number, userinfo.phone);
+            setLocale(LOCALE_KEY.user_name, userinfo.name);
+          } else {
+            clearLocale(LOCALE_KEY.email);
+            clearLocale(LOCALE_KEY.pass_word);
+          }
+          await setLocale(LOCALE_KEY.access_token, token);
+          await toggleLoggedIn();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    
+   
+  };
 
   render() {
     return (
-      // <AuthContext.Consumer>
-      //   {({ isLoggedIn, toggleLoggedIn }) => (
+      <AuthContext.Consumer>
+        {({ isLoggedIn, toggleLoggedIn }) => (
       <DismissKeyboardView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={loginStyle.container}>
@@ -87,8 +154,8 @@ class LoginScreen extends Component {
             <MaterialCommunityIcons name={'account'} size={25} style={{ color: '#fff' }} />
             <TextInput
               placeholder={"Tên đăng nhập"}
-              value={this.state.phoneNumber}
-              onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+              value={this.state.email}
+              onChangeText={(email) => this.setState({ email })}
               placeholderTextColor="#BDBDBD"
               underlineColorAndroid="transparent"
               style={[loginStyle.textInput]}
@@ -100,7 +167,7 @@ class LoginScreen extends Component {
           </View>
           <View style={loginStyle.height} />
           <View style={loginStyle.viewInput}>
-            <MaterialCommunityIcons name={'lock'} size={25} style={{ color: '#fff' }} />
+            <MaterialCommunityIcons name={'lock'} size={20} style={{ color: '#fff' }} />
             <TextInput
               placeholder={'Mật khẩu'}
               placeholderTextColor="#BDBDBD"
@@ -136,7 +203,7 @@ class LoginScreen extends Component {
             <Text style={loginStyle.txtNhoPassWork} >Nhớ mật khẩu?</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this.onLogin}
+            onPress={() => this.onLoginClick(toggleLoggedIn)}
             activeOpacity={0.8}
             style={loginStyle.btnLogin}>
             <Text style={loginStyle.txtDangNhap}>Đăng nhập</Text>
@@ -152,22 +219,19 @@ class LoginScreen extends Component {
           </View>
         </ScrollView>
       </DismissKeyboardView>
-      //   )}
-      // </AuthContext.Consumer>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  appState: state.appState,
+});
 
-// LoginScreen.defaultProps = {
-//   appState: {},
-// };
-
-// LoginScreen.propTypes = {
-//   onRegisterFcmToken: PropTypes.func.isRequired,
-//   onGetUnreadNotification: PropTypes.func.isRequired,
-// };
-
-export default LoginScreen;
+const mapDispatchToProps = (dispatch) => ({
+  getUserInFor: (payload) => dispatch(getUserInFor(payload)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
 
 const loginStyle = StyleSheet.create({
   container: {

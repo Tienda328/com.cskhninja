@@ -2,25 +2,16 @@ import React from 'react';
 import {
     View,
     Text,
-    TextInput,
-    Dimensions,
     StyleSheet
 } from 'react-native';
-const windowHeight = Dimensions.get('window').height;
 
-export default function TextInputKey({ nameText, statusError, placeholder, value, isError, onChangeText, editable }) {
+export default function ItemDisaBle({ nameText, statusError, isError, value }) {
     return (
         <View>
             <View>
                 <Text style={styles.txtName}>{nameText}</Text>
-                <View style={[styles.containerInput,{backgroundColor:editable?'#fff':'#D8D8D8'}]}>
-                <TextInput
-                    editable={editable}
-                    style={styles.input}
-                    placeholder={placeholder}
-                    value={value}
-                    onChangeText={onChangeText}
-                />
+                <View style={[styles.containerInput]}>
+               <Text style={styles.txtValue}>{value}</Text>
                 </View>
 
             </View>
@@ -35,6 +26,7 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         marginHorizontal:20,
         borderRadius:10,
+        justifyContent:'center',
         shadowRadius: 6,
         shadowOpacity: 0.16,
         shadowOffset: {
@@ -42,10 +34,14 @@ const styles = StyleSheet.create({
             height: 5,
         },
         elevation: 3,
-        backgroundColor: "#fff",
+        backgroundColor: "#D8D8D8",
     },
     bottomKey: {
         height: 20
+    },
+    txtValue:{
+        marginLeft:15,
+        color:'#6E6E6E'
     },
     txtError: {
         color: 'red',

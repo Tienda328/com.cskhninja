@@ -11,3 +11,7 @@ export const stopLoadingAction = (appState) => ({
   payload: appState,
 });
 
+export const getUserInFor = (payload) => ({
+  type: actionTypes.USER_INFOR,
+  payload: payload,
+});

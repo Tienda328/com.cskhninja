@@ -36,11 +36,11 @@ export default function ItemManage({ nameLoai, onPress, navigation }) {
 const styles = StyleSheet.create({
     containerAll: {
         backgroundColor: '#fff',
-        marginTop: 10,
         flex: 1,
         marginHorizontal: 20,
         borderRadius: 10,
-        // borderColor: '#fff',
+        borderColor: '#BDBDBD',
+        borderWidth:1,
         shadowColor: '#000',
         shadowRadius: 6,
         shadowOpacity: 0.16,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
             height: 5,
         },
         elevation: 3,
-
+        marginBottom:15,
     },
     txtLeft: {
         fontSize: 14,

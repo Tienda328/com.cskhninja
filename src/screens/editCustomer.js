@@ -54,30 +54,28 @@ export default class DetailKey extends React.Component {
             <View
                 style={styles.containerAll}>
                 <NaviHerderFull title={'SỬA TÀI KHOẢN'} buttonLeft={true} onPressBack={this.goBack} />
-                <View style={styles.containerAll} >
-                    <Image
-                        style={{ width: '100%', height: '100%', position: 'absolute' }}
-                        source={require('../resource/image/background-login.png')}
-                    />
+                <View style={styles.container} >
                     <View style={styles.bottomKey} />
                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextSuerName(text)}
                         placeholder="Họ tên"
                         nameText={'Trần văn hòa'}
                         value={surname}
+                        editable={true}
                         isError={true}
-                        statusError={'sai  roi'}
                     />
                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextEmail(text)}
                         placeholder="hoatv@ninjateam.vn"
                         nameText={'Email'}
+                        editable={true}
                         value={email}
                     />
                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
                         placeholder="025447125"
                         nameText={'Số điện thoại'}
+                        editable={true}
                         value={phoneNumber}
                     />
                     <TextInputKey
@@ -86,10 +84,11 @@ export default class DetailKey extends React.Component {
                         nameText={'Mật khẩu'}
                         value={passwork}
                     />
-                    <TextInputModal
+                    <View style={{flex:1}}></View>
+                    {/* <TextInputModal
                         nameTitle={'Trạng thái'}
                         isError={true}
-                        placeholder={'active'} />
+                        placeholder={'active'} /> */}
 
                     <View style={styles.containerButton}>
                         <TouchableOpacity
@@ -116,6 +115,22 @@ const styles = StyleSheet.create({
     },
     bottomKey: {
         height: 25,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        marginVertical: 20,
+        borderRadius: 10,
+        borderColor: '#fff',
+        shadowColor: '#000',
+        shadowRadius: 6,
+        shadowOpacity: 0.16,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        elevation: 3,
     },
     btnContinue: {
         flex: 1,

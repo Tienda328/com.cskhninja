@@ -6,10 +6,10 @@ import {
     StyleSheet
 } from 'react-native';
 
-export default function ItemLoaiBanQuyen({ nameLoai, onPress }) {
+export default function ItemLoaiBanQuyen({ item, onPress }) {
     return (
         <TouchableOpacity onPress={onPress}>
-            <Text style={styles.txtSelect}>{nameLoai ? nameLoai : ''}</Text>
+            <Text style={styles.txtSelect}>{item.name ? item.name : ''}</Text>
             <View style={styles.viewHeight} />
         </TouchableOpacity>
     );

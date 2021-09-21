@@ -23,19 +23,15 @@ export default class DetailKey extends React.Component {
 
         return (
             <View
-                style={styles.containerAll}>
+                style={styles.containerAll}> 
                 <NaviHerderFull title={'CHI TIẾT KEY'}
                     onPressBack={this.goBack}
                     buttonLeft={true} buttonRight={true}
-                    onPressRight={this.clickEdit}
-
-                    buttonRightIcon={true} />
-                <View style={styles.containerAll}>
-                    <Image
-                        style={{ width: '100%', height: '100%', position: 'absolute' }}
-                        source={require('../resource/image/background-login.png')}
-                    />
-                    <View style={styles.container}>
+                    nameIcon={'account-edit'}
+                     textRight={'Sửa'}
+                     onPressRight={this.clickEdit} />
+                <View style={styles.container}>
+                    <View>
                         <ItemFlexRow txtName={'Mã KH'} txtValue={'250885'}
                         styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Ngày Bán'} txtValue={'9/6/2021 11:27:22 AM'} 
@@ -92,13 +88,26 @@ export default class DetailKey extends React.Component {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#D8D8D8'
     },
-    container: {
-    },
+    container:{
+        flex:1,
+        backgroundColor:'#fff',
+        marginHorizontal:20,
+        marginTop:20,
+        borderRadius: 10,
+        borderColor: '#fff',
+        shadowColor: '#000',
+        shadowRadius: 6,
+        shadowOpacity: 0.16,
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
+        elevation: 3,
+      },
     txtColour: {
         fontSize: 18,
-        color: '#fff'
     },
     txtDelete: {
         fontWeight: '400',

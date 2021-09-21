@@ -12,75 +12,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemLoaiBanQuyen from '../components/ItemLoaiBanQuyen'
 const windowHeight = Dimensions.get('window').height;
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7acbea-c1b-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3a91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '586946-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7acbea-c1b153abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3dbd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a41aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7ac1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f',
-    title: 'Third Item',
-  },
-
-];
-
-
 class TextInputModal extends Component {
   state = {
     modalVisible: false,
-    namePlaceholder:''
   };
 
   setModalVisible = visible => {
@@ -88,20 +22,22 @@ class TextInputModal extends Component {
   };
 
   clickItem =item  => {
-    this.setState({namePlaceholder: item.title,
+    this.setState({
+      // namePlaceholder: item.title,
       modalVisible:false
     });
+    this.props.click(item)
   };
 
 
 
   renderItem = ({ item }) => (
-    <ItemLoaiBanQuyen  nameLoai ={item.title} onPress={()=> this.clickItem(item) }/>
+    <ItemLoaiBanQuyen  item ={item} onPress={()=> this.clickItem(item) }/>
   );
 
   render() {
-    const {modalVisible, namePlaceholder} = this.state;
-    const {nameTitle, isError, placeholder} = this.props;
+    const {modalVisible} = this.state;
+    const {nameTitle,statusError, isError, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
     return (
       <View style={styles.containerAll}>
         <Modal
@@ -115,7 +51,7 @@ class TextInputModal extends Component {
             <View style={styles.containerModal}>
               <View style={styles.modalHerder}>
                 <Text  />
-                <Text style={styles.txtTitle}>{nameTitle}</Text>
+                <Text style={styles.txtTitle}>{valueItem}</Text>
                 <TouchableOpacity
                   style={styles.btnClose}
                   onPress={() => this.setModalVisible(!modalVisible)}>
@@ -127,24 +63,26 @@ class TextInputModal extends Component {
                 </TouchableOpacity>
               </View>
               <View>
-                <FlatList
+              {noData ?   <FlatList
                 style={{height:450}}
-                  data={DATA}
+                  data={dataModal}
                   renderItem={(item)=>this.renderItem(item)}
                   keyExtractor={item => item.id}
-                />
+                />:<Text style={styles.txtNoData}>Không có dữ liệu</Text>
+
+              }
               </View>
             </View>
           </View>
         </Modal>
         <View>
+        <Text style={styles.txtName}>{nameTitle}</Text>
           <TouchableOpacity
-            style={styles.containerInput}
+            disabled={disabled}
+            style={[styles.containerInput, {backgroundColor:disabled?'#D8D8D8':'#fff'}]}
             onPress={() => this.setModalVisible(true)}>
-            <View style={styles.containerAll}>
-              <Text style={styles.txtName}>{nameTitle}</Text>
-              <Text style={styles.txtSelect}>{namePlaceholder===''?placeholder:namePlaceholder}</Text>
-            </View>
+              <Text style={styles.txtSelect}>{namePlaceholder}</Text>
+        
             <View style={styles.iconShow}>
               <Ionicons
                 name={'caret-down-outline'}
@@ -154,7 +92,7 @@ class TextInputModal extends Component {
             </View>
           </TouchableOpacity>
           {isError ? (
-            <Text style={styles.txtError}>sai roi</Text>
+            <Text style={styles.txtError}>{statusError}</Text>
           ) : (
             <View style={styles.viewHeight} />
           )}
@@ -168,6 +106,9 @@ const styles = StyleSheet.create({
   containerAll: {
     flex: 1,
   },
+  txtNoData:{textAlign:'center',
+  marginTop:20,
+},
   txtTitle:{
     color: 'white',
     fontSize: 15,
@@ -211,17 +152,15 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   txtSelect: {
-    height: windowHeight / 19.5,
-    marginTop: 5,
     color: 'gray',
     fontSize: 14,
+    marginLeft:10,
   },
   txtName: {
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 6,
-    marginLeft: 3,
-    marginTop: 10,
+    marginLeft: 20,
   },
   viewHeight: {
     height: 20,
@@ -233,22 +172,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerInput: {
-    // height: 70,
-    height: windowHeight / 10,
-    paddingLeft: 6,
-    borderRadius: 8,
-    borderWidth: 1,
+    height:40,
+    borderRadius: 10,
+    justifyContent:'space-between',
+    alignItems:'center',
     flexDirection: 'row',
-    borderColor: '#fff',
-    shadowColor: '#000',
     shadowRadius: 6,
     shadowOpacity: 0.16,
     shadowOffset: {
-      width: 0,
-      height: 5,
+        width: 0,
+        height: 5,
     },
-    elevation: 8,
-    backgroundColor: '#fff',
+    elevation: 3,
+    backgroundColor: "#fff",
     marginHorizontal: 20,
   },
 });

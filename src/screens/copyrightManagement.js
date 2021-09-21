@@ -14,6 +14,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemCustomer from '../components/itemManage';
 import Search from '../components/search';
 import TextInputModal from '../components/textInputModal';
+import LOCALE_KEY, {
+  getLocale,
+} from '../repositories/local/appLocale';
+import Guest from '../api/guest';
+import common from '../utils/common';
+import { stringMd5 } from 'react-native-quick-md5';
 
 const DATA = [
   {
@@ -67,7 +73,27 @@ class CopyrightManagement extends React.Component {
   renderItem = ({ item }) => (
     <ItemCustomer navigation={this.props.navigation} />
   );
-
+  async componentDidMount() {
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "loadproduct",
+      time: `1`,
+      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      variable:"{'type':'1'}"
+    };
+    try {
+      const response = await Guest.loadproduct(objPost);
+      console.log('ds', response.data)
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
 
   onChangeTextSearch = (text) => {
@@ -87,14 +113,10 @@ class CopyrightManagement extends React.Component {
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
-        <View style={styles.containerAll}>
-          <Image
-            style={{ width: '100%', height: '100%', position: 'absolute' }}
-            source={require('../resource/image/background-login.png')}
-          />
-          <Search value={search}
+        <Search value={search}
             onPressFilter={this.onFilter}
             onChangeText={(text) => this.onChangeTextSearch(text)} />
+        <View style={styles.container}>
           <Modal
             animationType="slide"
             transparent={true}
@@ -133,7 +155,6 @@ class CopyrightManagement extends React.Component {
             renderItem={(item) => this.renderItem(item)}
             keyExtractor={item => item.id}
           />
-          <View style={styles.height} />
 
         </View>
       </View>
@@ -143,7 +164,24 @@ class CopyrightManagement extends React.Component {
 };
 const styles = StyleSheet.create({
   containerAll: {
-    flex: 1
+    flex: 1,
+    backgroundColor:"#D8D8D8"
+  },
+  container:{
+    flex:1,
+    backgroundColor:'#FAFAFA',
+    marginHorizontal:20,
+    marginVertical:20,
+    borderRadius: 10,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowRadius: 6,
+    shadowOpacity: 0.16,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    elevation: 3,
   },
   btnClose: {
     marginRight: 10,
@@ -181,7 +219,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   flatList: {
-    marginTop: 10
+    paddingTop: 20
   },
 
   containerView: {

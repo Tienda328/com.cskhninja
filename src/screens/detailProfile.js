@@ -14,21 +14,33 @@ import LOCALE_KEY, {
 import Guest from '../api/guest';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
-
-export default class AddCustomer extends React.Component {
+ 
+class DetailProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             surName: '',
             email: '',
             phoneNumber: '',
-            passWord: '',
+            editable: false,
             stateSurName: null,
             stateEmail: null,
             statePhoneNumber: null,
             statePassword: null,
+            txtEdit:'Sửa'
         };
     }
+
+    async componentDidMount() {
+        const user_name = await getLocale(LOCALE_KEY.user_name);
+        const email = await getLocale(LOCALE_KEY.email);
+        const phone_number = await getLocale(LOCALE_KEY.phone_number);
+        this.setState({
+          email: email,
+          surName: user_name,
+          phoneNumber:phone_number
+        })
+      }
 
     validate = () => {
         this.validateUserName();
@@ -117,47 +129,16 @@ export default class AddCustomer extends React.Component {
         }
     }
 
-    addCustomer = async () => {
-        if (this.validate() === true) {
-            const { email, surName, phoneNumber, passWord } = this.state;
-            const pass_word = await getLocale(LOCALE_KEY.pass_word);
-            const emailInFo = await getLocale(LOCALE_KEY.email);
-            const md5 = stringMd5(pass_word);
-            const passCustomer = stringMd5(passWord);
-            const timeStamp = common.timeStamp();
-            const token = stringMd5('16518b38c0234509b38a34f6ca091e8686' + timeStamp);
-            const objPost = {
-                email: emailInFo,
-                password: md5,
-                function: "addcustomer",
-                time: timeStamp,
-                token: token,
-                variable: `{'email':${email},'name':${surName},'phone':${phoneNumber},'password':${passCustomer}}`
-            };
-            try {
-                const response = await Guest.addcustomer(objPost);
-                console.log('response', response)
-                if (response.status === true) {
-                    Alert.alert(
-                        "Thông báo",
-                        "Thêm khách hàng thành công",
-                        [
-                            { text: "OK", onPress: () => this.props.navigation.goBack() }
-                        ]
-                    );
-                } else {
-                    Alert.alert(
-                        "Thông báo",
-                        "Khách hàng đã tồn tại",
-                        [
-                            { text: "OK", onPress: () => { } }
-                        ]
-                    );
-                }
-            } catch (e) {
-                console.log(e);
-            }
+    addCustomer =  () => {
+        const{editable, txtEdit}=this.state
+        this.setState({
+            editable:true,
+            txtEdit:'Lưu'
+        });
+        if(editable===true&&txtEdit==='Lưu'){
+            console.log('dongs')
         }
+        
     }
     goBack = () => {
         this.props.navigation.goBack()
@@ -177,17 +158,12 @@ export default class AddCustomer extends React.Component {
             phoneNumber: text,
         });
     };
-    onChangeTextPassWord = (text) => {
-        this.setState({
-            passWord: text,
-        });
-    };
     render() {
-        const { surName, passWord, email, phoneNumber,
-            stateSurName, stateEmail, statePhoneNumber, statePassword } = this.state
+        const { surName, editable, email, phoneNumber,
+            stateSurName, stateEmail, statePhoneNumber, txtEdit } = this.state
         return (
             <View style={styles.containerALL}>
-                <NaviHerderFull title={'THÊM KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
+                <NaviHerderFull title={'THÔNG TIN CÁ NHÂN'} buttonLeft={true} onPressBack={this.goBack} />
                
                 <View style={styles.container}>
                 <View style={styles.bottomKey} />
@@ -195,7 +171,7 @@ export default class AddCustomer extends React.Component {
                         onChangeText={(text) => this.onChangeTextSurName(text)}
                         placeholder="Nhập họ tên"
                         nameText={'Họ tên'}
-                        editable={true}
+                        editable={editable}
                         value={surName}
                         isError={true}
                         statusError={stateSurName}
@@ -206,7 +182,7 @@ export default class AddCustomer extends React.Component {
                         nameText={'Nhập Email'}
                         value={email}
                         isError={true}
-                        editable={true}
+                        editable={editable}
                         statusError={stateEmail}
                     />
                     <TextInputKey
@@ -215,22 +191,9 @@ export default class AddCustomer extends React.Component {
                         nameText={'Nhập số điện thoại'}
                         value={phoneNumber}
                         isError={true}
-                        editable={true}
+                        editable={editable}
                         statusError={statePhoneNumber}
                     />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextPassWord(text)}
-                        placeholder="Mật khẩu"
-                        nameText={'Mật khẩu'}
-                        value={passWord}
-                        editable={true}
-                        isError={true}
-                        statusError={statePassword}
-                    />
-                    {/* <TextInputModal
-                    nameTitle={'Trạng thái'}
-                    isError={true}
-                    placeholder={'Chọn loại trạng thái'} /> */}
                     <View style={styles.containerViewButton} />
                     <View style={styles.containerButton}>
                         <TouchableOpacity
@@ -243,7 +206,7 @@ export default class AddCustomer extends React.Component {
                             activeOpacity={0.8}
                             onPress={this.addCustomer}
                             style={styles.btnContinue}>
-                            <Text style={styles.txtClick}>Lưu</Text>
+                            <Text style={styles.txtClick}>{txtEdit}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -254,6 +217,8 @@ export default class AddCustomer extends React.Component {
 
 }
 
+
+export default DetailProfile;
 const styles = StyleSheet.create({
     containerALL: {
         flex: 1,

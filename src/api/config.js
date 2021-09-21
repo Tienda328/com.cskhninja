@@ -1,4 +1,6 @@
-
+import {
+  Alert
+} from 'react-native';
 const baseUrl = 'http://ninjagroup.rest/api/app/graphql';
 
 let HEADERS = {
@@ -18,6 +20,14 @@ const onResponse = async (request, result) => {
         type: 'object'
       };
       throw exception;
+    }else if (result.status === 200) {
+      Alert.alert(
+        "Thông báo",
+        newBody.message,
+        [
+          { text: "OK", onPress: () => {} }
+        ]
+      );
     }
 
     // SUCCESS: Return valid response
@@ -26,7 +36,8 @@ const onResponse = async (request, result) => {
     if (e?.type === 'object') throw e;
     // console.log(result.status, result._bodyText); // uncomment this line if unexpected error occured
     // SUCCESS: when response is {} and status 200 but parsing JSON failed. Still is success response
-    if (result.status === 200) return result;
+    if (result.status === true) return result;
+
     // // FAILED: Throw unknown exceptions
     const exception = {
       exception: result,

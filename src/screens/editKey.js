@@ -69,11 +69,8 @@ export default class DetailKey extends React.Component {
                 style={styles.containerAll}>
                 <NaviHerderFull title={'SỬA KEY'} buttonLeft={true} onPressBack={this.goBack} />
                 <ScrollView>
-                    <Image
-                        style={{ width: '100%', height: '100%', position: 'absolute' }}
-                        source={require('../resource/image/background-login.png')}
-                    />
-                    <View style={styles.bottomKey} />
+                   <View style={styles.container}>
+                   <View style={styles.bottomKey} />
                     <TextInputModal
                         nameTitle={'Loại bản quyền'}
                         isError={true}
@@ -141,6 +138,7 @@ export default class DetailKey extends React.Component {
                             <Text style={styles.txtClick}>Lưu</Text>
                         </TouchableOpacity>
                     </View>
+                   </View>
                 </ScrollView>
             </View>
         );
@@ -155,6 +153,22 @@ const styles = StyleSheet.create({
     bottomKey: {
         height: 25,
     },
+     container:{
+        flex:1,
+        backgroundColor:'#fff',
+        marginHorizontal:20,
+        marginTop:20,
+        borderRadius: 10,
+        borderColor: '#fff',
+        shadowColor: '#000',
+        shadowRadius: 6,
+        shadowOpacity: 0.16,
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
+        elevation: 3,
+      },
     btnContinue: {
         flex: 1,
         marginLeft: 10,

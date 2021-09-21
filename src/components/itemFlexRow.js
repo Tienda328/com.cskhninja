@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         fontWeight:'600',
     },
     txtValue:{
-        color:"#D8D8D8",
+        color:"#000",
         marginRight:20,
         paddingVertical:8,
         fontSize:15,

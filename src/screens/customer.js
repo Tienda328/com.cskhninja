@@ -14,26 +14,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemCustomer from '../components/itemCustomer';
 import Search from '../components/search';
 import TextInputModal from '../components/textInputModal';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-  {
-    id: 'bd7acbea-c1b-3ad53abb28ba',
-    title: 'First Item',
-  },
-
-];
+import LOCALE_KEY, {
+  getLocale,
+} from '../repositories/local/appLocale';
+import Guest from '../api/guest';
+import common from '../utils/common';
+import { stringMd5 } from 'react-native-quick-md5';
 
 
 class Customer extends React.Component {
@@ -41,15 +27,44 @@ class Customer extends React.Component {
     super(props);
     this.state = {
       search: '',
-      modalVisible: false
+      modalVisible: false,
+      dataCustomer: [],
+      page:1
     };
   }
 
   renderItem = ({ item }) => (
-    <ItemCustomer navigation={this.props.navigation} />
+    <ItemCustomer navigation={this.props.navigation} item={item} />
   );
 
+  componentDidMount() {
+   this.getData()
+  }
 
+  getData=async ()=>{
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "loadcustomer",
+      time: `1`,
+      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      variable: "{'page':'1','pagesize':'10'}"
+    };
+    try {
+      const response = await Guest.loadcustomer(objPost);
+      const data =JSON.parse(response.data)
+      this.setState({
+        dataCustomer: data
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   onChangeTextSearch = (text) => {
     this.setState({
@@ -62,64 +77,65 @@ class Customer extends React.Component {
   onCloseFilter = () => {
     this.setState({ modalVisible: false });
   }
-
+  addCustomer = () => {
+    this.props.navigation.navigate('AddCustomerScreen')
+  }
   goBack = () => {
     this.props.navigation.goBack()
-};
+  };
+
+  clickSearch = async () => {
+    // const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    // const email = await getLocale(LOCALE_KEY.email);
+    // const md5 = stringMd5(pass_word);
+    // const timeStamp = common.timeStamp();
+    // const token = common.createToken(timeStamp)
+
+    // const objPost = {
+    //   email: email,
+    //   password: md5,
+    //   function: "seachcustomer",
+    //   time: `1`,
+    //   token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+    //   variable: `{'email':'${'hoatv2@ninjateam.vn'}'}`
+    // };
+    // try {
+    //   const response = await Guest.seachcustomer(objPost);
+    //    const data =await response.data
+    //   const datadasdasd =common.DataSeach(data)
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  };
+
+  // handleLoadMore=()=>{
+  //   this.setState({
+  //     page:this.state.page+1
+  //   }, ()=>console.log('dsds'))
+  // }
 
   render() {
-    const { search, modalVisible } = this.state;
+    const { search, dataCustomer, page } = this.state;
     return (
       <View style={styles.containerAll}>
-        <NaviHerderFull title={'DANH SÁCH KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
-        <View style={styles.containerAll}>
-          <Image
-            style={{ width: '100%', height: '100%', position: 'absolute' }}
-            source={require('../resource/image/background-login.png')}
-          />
-          <Search value={search}
+        <NaviHerderFull title={'DANH SÁCH KHÁCH HÀNG'}
+          buttonLeft={true} onPressBack={this.goBack}
+          buttonRight={true} nameIcon={'account-plus'}
+          onPressRight={this.addCustomer}
+          textRight={'Thêm'}
+        />
+           <Search value={search}
+            clickSearch={this.clickSearch}
             onPressFilter={this.onFilter}
             onChangeText={(text) => this.onChangeTextSearch(text)} />
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-          >
-            <View style={styles.containerView}>
-              <View style={styles.containerModal}>
-                <View style={styles.modalHerder}>
-                  <Text />
-                  <Text style={styles.txtTitle}>BỘ LỌC</Text>
-                  <TouchableOpacity
-                    style={styles.btnClose}
-                    onPress={this.onCloseFilter}>
-                    <Ionicons
-                      name={'close-outline'}
-                      size={25}
-                      style={{ color: '#fff' }}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  <View style={styles.height}/>
-                  <TextInputModal
-                    nameTitle={'Loại quản lý'}
-                    isError={true}
-                    placeholder={'Chọn loại quản lý'} />
-                </View>
-                <View>
-                </View>
-              </View>
-            </View>
-          </Modal>
+        <View style={styles.container}>
           <FlatList
             style={styles.flatList}
-            data={DATA}
+            data={dataCustomer}
             renderItem={(item) => this.renderItem(item)}
             keyExtractor={item => item.id}
+            // onEndReached={this.handleLoadMore}
           />
-          <View style={styles.height} />
-
         </View>
       </View>
     )
@@ -128,7 +144,24 @@ class Customer extends React.Component {
 };
 const styles = StyleSheet.create({
   containerAll: {
-    flex: 1
+    flex: 1,
+    backgroundColor:"#D8D8D8"
+  },
+  container:{
+    flex:1,
+    backgroundColor:'#FAFAFA',
+    marginHorizontal:20,
+    marginTop:20,
+    borderRadius: 10,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowRadius: 6,
+    shadowOpacity: 0.16,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    elevation: 3,
   },
   btnClose: {
     marginRight: 10,
@@ -161,12 +194,13 @@ const styles = StyleSheet.create({
       width: 0,
       height: 5,
     },
-    elevation: 8,
+    elevation: 3,
     backgroundColor: '#fff',
     marginHorizontal: 20,
   },
   flatList: {
-    marginTop: 10
+    marginTop: 10,
+    paddingBottom:30
   },
 
   containerView: {

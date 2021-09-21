@@ -22,6 +22,8 @@ target 'cskhninja' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'react-native-quick-md5', :path => '../node_modules/react-native-quick-md5'
+
   target 'cskhninjaTests' do
     inherit! :complete
     # Pods for testing

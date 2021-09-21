@@ -14,7 +14,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 class NaviHerderFull extends React.Component {
 
   render() {
-    const { buttonLeft, title, buttonRight, onPressBack, buttonRightIcon, onPressRight } = this.props
+    const { buttonLeft, title, buttonRight, 
+      textRight,
+      onPressBack, nameIcon, onPressRight } = this.props
     return (
       <View style={styles.containerALl}>
         <FocusAwareStatusBar
@@ -25,20 +27,21 @@ class NaviHerderFull extends React.Component {
           onPress={onPressBack}
           style={styles.bntback}
         >
-          <MaterialCommunityIcons name={'chevron-left-circle'} size={25} style={{ color: '#fff' }} />
+          <MaterialCommunityIcons name={'chevron-left'} size={25} style={{ color: '#fff' }} />
+          <Text style={styles.txtBack}>Back</Text>
         </TouchableOpacity> : <View />
         }
-        <View style={[styles.containerTitle, { marginRight: buttonLeft ? 30 : 0, marginLeft: buttonRight ? 30 : 0 }]}>
+        <View style={[styles.containerTitle, { marginRight: buttonLeft ? 30 : 0, marginLeft: buttonRight ? 10 : 0 }]}>
           <Text style={styles.txtTitle}>{title}</Text>
         </View>
         {buttonRight ? <TouchableOpacity
         onPress={onPressRight}
           style={styles.bntEdit}
-        >{buttonRightIcon ?
-          <Text style={styles.TxtEdit}>Sửa</Text> :
-          <MaterialCommunityIcons name={'bell'} size={25} style={styles.iconAdd} />
-          }
-
+        >
+           <MaterialCommunityIcons name={nameIcon} size={20} style={styles.iconAdd} />
+          <Text style={styles.TxtEdit}>{textRight}</Text> 
+         
+         
         </TouchableOpacity> : <View />
         }
 
@@ -51,21 +54,23 @@ export default NaviHerderFull;
 
 const styles = StyleSheet.create({
   containerALl: {
-    height: 60,
+    height: 50,
     flexDirection: 'row',
     backgroundColor: '#013ADF',
     justifyContent: 'space-between'
   },
-  iconAdd:{ color: '#fff', marginRight:20 },
+  iconAdd:{ color: '#fff' },
   TxtEdit: {
-    fontSize: 18,
-    fontWeight: '600',
     color: '#fff',
-    marginRight: 20
+    marginLeft:3
+  },
+  txtBack:{
+    color:'#fff'
   },
   bntEdit: {
-    justifyContent: 'center',
+    flexDirection:'row',
     alignItems: 'center',
+    marginRight:5,
   },
   containerTitle: {
     justifyContent: 'center',
@@ -73,11 +78,11 @@ const styles = StyleSheet.create({
     alignContent: 'center'
   },
   bntback: {
-    marginLeft: 20,
-    justifyContent: 'center'
+    alignItems: 'center',
+    flexDirection:'row'
   },
   txtTitle: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '600',
     color: '#fff'
   }

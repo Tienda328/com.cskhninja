@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-export default function ItemCustomer({ nameLoai, onPress, navigation }) {
+export default function ItemCustomer({ nameLoai, onPress, navigation, item }) {
     
     const clickItem =()=>{
         navigation.navigate('DetailCustomerScreen')
@@ -18,12 +18,13 @@ export default function ItemCustomer({ nameLoai, onPress, navigation }) {
             onPress={clickItem}>
             <View style={styles.containerText}>
                 <View>
-                    <Text style={styles.txtLeft}>Nguyenx Van chien</Text>
-                    <Text style={styles.txtLeft}>62348</Text>
+                    <Text style={styles.txtLeft}>{item.name? item.name: ''}</Text>
+                    <Text style={styles.txtLeft}>{item.id? item.id: ''}</Text>
                 </View>
                 <View>
-                    <Text style={styles.txtRight}>Email@gmail.com</Text>
-                    <Text style={styles.txtRight}>0358748718</Text>
+                    <Text numberOfLines={1} style={styles.txtRight}>{item.email? item.email: ''}</Text>
+                    <Text style={styles.txtRight}>{item.phone? item.phone: ''}</Text>
+  
                 </View>
             </View>
 
@@ -34,11 +35,12 @@ export default function ItemCustomer({ nameLoai, onPress, navigation }) {
 const styles = StyleSheet.create({
     containerAll: {
         backgroundColor: '#fff',
-        marginTop: 10,
+        marginBottom: 15,
         flex: 1,
         marginHorizontal: 20,
         borderRadius: 10,
-        // borderColor: '#fff',
+        borderColor: '#BDBDBD',
+        borderWidth:1,
         shadowColor: '#000',
         shadowRadius: 6,
         shadowOpacity: 0.16,
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginRight: 20,
         paddingVertical: 5,
+        width:130,
     },
     containerText: {
         flexDirection: 'row',
