@@ -95,7 +95,8 @@ class LoginScreen extends Component {
     }else{
       // const md5 = stringMd5('0979090897');
       const md5 = stringMd5(password);
-      const timeStamp =common.timeStamp();
+      const timeStamp = common.timeStamp();
+      const token = common.createToken('1')
       // demo@ninjateam.vn
       const objPost = {
             email:email,
@@ -107,6 +108,7 @@ class LoginScreen extends Component {
       try {
         const response = await Guest.login(objPost);
         const userinfo= JSON.parse(response.data);
+        console.log('response',response)
         if(response.status===true){
           if (this.state.storageInfor === true) {
             setLocale(LOCALE_KEY.email, email);

@@ -5,6 +5,7 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
+    Linking,
     Image,
     StyleSheet
 } from 'react-native';
@@ -61,7 +62,16 @@ export default class DetailCustomer extends React.Component {
                     <View style={styles.containerAll} >
                         <View style={styles.containerAll} />
                         <View style={styles.containerButton}>
-                        <TouchableOpacity style={styles.btnCall}>
+                        <TouchableOpacity style={styles.btnCall}
+                        onPress={() => {
+                            if (phone !== ''
+                            ) {
+                              Linking.openURL(
+                                'tel:' + phone,
+                              );
+                            }
+                          }}
+                        >
                             <View style={styles.containerCall}>
                                 <MaterialCommunityIcons name={'phone'} size={25} style={styles.iconCall} />
                                 <Text style={styles.txtGoi}>GỌI</Text>

@@ -46,7 +46,7 @@ class CopyrightManagement extends React.Component {
       page: 1,
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
-      modalVisible: true,
+      modalVisible: false,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,

@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
+    Linking,
     StyleSheet
 } from 'react-native';
 import ItemFlexRow from '../components/itemFlexRow';
@@ -61,7 +62,16 @@ export default class DetailKey extends React.Component {
                         styleColour={styles.txtColour} />
                     </View>
                     <View style={styles.containerButton}>
-                        <TouchableOpacity style={styles.btnCall}>
+                        <TouchableOpacity style={styles.btnCall}
+                          onPress={() => {
+                            if (customerphone !== ''
+                            ) {
+                              Linking.openURL(
+                                'tel:' + customerphone,
+                              );
+                            }
+                          }}
+                        >
                             <View style={styles.containerCall}>
                                 <MaterialCommunityIcons name={'phone'} size={25} style={styles.iconCall} />
                                 <Text style={styles.txtGoi}>GỌI</Text>
