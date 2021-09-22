@@ -67,7 +67,7 @@ class TextInputModal extends Component {
                 style={{height:450}}
                   data={dataModal}
                   renderItem={(item)=>this.renderItem(item)}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item, index) => index.toString()}
                 />:<Text style={styles.txtNoData}>Không có dữ liệu</Text>
 
               }

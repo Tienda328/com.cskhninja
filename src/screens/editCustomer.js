@@ -53,7 +53,7 @@ export default class DetailKey extends React.Component {
         return (
             <View
                 style={styles.containerAll}>
-                <NaviHerderFull title={'SỬA TÀI KHOẢN'} buttonLeft={true} onPressBack={this.goBack} />
+                <NaviHerderFull title={'SỬA TÀI KHOẢN KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
                 <View style={styles.container} >
                     <View style={styles.bottomKey} />
                     <TextInputKey
@@ -82,6 +82,7 @@ export default class DetailKey extends React.Component {
                         onChangeText={(text) => this.onChangeTextPassWork(text)}
                         placeholder="Nhập mật khẩu"
                         nameText={'Mật khẩu'}
+                        editable={true}
                         value={passwork}
                     />
                     <View style={{flex:1}}></View>

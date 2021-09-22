@@ -13,6 +13,7 @@ import NaviHerderFull from '../components/naviHerderFull';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class DetailKey extends React.Component {
+
     goBack = () => {
         this.props.navigation.goBack()
     };
@@ -20,7 +21,9 @@ export default class DetailKey extends React.Component {
         this.props.navigation.navigate('EditKeyScreen')
     };
     render() {
-
+        const {customerid,customername,datecreate, customeremail, customerphone,
+            productName,expirationdate,conlai,paymentName,note,price
+        } = this.props.route.params.item
         return (
             <View
                 style={styles.containerAll}> 
@@ -32,29 +35,29 @@ export default class DetailKey extends React.Component {
                      onPressRight={this.clickEdit} />
                 <View style={styles.container}>
                     <View>
-                        <ItemFlexRow txtName={'Mã KH'} txtValue={'250885'}
+                        <ItemFlexRow txtName={'Mã KH'} txtValue={customerid?customerid:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Bán'} txtValue={'9/6/2021 11:27:22 AM'} 
+                        <ItemFlexRow txtName={'Ngày Bán'} txtValue={datecreate?datecreate:''} 
                         styleColour={styles.txtColour}/>
-                        <ItemFlexRow txtName={'Họ Tên'} txtValue={'Trần Văn Hòa'}
+                        <ItemFlexRow txtName={'Họ Tên'} txtValue={customername?customername:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Email'} txtValue={'hoatv@ninjateam.vn'}
+                        <ItemFlexRow txtName={'Email'} txtValue={customeremail?customeremail:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Số Điện Thoại'} txtValue={'0979090897'}
+                        <ItemFlexRow txtName={'Số Điện Thoại'} txtValue={customerphone?customerphone:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Sản Phẩm'} txtValue={'Phần Mềm Ninja Care'}
+                        <ItemFlexRow txtName={'Sản Phẩm'} txtValue={productName?productName:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Người Bán'} txtValue={'Tran Van Hoa'}
+                        <ItemFlexRow txtName={'Người Bán'} txtValue={customername?customername:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Kết Thúc'} txtValue={'12/5/2021 11:27:22 AM'}
+                        <ItemFlexRow txtName={'Ngày Kết Thúc'} txtValue={expirationdate?expirationdate:''}
                         styleColour={styles.txtColour}/>
-                        <ItemFlexRow txtName={'Còn Lại'} txtValue={'84 ngày'}
+                        <ItemFlexRow txtName={'Còn Lại'} txtValue={conlai?conlai:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Giá Tiền'} txtValue={'0.00'}
+                        <ItemFlexRow txtName={'Giá Tiền'} txtValue={price?price:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Thanh Toán'} txtValue={'Tài khoản Vietcombank'} 
+                        <ItemFlexRow txtName={'Thanh Toán'} txtValue={paymentName?paymentName:''} 
                         style={{ width: 160 }} styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ghi Chú'} txtValue={'TEST NHÂN VIÊN'}
+                        <ItemFlexRow txtName={'Ghi Chú'} txtValue={note?note:'note'}
                         styleColour={styles.txtColour} />
                     </View>
                     <View style={styles.containerButton}>

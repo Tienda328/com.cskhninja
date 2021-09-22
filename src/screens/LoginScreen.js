@@ -96,7 +96,6 @@ class LoginScreen extends Component {
       // const md5 = stringMd5('0979090897');
       const md5 = stringMd5(password);
       const timeStamp =common.timeStamp();
-      const token = stringMd5('16518b38c0234509b38a34f6ca091e8686'+timeStamp);
       // demo@ninjateam.vn
       const objPost = {
             email:email,
@@ -118,8 +117,16 @@ class LoginScreen extends Component {
             clearLocale(LOCALE_KEY.email);
             clearLocale(LOCALE_KEY.pass_word);
           }
-          await setLocale(LOCALE_KEY.access_token, token);
+          await setLocale(LOCALE_KEY.access_token, 'd1ff52a77a2965156cb8e7e67d4ac931');
           await toggleLoggedIn();
+        }else if(response.status===false){
+          Alert.alert(
+            "Thông báo",
+            "Email hoặc mật khẩu không đúng, hãy thử lại",
+            [
+              { text: "OK", onPress: () => {} }
+            ]
+          );
         }
       } catch (e) {
         console.log(e);

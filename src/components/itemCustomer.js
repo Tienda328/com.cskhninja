@@ -8,14 +8,14 @@ import {
 
 export default function ItemCustomer({ nameLoai, onPress, navigation, item }) {
     
-    const clickItem =()=>{
-        navigation.navigate('DetailCustomerScreen')
+    const clickItem =(item)=>{
+        navigation.navigate('DetailCustomerScreen',{item})
     }
 
     return (
         <TouchableOpacity
             style={styles.containerAll}
-            onPress={clickItem}>
+            onPress={()=>clickItem(item)}>
             <View style={styles.containerText}>
                 <View>
                     <Text style={styles.txtLeft}>{item.name? item.name: ''}</Text>

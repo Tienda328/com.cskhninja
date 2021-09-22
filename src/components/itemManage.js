@@ -6,26 +6,26 @@ import {
     StyleSheet
 } from 'react-native';
 
-export default function ItemManage({ nameLoai, onPress, navigation }) {
+export default function ItemManage({ navigation, item }) {
     
-    const clickItem =()=>{
-        navigation.navigate('DetailKeyScreen')
+    const clickItem =(item)=>{
+        navigation.navigate('DetailKeyScreen',{item})
     }
 
     return (
         <TouchableOpacity
             style={styles.containerAll}
-            onPress={clickItem}>
+            onPress={()=>clickItem(item)}>
             <View style={styles.containerText}>
-                <View>
-                    <Text style={styles.txtLeft}>Tên khách hàng</Text>
-                    <Text style={styles.txtLeft}>Email</Text>
-                    <Text style={styles.txtLeft}>Số điện thoại</Text>
+                <View style={{width:130}}>
+                    <Text style={styles.txtLeft} numberOfLines={1}>{item.customername?item.customername:''}</Text>
+                    <Text style={[styles.txtLeft]} numberOfLines={1}>{item.customeremail?item.customeremail:''}</Text>
+                    <Text style={styles.txtLeft} numberOfLines={1}>{item.customerphone?item.customerphone:''}</Text>
                 </View>
-                <View>
-                    <Text style={styles.txtRight}>Tên sản phẩm</Text>
-                    <Text style={styles.txtRight}>giá</Text>
-                    <Text style={styles.txtRight}>Ngày đến hạn</Text>
+                <View style={{width:130}}>
+                    <Text style={styles.txtRight} numberOfLines={1}>{item.productName?item.productName:''}</Text>
+                    <Text style={styles.txtRight} numberOfLines={1}>{item.price?item.price:''}</Text>
+                    <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?item.expirationdate:''}</Text>
                 </View>
             </View>
 

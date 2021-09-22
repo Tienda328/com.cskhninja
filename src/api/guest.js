@@ -9,5 +9,6 @@ const Guest = {
     loadplan: (params: Object) => config.post(params),
     loadpayment: (params: Object) => config.post(params),
     createkey: (params: Object) => config.post(params),
+    viewallkey:(params: Object) => config.post(params),
 }
 export default Guest;

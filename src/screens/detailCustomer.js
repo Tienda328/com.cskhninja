@@ -21,11 +21,12 @@ export default class DetailCustomer extends React.Component {
         this.props.navigation.navigate('EditCustomerScreen')
     };
     render() {
-
+        const {email,id,name, phone
+        } = this.props.route.params.item
         return (
             <View
                 style={styles.containerAll}>
-                <NaviHerderFull title={'Trần Văn Hòa'}
+                <NaviHerderFull title={name?name:''}
                     onPressBack={this.goBack}
                     buttonLeft={true} buttonRight={true}
                     nameIcon={'account-edit'}
@@ -37,15 +38,15 @@ export default class DetailCustomer extends React.Component {
 
                     <View>
                         <ItemFlexRow txtName={'Mã KH'}
-                            txtValue={'250885'}
+                            txtValue={id?id:''}
                             styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Email'}
-                            txtValue={'hoatv@ninjateam.vn'}
+                            txtValue={email?email:''}
                             styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Số Điện Thoại'}
-                            txtValue={'0979090897'}
+                            txtValue={phone?phone:''}
                             styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'DateCreate'}
+                        {/* <ItemFlexRow txtName={'DateCreate'}
                             txtValue={'5/5/2018 8:04:24 AM'}
                             styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Point'}
@@ -55,7 +56,7 @@ export default class DetailCustomer extends React.Component {
                             txtValue={'E7B2C2EC6FF08CEEC753855DD18B6D8C'}
                             style={{ width: 160 }} styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Status'} txtValue={'Active'}
-                            styleColour={styles.txtColour} />
+                            styleColour={styles.txtColour} /> */}
                     </View>
                     <View style={styles.containerAll} >
                         <View style={styles.containerAll} />

@@ -125,13 +125,12 @@ export default class AddCustomer extends React.Component {
             const md5 = stringMd5(pass_word);
             const passCustomer = stringMd5(passWord);
             const timeStamp = common.timeStamp();
-            const token = stringMd5('16518b38c0234509b38a34f6ca091e8686' + timeStamp);
             const objPost = {
                 email: emailInFo,
                 password: md5,
                 function: "addcustomer",
-                time: timeStamp,
-                token: token,
+                time: `1`,
+                token: 'd1ff52a77a2965156cb8e7e67d4ac931',
                 variable: `{'email':${email},'name':${surName},'phone':${phoneNumber},'password':${passCustomer}}`
             };
             try {
@@ -267,7 +266,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         marginHorizontal: 20,
-        marginVertical: 20,
+        marginTop: 20,
         borderRadius: 10,
         borderColor: '#fff',
         shadowColor: '#000',

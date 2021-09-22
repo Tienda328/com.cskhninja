@@ -207,7 +207,6 @@ class AddKey extends React.Component {
     };
 
     clickTypeBQ = async (item) => {
-
         const { type } = this.state;
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
         const email = await getLocale(LOCALE_KEY.email);
@@ -215,7 +214,6 @@ class AddKey extends React.Component {
         // const timeStamp = common.timeStamp();
         const timeStamp = '1';
         const token = common.createToken(timeStamp)
-
         const objPost = {
             email: email,
             password: md5,
