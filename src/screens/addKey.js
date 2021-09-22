@@ -88,8 +88,8 @@ class AddKey extends React.Component {
                 email: email,
                 password: md5,
                 function: "createkey",
-                time: `1`,
-                token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+                time: timeStamp,
+                token: token,
                 variable:`{'productid':'${22}','planid':'${68}'
                 ,'customerid':'${62348}','hid':'${'NINJA-SYSTEM-1'}'
                 ,'discount':'${0}','note':'${'cấp key test'}','paymentid':'${1}'
@@ -173,8 +173,8 @@ class AddKey extends React.Component {
             email: email,
             password: md5,
             function: "loadproduct",
-            time: `1`,
-            token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+            time: timeStamp,
+            token: token,
             variable: `{'type':'${type}'}`
         };
         try {
@@ -218,8 +218,8 @@ class AddKey extends React.Component {
             email: email,
             password: md5,
             function: "loadplan",
-            time: `1`,
-            token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+            time: timeStamp,
+            token: token,
             variable: `{'productid':'${item.id}','type':'${type}'}`
         };
         try {
@@ -252,8 +252,8 @@ class AddKey extends React.Component {
             email: email,
             password: md5,
             function: "loadpayment",
-            time: `1`,
-            token: "d1ff52a77a2965156cb8e7e67d4ac931",
+            time: timeStamp,
+            token: token,
         };
         try {
             const response = await Guest.loadpayment(objPost);

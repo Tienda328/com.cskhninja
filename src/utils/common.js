@@ -26,7 +26,7 @@ function timeStamp(){
     return timeStamp;
 }
 
-function createToken({timeStamp}){
+function createToken(timeStamp){
   const token = stringMd5('16518b38c0234509b38a34f6ca091e8686' + `${timeStamp}`);
   return token;
 }

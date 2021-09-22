@@ -144,8 +144,8 @@ class CopyrightManagement extends React.Component {
       email: email,
       password: md5,
       function: "viewallkey",
-      time: "1",
-      token: "d1ff52a77a2965156cb8e7e67d4ac931",
+      time: timeStamp,
+      token: token,
       variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'${productid}','page':'1','pagesize':'10'}`
     }
     try {
@@ -179,8 +179,8 @@ class CopyrightManagement extends React.Component {
       email: email,
       password: md5,
       function: "viewallkey",
-      time: "1",
-      token: "d1ff52a77a2965156cb8e7e67d4ac931",
+      time: timeStamp,
+      token: token,
       variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','page':'${page}','pagesize':'5'}`
     }
     try {

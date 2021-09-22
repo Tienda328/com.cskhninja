@@ -13,7 +13,7 @@ import {
 import DismissKeyboardView from '../components/DismissKeyboard';
 import NaviHeaderComponent from '../components/NaviHeaderComponent'
 import { AuthContext } from '../context/AuthContext';
-import common  from '../utils/common';
+import common from '../utils/common';
 import LOCALE_KEY, {
   getLocale,
   setLocale,
@@ -25,15 +25,15 @@ import {
 } from '../redux/actions';
 import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      password:'',
-      email:'',
+      password: '',
+      email: '',
       secureTextEntry: true,
       storageInfor: false,
       iconstorageInfor: 'checkbox-blank-outline',
@@ -63,13 +63,13 @@ class LoginScreen extends Component {
       email: email,
       storageInfor: save_infor,
       iconstorageInfor: icon,
-      password:password
+      password: password
     });
     if (Platform.OS === 'android') {
-    
+
     }
   }
-  
+
   onUserSaveClick = () => {
     let iconName = this.state.storageInfor
       ? 'checkbox-blank-outline'
@@ -82,34 +82,38 @@ class LoginScreen extends Component {
     });
   };
 
-  onLoginClick = async (toggleLoggedIn) => { 
-    const {password,email } =this.state;
-    if(password===''||email===''){
+  onLoginClick = async (toggleLoggedIn) => {
+    const { password, email } = this.state;
+    Alert.alert(
+      "Thông báo",
+      "Click Test Đăng nhập",
+      [
+        { text: "OK", onPress: () => { } }
+      ]
+    );
+    if (password === '' || email === '') {
       Alert.alert(
         "Thông báo",
         "Email hoặc mật khẩu không được để trống",
         [
-          { text: "OK", onPress: () => {} }
+          { text: "OK", onPress: () => { } }
         ]
       );
-    }else{
-      // const md5 = stringMd5('0979090897');
+    } else {
       const md5 = stringMd5(password);
       const timeStamp = common.timeStamp();
-      const token = common.createToken('1')
-      // demo@ninjateam.vn
+      const token = common.createToken(timeStamp);
       const objPost = {
-            email:email,
-            password:md5,
-            function:"login",
-            time:'1',
-            token:'d1ff52a77a2965156cb8e7e67d4ac931'
+        email: email,
+        password: md5,
+        function: "login",
+        time: timeStamp,
+        token: token
       };
       try {
         const response = await Guest.login(objPost);
-        const userinfo= JSON.parse(response.data);
-        console.log('response',response)
-        if(response.status===true){
+        const userinfo = JSON.parse(response.data);
+        if (response.status === true) {
           if (this.state.storageInfor === true) {
             setLocale(LOCALE_KEY.email, email);
             setLocale(LOCALE_KEY.pass_word, password);
@@ -121,113 +125,113 @@ class LoginScreen extends Component {
           }
           await setLocale(LOCALE_KEY.access_token, 'd1ff52a77a2965156cb8e7e67d4ac931');
           await toggleLoggedIn();
-        }else if(response.status===false){
+        } else if (response.status === false) {
           Alert.alert(
             "Thông báo",
             "Email hoặc mật khẩu không đúng, hãy thử lại",
             [
-              { text: "OK", onPress: () => {} }
+              { text: "OK", onPress: () => { } }
             ]
           );
         }
       } catch (e) {
         console.log(e);
       }
+
     }
-    
-   
+
   };
 
   render() {
     return (
       <AuthContext.Consumer>
         {({ isLoggedIn, toggleLoggedIn }) => (
-      <DismissKeyboardView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={loginStyle.container}>
-        <NaviHeaderComponent title={'Đăng nhập'} />
-        <ScrollView contentContainerStyle={loginStyle.scroll}>
-          <Image
-            style={{ width: '100%', height: '100%', position: 'absolute' }}
-            source={require('../resource/image/background-login.png')}
-          />
-          <View style={loginStyle.header}>
-            <Image
-              style={loginStyle.iconLogin}
-              source={{
-                uri: 'https://www.phanmemninja.com/wp-content/uploads/2021/05/LOGO-NINJA-nen.png',
-              }}
-            />
-          </View>
-          <View style={loginStyle.viewInput}>
-            <MaterialCommunityIcons name={'account'} size={25} style={{ color: '#fff' }} />
-            <TextInput
-              placeholder={"Tên đăng nhập"}
-              value={this.state.email}
-              onChangeText={(email) => this.setState({ email })}
-              placeholderTextColor="#BDBDBD"
-              underlineColorAndroid="transparent"
-              style={[loginStyle.textInput]}
-              keyboardType="email-address"
-              behavior={'padding'}
-              autoCapitalize="none"
-              keyboardVerticalOffset={65}
-            />
-          </View>
-          <View style={loginStyle.height} />
-          <View style={loginStyle.viewInput}>
-            <MaterialCommunityIcons name={'lock'} size={20} style={{ color: '#fff' }} />
-            <TextInput
-              placeholder={'Mật khẩu'}
-              placeholderTextColor="#BDBDBD"
-              underlineColorAndroid="transparent"
-              style={[loginStyle.textInput]}
-              ref={(ref) => {
-                this.currentPasswordRef = ref;
-              }}
-              autoCapitalize="none"
-              secureTextEntry={this.state.secureTextEntry}
-              behavior={'padding'}
-              keyboardVerticalOffset={65}
-              value={this.state.password}
-              onChangeText={(password) => this.setState({ password })}
-              maxLength={30}
-            />
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={this.onIconClick}>
-              <Entypo name={this.state.iconShowPass} size={20} />
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={loginStyle.storageInfor}
-            onPress={this.onUserSaveClick}>
-            <MaterialCommunityIcons
-              style={loginStyle.material}
-              name={this.state.iconstorageInfor}
-              size={20}
-              color='#fff'
-            />
-            <Text style={loginStyle.txtNhoPassWork} >Nhớ mật khẩu?</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.onLoginClick(toggleLoggedIn)}
-            activeOpacity={0.8}
-            style={loginStyle.btnLogin}>
-            <Text style={loginStyle.txtDangNhap}>Đăng nhập</Text>
-          </TouchableOpacity>
-          <View style={loginStyle.containerFoget}>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity
-              onPress={this.onForgorPass}
-              activeOpacity={0.8}
-              style={loginStyle.BntQuenMatKhau}>
-              <Text style={loginStyle.txtQuenMatKhau}>Quên mật khẩu?</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </DismissKeyboardView>
+          <DismissKeyboardView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={loginStyle.container}>
+            <NaviHeaderComponent title={'Đăng nhập'} />
+            <ScrollView contentContainerStyle={loginStyle.scroll}>
+              <Image
+                style={{ width: '100%', height: '100%', position: 'absolute' }}
+                source={require('../resource/image/background-login.png')}
+              />
+              <View style={loginStyle.header}>
+                <Image
+                  style={loginStyle.iconLogin}
+                  source={{
+                    uri: 'https://www.phanmemninja.com/wp-content/uploads/2021/05/LOGO-NINJA-nen.png',
+                  }}
+                />
+              </View>
+              <View style={loginStyle.viewInput}>
+                <MaterialCommunityIcons name={'account'} size={25} style={{ color: '#fff' }} />
+                <TextInput
+                  placeholder={"Tên đăng nhập"}
+                  value={this.state.email}
+                  onChangeText={(email) => this.setState({ email })}
+                  placeholderTextColor="#BDBDBD"
+                  underlineColorAndroid="transparent"
+                  style={[loginStyle.textInput]}
+                  keyboardType="email-address"
+                  behavior={'padding'}
+                  autoCapitalize="none"
+                  keyboardVerticalOffset={65}
+                />
+              </View>
+              <View style={loginStyle.height} />
+              <View style={loginStyle.viewInput}>
+                <MaterialCommunityIcons name={'lock'} size={20} style={{ color: '#fff' }} />
+                <TextInput
+                  placeholder={'Mật khẩu'}
+                  placeholderTextColor="#BDBDBD"
+                  underlineColorAndroid="transparent"
+                  style={[loginStyle.textInput]}
+                  ref={(ref) => {
+                    this.currentPasswordRef = ref;
+                  }}
+                  autoCapitalize="none"
+                  secureTextEntry={this.state.secureTextEntry}
+                  behavior={'padding'}
+                  keyboardVerticalOffset={65}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                  maxLength={30}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={this.onIconClick}>
+                  <Entypo name={this.state.iconShowPass} size={20} />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={loginStyle.storageInfor}
+                onPress={this.onUserSaveClick}>
+                <MaterialCommunityIcons
+                  style={loginStyle.material}
+                  name={this.state.iconstorageInfor}
+                  size={20}
+                  color='#fff'
+                />
+                <Text style={loginStyle.txtNhoPassWork} >Nhớ mật khẩu?</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.onLoginClick(toggleLoggedIn)}
+                activeOpacity={0.8}
+                style={loginStyle.btnLogin}>
+                <Text style={loginStyle.txtDangNhap}>Đăng nhập</Text>
+              </TouchableOpacity>
+              <View style={loginStyle.containerFoget}>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  onPress={this.onForgorPass}
+                  activeOpacity={0.8}
+                  style={loginStyle.BntQuenMatKhau}>
+                  <Text style={loginStyle.txtQuenMatKhau}>Quên mật khẩu?</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </DismissKeyboardView>
         )}
       </AuthContext.Consumer>
     );

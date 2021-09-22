@@ -55,8 +55,8 @@ class Customer extends React.Component {
       email: email,
       password: md5,
       function: "loadcustomer",
-      time: `1`,
-      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      time: timeStamp,
+      token: token,
       variable: `{'page':'1','pagesize':'10'}`
     };
     try {
@@ -135,8 +135,8 @@ class Customer extends React.Component {
       email: email,
       password: md5,
       function: "loadcustomer",
-      time: `1`,
-      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      time: timeStamp,
+      token: token,
       variable: `{'page':'${this.state.page}','pagesize':'5'}`
     };
     

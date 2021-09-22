@@ -83,8 +83,8 @@ class AddKey extends React.Component {
                 email: email,
                 password: md5,
                 function: "createkey",
-                time: `1`,
-                token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+                time: timeStamp,
+                token: token,
                 variable:`{'productid':'${22}','planid':'${68}'
                 ,'customerid':'${62348}','hid':'${'NINJA-SYSTEM-1'}'
                 ,'discount':'${0}','note':'${'cấp key test'}','paymentid':'${1}'
@@ -163,8 +163,8 @@ class AddKey extends React.Component {
             email: email,
             password: md5,
             function: "loadproduct",
-            time: `1`,
-            token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+            time: timeStamp,
+            token: token,
             variable: `{'type':'${type}'}`
         };
         try {
@@ -202,14 +202,14 @@ class AddKey extends React.Component {
         const email = await getLocale(LOCALE_KEY.email);
         const md5 = stringMd5(pass_word);
         // const timeStamp = common.timeStamp();
-        const timeStamp = '1';
-        const token = common.createToken(timeStamp)
+        const timeStamp = common.timeStamp();
+        const token = common.createToken(timeStamp);
         const objPost = {
             email: email,
             password: md5,
             function: "loadplan",
-            time: `1`,
-            token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+            time: timeStamp,
+            token: token,
             variable: `{'productid':'${item.id}','type':'${type}'}`
         };
         try {
@@ -242,8 +242,8 @@ class AddKey extends React.Component {
             email: email,
             password: md5,
             function: "loadpayment",
-            time: `1`,
-            token: "d1ff52a77a2965156cb8e7e67d4ac931",
+            time: timeStamp,
+            token: token,
         };
         try {
             const response = await Guest.loadpayment(objPost);
