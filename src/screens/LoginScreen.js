@@ -83,14 +83,7 @@ class LoginScreen extends Component {
   };
 
   onLoginClick = async (toggleLoggedIn) => {
-    const { password, email } = this.state;
-    Alert.alert(
-      "Thông báo",
-      "Click Test Đăng nhập",
-      [
-        { text: "OK", onPress: () => { } }
-      ]
-    );
+    const { password, email } = this.state;  
     if (password === '' || email === '') {
       Alert.alert(
         "Thông báo",
@@ -137,9 +130,7 @@ class LoginScreen extends Component {
       } catch (e) {
         console.log(e);
       }
-
     }
-
   };
 
   render() {

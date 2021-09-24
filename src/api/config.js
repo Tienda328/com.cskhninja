@@ -1,7 +1,7 @@
 import {
   Alert
 } from 'react-native';
-const baseUrl = 'http://ninjagroup.rest/api/app/graphql';
+const baseUrl = 'https://ninjagroup.rest/api/app/graphql';
 
 let HEADERS = {
   Accept: 'application/json',

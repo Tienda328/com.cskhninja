@@ -195,7 +195,7 @@ class DetailProfile extends React.Component {
                         statusError={statePhoneNumber}
                     />
                     <View style={styles.containerViewButton} />
-                    <View style={styles.containerButton}>
+                    {/* <View style={styles.containerButton}>
                         <TouchableOpacity
                             activeOpacity={0.8}
                             onPress={() => this.props.navigation.goBack()}
@@ -208,7 +208,7 @@ class DetailProfile extends React.Component {
                             style={styles.btnContinue}>
                             <Text style={styles.txtClick}>{txtEdit}</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
 
             </View>

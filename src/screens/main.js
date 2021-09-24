@@ -13,6 +13,10 @@ import NaviHerderFull from '../components/naviHerderFull';
 import LinearGradient from 'react-native-linear-gradient';
 import colors from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import LOCALE_KEY, {
+  getLocale,
+} from '../repositories/local/appLocale';
 const Width = Dimensions.get('screen').width;
 
 function StatisticSection({ data }) {
@@ -120,12 +124,12 @@ class Main extends React.Component {
 
   render() {
     const { search } = this.state
-
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
           buttonRight={true}
           nameIcon={'bell'} />
+             
         <View style={styles.containerAll}>
           <Image
             style={{ width: '100%', height: '100%', position: 'absolute' }}
@@ -137,9 +141,8 @@ class Main extends React.Component {
             <Text style={styles.txtNinja}>-----NINJA * GROUP-----</Text>
           </View>
           <View style={styles.containerButton}>
-
             
-          <TouchableOpacity style={styles.containerAddkey}
+          {/* <TouchableOpacity style={styles.containerAddkey}
             onPress={() => this.props.navigation.navigate('AddKey')}
           >
             <Text style={styles.txtCustomer}>THÊM KEY</Text>
@@ -154,7 +157,7 @@ class Main extends React.Component {
            onPress={() => this.props.navigation.navigate('CopyrightManagement')}
           >
             <Text style={styles.txtCustomer}>QUẢN LÝ BẢN QUYỀN</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           </View>
         </View>
 

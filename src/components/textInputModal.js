@@ -37,7 +37,7 @@ class TextInputModal extends Component {
 
   render() {
     const {modalVisible} = this.state;
-    const {nameTitle,statusError, isError, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
+    const {nameTitle,statusError, isError,stylesInput, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
     return (
       <View style={styles.containerAll}>
         <Modal
@@ -79,7 +79,7 @@ class TextInputModal extends Component {
         <Text style={styles.txtName}>{nameTitle}</Text>
           <TouchableOpacity
             disabled={disabled}
-            style={[styles.containerInput, {backgroundColor:disabled?'#D8D8D8':'#fff'}]}
+            style={[styles.containerInput, stylesInput ,{backgroundColor:disabled?'#D8D8D8':'#fff'}]}
             onPress={() => this.setModalVisible(true)}>
               <Text style={styles.txtSelect}>{namePlaceholder}</Text>
         
