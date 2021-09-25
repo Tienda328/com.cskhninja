@@ -5,24 +5,20 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  TouchableOpacity,
-  Modal,
+  Dimensions,
   ActivityIndicator
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemCustomer from '../components/itemCustomer';
 import Search from '../components/search';
-import TextInputModal from '../components/textInputModal';
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
-
-
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 class Customer extends React.Component {
   constructor(props) {
     super(props);
@@ -76,12 +72,6 @@ class Customer extends React.Component {
       search: text,
     });
   };
-  onFilter = () => {
-    this.setState({ modalVisible: true });
-  }
-  onCloseFilter = () => {
-    this.setState({ modalVisible: false });
-  }
   addCustomer = () => {
     this.props.navigation.navigate('AddCustomerScreen')
   }
@@ -163,7 +153,6 @@ class Customer extends React.Component {
   }
 
   render() {
-
     const { search, dataCustomer } = this.state;
     return (
       <View style={styles.containerAll}>
@@ -234,12 +223,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    height: windowHeight/11.8,
     backgroundColor: '#2E64FE',
   },
   containerModal: {
-    width: 300,
-    height: 200,
+    width:  windowWidth/11.8,
+    height: windowHeight/3.58,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',

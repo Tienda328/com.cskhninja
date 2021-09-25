@@ -9,6 +9,7 @@ import {
   Image,
   ScrollView,
   Platform,
+  Dimensions
 } from 'react-native';
 import DismissKeyboardView from '../components/DismissKeyboard';
 import NaviHeaderComponent from '../components/NaviHeaderComponent'
@@ -27,7 +28,8 @@ import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -258,7 +260,7 @@ const loginStyle = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 16,
     alignItems: 'center',
-    height: 70,
+    height: windowHeight/10.2,
     paddingLeft: 10,
     color: '#fff',
   },
@@ -269,15 +271,15 @@ const loginStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    width: 250,
+    height: windowHeight/17.8,
+    // width: 250,
     backgroundColor: '#66AF5C',
     borderRadius: 20,
   },
   viewInput: {
     flexDirection: 'row',
     marginTop: 10,
-    height: 60,
+    height: windowHeight/11.9,
     borderWidth: 1,
     borderColor: '#fff',
     backgroundColor: '#0040FF',
@@ -318,7 +320,7 @@ const loginStyle = StyleSheet.create({
   },
   btnLogin: {
     backgroundColor: '#FE9A2E',
-    height: 60,
+    height: windowHeight/11.9,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 30,

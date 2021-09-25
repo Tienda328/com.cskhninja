@@ -31,7 +31,7 @@ export default function TextInputKey({ nameText, statusError, placeholder, value
 
 const styles = StyleSheet.create({
     containerInput: {
-        height:40,
+        height: windowHeight/17.8,
         shadowColor: '#000',
         marginHorizontal:20,
         borderRadius:10,

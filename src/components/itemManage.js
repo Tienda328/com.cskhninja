@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ItemManage({ navigation, item }) {
     
@@ -17,14 +18,19 @@ export default function ItemManage({ navigation, item }) {
             style={styles.containerAll}
             onPress={()=>clickItem(item)}>
             <View style={styles.containerText}>
+                {/* <View> <Text>dsd</Text></View> */}
                 <View style={{width:130}}>
                     <Text style={styles.txtLeft} numberOfLines={1}>{item.customername?item.customername:''}</Text>
                     <Text style={[styles.txtLeft]} numberOfLines={1}>{item.customeremail?item.customeremail:''}</Text>
                     <Text style={styles.txtLeft} numberOfLines={1}>{item.customerphone?item.customerphone:''}</Text>
                 </View>
-                <View style={{width:130}}>
+                <View style={{width:130,}}>
                     <Text style={styles.txtRight} numberOfLines={1}>{item.productName?item.productName:''}</Text>
-                    <Text style={styles.txtRight} numberOfLines={1}>{item.price?item.price:''}</Text>
+                    <View style={{flexDirection:'row',alignItems:'center'}}> 
+                   {item.status===0? <MaterialCommunityIcons name={'checkbox-blank-outline'} size={20} style={{ color: '#FE2E2E' }} />:
+                    <MaterialCommunityIcons name={'checkbox-intermediate'} size={20} style={{ color: '#00FF00' }} />}
+                        <Text style={[styles.txtRight,{marginLeft:10}]} numberOfLines={1}>{item.price?item.price:''}</Text>            
+                    </View>
                     <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?item.expirationdate:''}</Text>
                 </View>
             </View>

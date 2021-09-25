@@ -13,6 +13,7 @@ import colors from '../constants/colors';
 import common from '../utils/common';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const isIos = Platform.OS === 'ios';
+const windowHeight = Dimensions.get('window').height;
 class NaviHerderFull extends React.Component {
 
   render() {
@@ -54,9 +55,9 @@ class NaviHerderFull extends React.Component {
 };
 export default NaviHerderFull;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   containerALl: {
-    height: 50,
+    height: windowHeight/17.8,
     flexDirection: 'row',
     marginTop: isIos ? common.getStatusBarHeight() + 12 : 0,
     backgroundColor: '#013ADF',

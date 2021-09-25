@@ -5,13 +5,12 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
+  Dimensions,
   TouchableOpacity,
   Modal,
   ActivityIndicator
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
-import TextInputKey from '../components/TextIputKey';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemManage from '../components/itemManage';
 import Search from '../components/search';
@@ -22,7 +21,8 @@ import LOCALE_KEY, {
 import Guest from '../api/guest';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
-import { tupleExpression } from '@babel/types';
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 
 const DataType = [
@@ -63,7 +63,7 @@ class CopyrightManagement extends React.Component {
 
   renderItem = ({ item }) => (
     <ItemManage navigation={this.props.navigation} item={item} />
-  );
+  ); 
   componentDidMount() {
     this.setState({
       isLoading: true
@@ -233,6 +233,7 @@ class CopyrightManagement extends React.Component {
   render() {
     const { search, modalVisible, dataKey, typeBQ, phanmem,
       dataBQ, disablePhanMem } = this.state;
+      console.log('dssd',dataKey)
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
@@ -356,12 +357,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    height: windowHeight/11.9,
     backgroundColor: '#2E64FE',
   },
   containerModal: {
-    width: 300,
-    height: 300,
+    width: windowWidth/1.31,
+    height: windowHeight/2.39,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',

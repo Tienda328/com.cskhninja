@@ -11,8 +11,9 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemLoaiBanQuyen from '../components/ItemLoaiBanQuyen'
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
-class TextInputModal extends Component {
+ class TextInputModal extends Component {
   state = {
     modalVisible: false,
   };
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    height: windowHeight/11.8,
     backgroundColor: '#2E64FE',
   },
   btnClose: {
@@ -130,8 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   containerModal: {
-    width: 300,
-    height: 500,
+    width: windowWidth/1.31,
+    height: windowHeight/1.43,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerInput: {
-    height:40,
+    height: windowHeight/17.8,
     borderRadius: 10,
     justifyContent:'space-between',
     alignItems:'center',

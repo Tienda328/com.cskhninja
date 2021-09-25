@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
+const windowHeight = Dimensions.get('window').height;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         margin: 12,
         padding: 10,
         flex:1,
-        height:40,
+        height: windowHeight/17.8,
     },
     containerALL: {
         flexDirection: 'row',
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         borderRadius:10,
-        height:50,
+        height: windowHeight/14.3,
         backgroundColor: '#fff',
         shadowColor: '#000',
         shadowOffset: {

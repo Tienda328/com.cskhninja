@@ -2,8 +2,10 @@ import React from 'react';
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Dimensions
 } from 'react-native';
+const windowHeight = Dimensions.get('window').height;
 
 export default function ItemDisaBle({ nameText, statusError, isError, value }) {
     return (
@@ -22,7 +24,7 @@ export default function ItemDisaBle({ nameText, statusError, isError, value }) {
 
 const styles = StyleSheet.create({
     containerInput: {
-        height:40,
+        height: windowHeight/17.8,
         shadowColor: '#000',
         marginHorizontal:20,
         borderRadius:10,
