@@ -5,12 +5,14 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Dimensions, Platform
 } from 'react-native';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
 import colors from '../constants/colors';
+import common from '../utils/common';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+const isIos = Platform.OS === 'ios';
 class NaviHerderFull extends React.Component {
 
   render() {
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   containerALl: {
     height: 50,
     flexDirection: 'row',
+    marginTop: isIos ? common.getStatusBarHeight() + 12 : 0,
     backgroundColor: '#013ADF',
     justifyContent: 'space-between'
   },

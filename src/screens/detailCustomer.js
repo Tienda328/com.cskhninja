@@ -87,7 +87,7 @@ export default class DetailCustomer extends React.Component {
                         </View>
                     </View>
                     <TouchableOpacity style={styles.containerDelete}>
-                        <MaterialCommunityIcons name={'delete-circle-outline'} size={50} style={{ color: '#FE2E2E' }} />
+                        <MaterialCommunityIcons name={'delete-circle-outline'} size={40} style={{ color: '#FE2E2E' }} />
                         {/* <Text style={styles.txtDelete}> Xóa key</Text> */}
                     </TouchableOpacity>
                 </View>

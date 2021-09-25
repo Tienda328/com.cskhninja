@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import colors from '../constants/colors';
 import {useNavigation} from '@react-navigation/native';
 import FocusAwareStatusBar from './FocusAwareStatusBar';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
 
 const NaviHeaderComponent: () => React$Node = (props) => {
   const navigation = useNavigation();
+  const safeAreaInsets = useSafeAreaInsets();
 
   const onBackPress = async () => {
     if (props.onBackPress !== undefined) {
@@ -50,7 +52,7 @@ const NaviHeaderComponent: () => React$Node = (props) => {
   };
 
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, {paddingTop: safeAreaInsets.top}]}>
       <FocusAwareStatusBar
         barStyle="light-content"
         backgroundColor={colors.colourStatus}
