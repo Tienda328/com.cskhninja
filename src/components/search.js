@@ -7,9 +7,9 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-const windowHeight = Dimensions.get('window').height;
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 export default function Search({ value,showFilter, onChangeText, style, onPressFilter,clickSearch }) {
     return (
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     containerFilter:{
-        height:50, 
-        width:50,
+        height:windowHeight/14, 
+        width:windowWidth/6.5,
         marginLeft:10,
         borderRadius:10,
         justifyContent:'center',

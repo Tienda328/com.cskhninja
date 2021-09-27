@@ -77,7 +77,6 @@ class AddKey extends React.Component {
             messagebill !== '' &&
             note !== '' 
         ){
-            const { type } = this.state;
             const pass_word = await getLocale(LOCALE_KEY.pass_word);
             const email = await getLocale(LOCALE_KEY.email);
             const md5 = stringMd5(pass_word);
@@ -90,13 +89,13 @@ class AddKey extends React.Component {
                 function: "createkey",
                 time: timeStamp,
                 token: token,
-                variable:`{'productid':'${22}','planid':'${68}'
-                ,'customerid':'${62348}','hid':'${'NINJA-SYSTEM-1'}'
-                ,'discount':'${0}','note':'${'cấp key test'}','paymentid':'${1}'
-                ,'messagebill':'${'key test'}','type':'${1}'}`
+                variable:`{'productid':'${productid}','planid':'${planid}'
+                ,'customerid':'${CustomerCode}','hid':'${hid}'
+                ,'discount':'${discount}','note':'${note}','paymentid':'${productid}'
+                ,'messagebill':'${messagebill}','type':'${type}'}`
             };
             try {
-                const response = await Guest.createkey(objPost);
+                 await Guest.createkey(objPost);
     
             } catch (e) {
                 console.log(e);

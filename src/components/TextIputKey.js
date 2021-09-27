@@ -4,23 +4,25 @@ import {
     Text,
     TextInput,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    Platform
 } from 'react-native';
 const windowHeight = Dimensions.get('window').height;
+const isIos = Platform.OS === 'ios';
 
 export default function TextInputKey({ nameText, statusError, placeholder, value, isError, onChangeText, editable }) {
     return (
         <View>
             <View>
                 <Text style={styles.txtName}>{nameText}</Text>
-                <View style={[styles.containerInput,{backgroundColor:editable?'#fff':'#D8D8D8'}]}>
-                <TextInput
-                    editable={editable}
-                    style={styles.input}
-                    placeholder={placeholder}
-                    value={value}
-                    onChangeText={onChangeText}
-                />
+                <View style={[styles.containerInput, { backgroundColor: editable ? '#fff' : '#D8D8D8' }]}>
+                    <TextInput
+                        editable={editable}
+                        style={styles.input}
+                        placeholder={placeholder}
+                        value={value}
+                        onChangeText={onChangeText}
+                    />
                 </View>
 
             </View>
@@ -31,10 +33,10 @@ export default function TextInputKey({ nameText, statusError, placeholder, value
 
 const styles = StyleSheet.create({
     containerInput: {
-        height: windowHeight/17.8,
+        height: windowHeight / 17.8,
         shadowColor: '#000',
-        marginHorizontal:20,
-        borderRadius:10,
+        marginHorizontal: 20,
+        borderRadius: 10,
         shadowRadius: 6,
         shadowOpacity: 0.16,
         shadowOffset: {
@@ -54,11 +56,12 @@ const styles = StyleSheet.create({
         marginLeft: 25
     },
     input: {
-        marginLeft:10,
+        marginLeft: 10,
         fontSize: 14,
-        fontWeight:'300'
+        marginTop: isIos ? 15 : 0,
+        fontWeight: '300'
     },
-    
+
     txtName: {
         fontSize: 14,
         fontWeight: 'bold',
