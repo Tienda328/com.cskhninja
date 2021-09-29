@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { stringMd5 } from 'react-native-quick-md5';
 import { Dimensions, Platform, StatusBar } from 'react-native';
 
@@ -10,6 +11,14 @@ function formatNumber(number) {
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' đ'
     );
+  }
+
+  function formatDate(date) {
+    if (date) {
+      return moment(date).utc().format('DD/MM/YYYY');
+    } else {
+      return '';
+    }
   }
 
   function DataSeach(string) {
@@ -63,6 +72,7 @@ export function ifIphoneX(iphoneXStyle, regularStyle) {
     formatNumber,
     timeStamp,
     DataSeach,
+    formatDate,
     createToken,
     getStatusBarHeight,
   };

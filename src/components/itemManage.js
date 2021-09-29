@@ -6,7 +6,7 @@ import {
     StyleSheet
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import common from '../utils/common';
 export default function ItemManage({ navigation, item }) {
     
     const clickItem =(item)=>{
@@ -29,9 +29,9 @@ export default function ItemManage({ navigation, item }) {
                     <View style={{flexDirection:'row',alignItems:'center'}}> 
                    {item.status===0? <MaterialCommunityIcons name={'checkbox-blank-outline'} size={20} style={{ color: '#FE2E2E' }} />:
                     <MaterialCommunityIcons name={'checkbox-intermediate'} size={20} style={{ color: '#00FF00' }} />}
-                        <Text style={[styles.txtRight,{marginLeft:10}]} numberOfLines={1}>{item.price?item.price:''}</Text>            
+                        <Text style={[styles.txtRight,{marginLeft:10}]} numberOfLines={1}>{item.price?common.formatNumber(item.price):''}</Text>            
                     </View>
-                    <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?item.expirationdate:''}</Text>
+                    <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?common.formatDate(item.expirationdate):''}</Text>
                 </View>
             </View>
 

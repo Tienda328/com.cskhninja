@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import ItemFlexRow from '../components/itemFlexRow';
 import NaviHerderFull from '../components/naviHerderFull';
+import common from '../utils/common';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class DetailKey extends React.Component {
@@ -38,7 +39,7 @@ export default class DetailKey extends React.Component {
                     <View>
                         <ItemFlexRow txtName={'Mã KH'} txtValue={customerid?customerid:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Bán'} txtValue={datecreate?datecreate:''} 
+                        <ItemFlexRow txtName={'Ngày Bán'} txtValue={datecreate?common.formatDate(datecreate):''} 
                         styleColour={styles.txtColour}/>
                         <ItemFlexRow txtName={'Họ Tên'} txtValue={customername?customername:''}
                         styleColour={styles.txtColour} />
@@ -50,11 +51,11 @@ export default class DetailKey extends React.Component {
                         styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Người Bán'} txtValue={customername?customername:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Ngày Kết Thúc'} txtValue={expirationdate?expirationdate:''}
+                        <ItemFlexRow txtName={'Ngày Kết Thúc'} txtValue={expirationdate?common.formatDate(expirationdate):''}
                         styleColour={styles.txtColour}/>
                         <ItemFlexRow txtName={'Còn Lại'} txtValue={conlai?conlai:''}
                         styleColour={styles.txtColour} />
-                        <ItemFlexRow txtName={'Giá Tiền'} txtValue={price?price:''}
+                        <ItemFlexRow txtName={'Giá Tiền'} txtValue={price?common.formatNumber(price):''}
                         styleColour={styles.txtColour} />
                         <ItemFlexRow txtName={'Thanh Toán'} txtValue={paymentName?paymentName:''} 
                         style={{ width: 160 }} styleColour={styles.txtColour} />
