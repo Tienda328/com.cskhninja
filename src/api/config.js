@@ -8,7 +8,7 @@ let HEADERS = {
   'Content-Type': 'application/json',
 };
 
-const onResponse = async (request, result) => {
+const onResponse = async (request, result,message) => {
   try {
     const body = await result.text();
     const newBody = JSON.parse(body);
@@ -20,7 +20,7 @@ const onResponse = async (request, result) => {
         type: 'object'
       };
       throw exception;
-    }else if (result.status === 200) {
+    }else if (result.status === 200 && message === undefined) {
       Alert.alert(
         "Thông báo",
         newBody.message,
@@ -48,7 +48,7 @@ const onResponse = async (request, result) => {
 };
 
 const config = {
-  post: async ( params: Object) => {
+  post: async ( params: Object, message) => {
     // await TokenHelper.refreshToken();
     const url = baseUrl;
     const options = {
@@ -61,7 +61,7 @@ const config = {
       options
     };
 
-    return fetch(url, options).then(result => onResponse(request, result));
+    return fetch(url, options).then(result => onResponse(request, result, message));
   },
 
   get: async (endpoint: string, params: Object = {}) => {

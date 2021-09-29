@@ -136,10 +136,10 @@ class Main extends React.Component {
             source={require('../resource/image/background-login.png')}
           />
           {/* <Search value={search} onChangeText={(text) => this.onChangeTextSearch(text)} /> */}
-          <StatisticSection />
+          {/* <StatisticSection />
           <View style={styles.viewNinja}>
             <Text style={styles.txtNinja}>-----NINJA * GROUP-----</Text>
-          </View>
+          </View> */}
           <View style={styles.containerButton}>
             
           {/* <TouchableOpacity style={styles.containerAddkey}

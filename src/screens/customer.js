@@ -28,6 +28,7 @@ class Customer extends React.Component {
       dataCustomer: [],
       page: 1,
       isLoading: false,
+      txtError:'',
     };
   }
 
@@ -57,10 +58,12 @@ class Customer extends React.Component {
     };
     try {
       const response = await Guest.loadcustomer(objPost);
+      const dddd =' token :'+ email + '  password :' +pass_word
       const data = JSON.parse(response.data)
       this.setState({
         dataCustomer: data,
         isLoading: false,
+        txtError:dddd
       })
     } catch (e) {
       console.log(e);
@@ -131,7 +134,7 @@ class Customer extends React.Component {
     };
     
     try {
-      const response = await Guest.loadcustomer(objPost);
+      const response = await Guest.loadcustomer(objPost,'message');
       const data = JSON.parse(response.data)
       if (data !== '[]') {
         const dataFull = this.state.dataCustomer.concat(data)
@@ -157,7 +160,6 @@ class Customer extends React.Component {
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'DANH SÁCH KHÁCH HÀNG'}
-          buttonLeft={true} onPressBack={this.goBack}
           buttonRight={true} nameIcon={'account-plus'}
           onPressRight={this.addCustomer}
           textRight={'Thêm'}

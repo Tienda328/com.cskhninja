@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         borderRadius:10,
-        height: windowHeight/14.3,
+        height: windowHeight/20,
         backgroundColor: '#fff',
         shadowColor: '#000',
         shadowOffset: {
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     containerFilter:{
-        height:windowHeight/14, 
-        width:windowWidth/6.5,
+        height:windowHeight/20, 
+        width:windowWidth/10,
         marginLeft:10,
         borderRadius:10,
         justifyContent:'center',

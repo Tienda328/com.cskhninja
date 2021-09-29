@@ -224,6 +224,7 @@ class AddKey extends React.Component {
         try {
             const response = await Guest.loadplan(objPost);
             const data = JSON.parse(response.data)
+            console.log('dsata',response.data )
             if (response.data === '[]') {
                 this.setState({
                     isNoData: false,

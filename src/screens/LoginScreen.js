@@ -29,7 +29,6 @@ import Guest from '../api/guest';
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +56,7 @@ class LoginScreen extends Component {
     const email = await getLocale(LOCALE_KEY.email);
     const password = await getLocale(LOCALE_KEY.pass_word);
     const save_infor =
-      (await getLocale(LOCALE_KEY.storage_infor)) === '1' ? true : false;
+      (await getLocale(LOCALE_KEY.storage_infor)) === '1' ? false : true;
     const icon = save_infor
       ? 'checkbox-intermediate'
       : 'checkbox-blank-outline';
@@ -118,7 +117,7 @@ class LoginScreen extends Component {
             clearLocale(LOCALE_KEY.email);
             clearLocale(LOCALE_KEY.pass_word);
           }
-          await setLocale(LOCALE_KEY.access_token, 'd1ff52a77a2965156cb8e7e67d4ac931');
+          await setLocale(LOCALE_KEY.access_token, token);
           await toggleLoggedIn();
         } else if (response.status === false) {
           Alert.alert(
@@ -196,7 +195,7 @@ class LoginScreen extends Component {
                   <Entypo name={this.state.iconShowPass} size={20} />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 activeOpacity={0.8}
                 style={loginStyle.storageInfor}
                 onPress={this.onUserSaveClick}>
@@ -207,7 +206,7 @@ class LoginScreen extends Component {
                   color='#fff'
                 />
                 <Text style={loginStyle.txtNhoPassWork} >Nhớ mật khẩu?</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 onPress={() => this.onLoginClick(toggleLoggedIn)}
                 activeOpacity={0.8}
@@ -324,6 +323,7 @@ const loginStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 30,
+    marginTop:30,
     borderRadius: 30,
   },
   txtDangNhap: {

@@ -102,8 +102,8 @@ class CopyrightManagement extends React.Component {
       email: email,
       password: md5,
       function: "loadproduct",
-      time: `1`,
-      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      time: timeStamp,
+      token: token,
       variable: `{'type':'${type}'}`
     };
     try {
@@ -153,7 +153,7 @@ class CopyrightManagement extends React.Component {
       const data = JSON.parse(response.data)
       this.setState({
         dataKey: data,
-        isLoading:false
+        isLoading:false,
       })
     } catch (e) {
       console.log(e);
@@ -184,7 +184,7 @@ class CopyrightManagement extends React.Component {
       variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','page':'${page}','pagesize':'5'}`
     }
     try {
-      const response = await Guest.loadcustomer(objPost);
+      const response = await Guest.viewallkey(objPost,'message');
       const data = JSON.parse(response.data)
       if (data !== '[]') {
         const dataFull = this.state.dataKey.concat(data)
@@ -233,7 +233,6 @@ class CopyrightManagement extends React.Component {
   render() {
     const { search, modalVisible, dataKey, typeBQ, phanmem,
       dataBQ, disablePhanMem } = this.state;
-      console.log('dssd',dataKey)
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
