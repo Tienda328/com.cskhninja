@@ -260,23 +260,23 @@ const styles = StyleSheet.create({
     },
     containerViewButton: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#D8D8D8"
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
-        marginTop: 20,
-        borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
+        // backgroundColor: '#fff',
+        // marginHorizontal: 20,
+        // marginTop: 20,
+        // borderRadius: 10,
+        // borderColor: '#fff',
+        // shadowColor: '#000',
+        // shadowRadius: 6,
+        // shadowOpacity: 0.16,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 5,
+        // },
+        // elevation: 3,
     },
     bottomKey: {
         height: 20

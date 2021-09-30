@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
     StyleSheet
 } from 'react-native';
 
@@ -10,7 +9,10 @@ export default function ItemFlexRow({ txtName, txtValue, style, styleColour }) {
     return (
         <View style={styles.containerAll}>
             <Text style={[styles.txtName, styleColour]}> {txtName}</Text>
-            <Text style={[styles.txtValue,style]} numberOfLines={1} > {txtValue}</Text>
+          <View style={styles.viewContainer}>
+            <Text/>
+          <Text style={[styles.txtValue,style]} > {txtValue}</Text>
+          </View>
         </View>
     );
 }
@@ -22,6 +24,15 @@ const styles = StyleSheet.create({
         borderBottomWidth:1,
         borderBottomColor:'gray'
     },
+    viewContainer:{
+        width:160,
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    viewFlex1:{
+        flex:1,
+    },
+
     txtName:{
         marginLeft:20,
         fontSize:16,

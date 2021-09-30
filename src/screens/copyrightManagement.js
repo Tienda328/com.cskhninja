@@ -46,7 +46,7 @@ class CopyrightManagement extends React.Component {
       page: 1,
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
-      modalVisible: false,
+      modalVisible: true,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,
@@ -63,11 +63,11 @@ class CopyrightManagement extends React.Component {
 
   renderItem = ({ item }) => (
     <ItemManage navigation={this.props.navigation} item={item} />
-  ); 
+  );
   componentDidMount() {
     this.setState({
       isLoading: true
-    }, () => this.getKey('','0'))
+    }, () => this.getKey('', '0'))
   }
   clickItemType = async item => {
     if (item.name === 'Phần mềm') {
@@ -121,7 +121,7 @@ class CopyrightManagement extends React.Component {
     this.setState({
       phanmem: item.name,
       hid: item.title,
-      productid:item.id,
+      productid: item.id,
       disableTypeBQ: false,
     })
   };
@@ -133,7 +133,7 @@ class CopyrightManagement extends React.Component {
       price: item.price
     })
   };
-  getKey = async (search,productid) => {
+  getKey = async (search, productid) => {
     // const { search } = this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
@@ -153,7 +153,7 @@ class CopyrightManagement extends React.Component {
       const data = JSON.parse(response.data)
       this.setState({
         dataKey: data,
-        isLoading:false,
+        isLoading: false,
       })
     } catch (e) {
       console.log(e);
@@ -184,7 +184,7 @@ class CopyrightManagement extends React.Component {
       variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','page':'${page}','pagesize':'5'}`
     }
     try {
-      const response = await Guest.viewallkey(objPost,'message');
+      const response = await Guest.viewallkey(objPost);
       const data = JSON.parse(response.data)
       if (data !== '[]') {
         const dataFull = this.state.dataKey.concat(data)
@@ -215,20 +215,20 @@ class CopyrightManagement extends React.Component {
       </View> : null
     )
   }
-  onClickFilter=()=>{
-    const { search,productid, } = this.state;
-    if(productid===null){
+  onClickFilter = () => {
+    const { search, productid, } = this.state;
+    if (productid === null) {
       this.setState({
         modalVisible: false,
         isLoading: true
-      }, () => this.getKey(search,'0'))
-    }else{
+      }, () => this.getKey(search, '0'))
+    } else {
       this.setState({
         modalVisible: false,
         isLoading: true
-      }, () => this.getKey(search,productid))
+      }, () => this.getKey(search, productid))
     }
-   
+
   }
   render() {
     const { search, modalVisible, dataKey, typeBQ, phanmem,
@@ -263,13 +263,14 @@ class CopyrightManagement extends React.Component {
                 </View>
                 <TextInputModal
                   dataModal={DataType}
-                  nameTitle={'Loại bản quyền'}
+                  nameIcon={'call-merge'}
+                  isError={true}
                   valueItem={typeBQ}
                   noData
                   click={this.clickItemType}
                   namePlaceholder={typeBQ} />
                 <TextInputModal
-                  nameTitle={'Phần mềm'}
+                  nameIcon={'blender-software'}
                   valueItem={phanmem}
                   noData
                   disabled={disablePhanMem}
@@ -278,10 +279,10 @@ class CopyrightManagement extends React.Component {
                   click={this.clickItemPhanMem}
                   namePlaceholder={phanmem}
                 />
-                 <TouchableOpacity style={styles.bntLoc}
-                 onPress={this.onClickFilter}>
-                      <Text style={styles.txtLoc}>Lọc</Text>
-                   </TouchableOpacity>
+                <TouchableOpacity style={styles.bntLoc}
+                  onPress={this.onClickFilter}>
+                  <Text style={styles.txtLoc}>Lọc</Text>
+                </TouchableOpacity>
                 <View>
                 </View>
               </View>
@@ -311,34 +312,34 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center'
   },
-  txtLoc:{
-    paddingVertical:10,
-    color:'#fff',
-    fontWeight:'600'
+  txtLoc: {
+    paddingVertical: 10,
+    color: '#fff',
+    fontWeight: '600'
   },
-  bntLoc:{
-    marginHorizontal:20,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#2E64FE',
-    borderRadius:10,
-    marginBottom:20
+  bntLoc: {
+    marginHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2E64FE',
+    borderRadius: 10,
+    marginBottom: 20
   },
   container: {
-    flex: 1,
-    backgroundColor: '#FAFAFA',
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 10,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    elevation: 3,
+    // flex: 1,
+    // backgroundColor: '#FAFAFA',
+    // marginHorizontal: 20,
+    // marginTop: 20,
+    // borderRadius: 10,
+    // borderColor: '#fff',
+    // shadowColor: '#000',
+    // shadowRadius: 6,
+    // shadowOpacity: 0.16,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 5,
+    // },
+    // elevation: 3,
   },
   btnClose: {
     marginRight: 10,
@@ -356,12 +357,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: windowHeight/11.9,
+    height: windowHeight / 11.9,
     backgroundColor: '#2E64FE',
   },
   containerModal: {
-    width: windowWidth/1.31,
-    height: windowHeight/2.39,
+    width: windowWidth / 1.31,
+    height: windowHeight / 2.39,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',
@@ -376,7 +377,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   flatList: {
-    paddingTop: 20
+    marginTop: 20
   },
 
   containerView: {

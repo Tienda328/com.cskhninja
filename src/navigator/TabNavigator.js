@@ -12,7 +12,7 @@ import AddKeyScreen from '../screens/addKey';
 
 const styles = StyleSheet.create({
   tabbarItemCenter: {
-    backgroundColor: '#fff',
+    backgroundColor: '#01DF01',
     position: 'absolute',
     bottom: 0,
     padding: 7,
@@ -56,7 +56,7 @@ class TabNavigator extends React.Component {
     } else if (route.name === 'AddKey') {
       return (
         <View style={styles.tabbarItemCenter}>
-          {focused ? <MaterialCommunityIcons name={'alarm-plus'} size={35} color={color} /> : <MaterialCommunityIcons name={'alarm-plus'} size={35} color={color} />}
+          {focused ? <MaterialCommunityIcons name={'alarm-plus'} size={35} color={'#fff'} /> : <MaterialCommunityIcons name={'alarm-plus'} size={35} color={'#fff'} />}
         </View>
       );
     }
@@ -105,9 +105,9 @@ class TabNavigator extends React.Component {
         <Tab.Screen name="Home" component={MainScreen} options={{
           tabBarVisible: false
         }} />
-        <Tab.Screen name="Customer" component={CustomerScreen} />
+         <Tab.Screen name="CopyrightManagement" component={CopyrightManagementScreen} />
         <Tab.Screen name="AddKey" component={AddKeyScreen} />
-        <Tab.Screen name="CopyrightManagement" component={CopyrightManagementScreen} />
+        <Tab.Screen name="Customer" component={CustomerScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     )

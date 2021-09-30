@@ -5,14 +5,15 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowHeight = Dimensions.get('window').height;
 
-export default function ItemDisaBle({ nameText, statusError, isError, value }) {
+export default function ItemDisaBle({ nameText, statusError, isError, value, nameIcon }) {
     return (
         <View>
             <View>
-                <Text style={styles.txtName}>{nameText}</Text>
                 <View style={[styles.containerInput]}>
+                <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginLeft:20 }} />
                <Text style={styles.txtValue}>{value}</Text>
                 </View>
 
@@ -24,11 +25,12 @@ export default function ItemDisaBle({ nameText, statusError, isError, value }) {
 
 const styles = StyleSheet.create({
     containerInput: {
+        flexDirection:'row',
         height: windowHeight/17.8,
         shadowColor: '#000',
         marginHorizontal:20,
         borderRadius:10,
-        justifyContent:'center',
+        alignItems:'center',
         shadowRadius: 6,
         shadowOpacity: 0.16,
         shadowOffset: {
@@ -43,12 +45,12 @@ const styles = StyleSheet.create({
     },
     txtValue:{
         marginLeft:15,
-        color:'#6E6E6E'
+        color:'gray'
     },
     txtError: {
         color: 'red',
-        fontSize: 13,
-        marginVertical: 5,
+        fontSize: 12,
+        marginVertical: 8,
         marginLeft: 25
     },
     input: {

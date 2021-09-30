@@ -334,7 +334,7 @@ class AddKey extends React.Component {
                 variable: `{'email':'${this.state.email}'}`
             };
             try {
-                const response = await Guest.seachcustomer(objPost);
+                const response = await Guest.seachcustomer(objPost,'message');
                 itemInfo = response.data
                 const makh = JSON.parse(itemInfo).id
                 const nameKh = JSON.parse(itemInfo).name
@@ -378,7 +378,7 @@ class AddKey extends React.Component {
                                     <TextInputKey
                                         onChangeText={(text) => this.onChangeTextEmail(text)}
                                         placeholder="Nhập Email khách hàng"
-                                        nameText={'Email khách hàng'}
+                                        nameIcon={'email'}
                                         value={email}
                                         isError={true}
                                         editable={true}
@@ -392,14 +392,15 @@ class AddKey extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <ItemDisable nameText={'Mã khách hàng'}
+                            nameIcon={'barcode'}
                                 statusError={CustomerCode === '0' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
                                 isError={true}
                                 value={CustomerCode} />
-                            <ItemDisable nameText={'Tên khách hàng'} value={CustomerName} />
-                            <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} />
+                            <ItemDisable nameText={'Tên khách hàng'} value={CustomerName}    nameIcon={'rename-box'}/>
+                            <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} nameIcon={'cellphone'} />
                             <TextInputModal
                                 dataModal={DataType}
-                                nameTitle={'Loại bản quyền'}
+                                nameIcon={'call-merge'}
                                 isError={true}
                                 valueItem={typeBQ}
                                 noData
@@ -407,7 +408,7 @@ class AddKey extends React.Component {
                                 statusError={typeBQ === 'Chọn loại bản quyền' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
                                 namePlaceholder={typeBQ} />
                             <TextInputModal
-                                nameTitle={'Phần mềm'}
+                                nameIcon={'blender-software'}
                                 isError={true}
                                 valueItem={phanmem}
                                 statusError={phanmem === 'Chọn phần mềm' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
@@ -419,7 +420,7 @@ class AddKey extends React.Component {
                                 namePlaceholder={phanmem}
                             />
                             <TextInputModal
-                                nameTitle={'Gói bản quyền'}
+                               nameIcon={'gift'}
                                 valueItem={goiBQ}
                                 disabled={disableTypeBQ}
                                 dataModal={dataTypyBQ}
@@ -429,19 +430,20 @@ class AddKey extends React.Component {
                             <TextInputKey
                                 onChangeText={(text) => this.onChangeTextMotorCode(text)}
                                 placeholder="Mã máy có thể bỏ trống"
-                                nameText={'Mã máy'}
+                                nameIcon={'qrcode'}
                                 value={motorCode}
                                 editable={true}
                             />
-                            <ItemDisable nameText={'Giá'} value={price} />
+                            <ItemDisable nameIcon={'currency-usd'} value={price} />
                             <TextInputKey
                                 onChangeText={(text) => this.onChangeTextDiscount(text)}
-                                nameText={'Khuyến mãi'}
+                                nameIcon={'sale'}
+                                nameIcon={'currency-usd'}
                                 value={disCount}
                                 editable={true}
                             />
                             <TextInputModal
-                                nameTitle={'Thanh toán'}
+                                nameIcon={'bank'}
                                 valueItem={valuePay}
                                 // disabled={disableTypeBQ}
                                 dataModal={dataPay}
@@ -452,7 +454,7 @@ class AddKey extends React.Component {
                                 nameTitle={'Gói bản quyền'}
                                 onChangeText={(text) => this.onChangeTextMessagebill(text)}
                                 placeholder="Ghi rõ nội dung chuyển khoản"
-                                nameText={'Nội dung chuyển khoản'}
+                                nameIcon={'content-save'}
                                 editable={true}
                                  isError={true}
                                 statusError={messagebill === '' && isErrorState === true ? 'Nội dung chuyển khoản Không được để trống' : ''}
@@ -462,7 +464,7 @@ class AddKey extends React.Component {
                                 onChangeText={(text) => this.onChangeTextNote(text)}
                                 placeholder="Ghi chú"
                                 isError={true}
-                                nameText={'Ghi chú'}
+                                nameIcon={'calendar-text'}
                                 editable={true}
                                 value={note}
                                 statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
@@ -487,22 +489,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        marginHorizontal: 20,
-        marginVertical: 20,
-        borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
     },
     containerSearch: {
         flexDirection: 'row',
-        alignItems: 'center'
     },
     bntSearch: {
         width: 40,

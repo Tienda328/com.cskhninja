@@ -50,6 +50,7 @@ class LoginScreen extends Component {
     });
   };
   onForgorPass = async () => {
+    this.props.navigation.navigate('ResetPassWordScreen')
   }
 
   async componentDidMount() {

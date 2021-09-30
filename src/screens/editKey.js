@@ -233,29 +233,7 @@ class AddKey extends React.Component {
     };
 
     async componentDidMount() {
-        const pass_word = await getLocale(LOCALE_KEY.pass_word);
-        const email = await getLocale(LOCALE_KEY.email);
-        const md5 = stringMd5(pass_word);
-        const timeStamp = '1';
-        const token = common.createToken(timeStamp)
-        const objPost = {
-            email: email,
-            password: md5,
-            function: "loadpayment",
-            time: timeStamp,
-            token: token,
-        };
-        try {
-            const response = await Guest.loadpayment(objPost);
-            const data = JSON.parse(response.data)
-            this.setState({
-                dataPay: data,
-                valuePay: data[0].name,
-                paymentid: data[0].id,
-            })
-        } catch (e) {
-            console.log(e);
-        }
+      
     }
     clickItemPay = item => {
         this.setState({
@@ -309,7 +287,7 @@ class AddKey extends React.Component {
                             <View style={styles.bottomKey} />
                             <TextInputModal
                                 dataModal={DataType}
-                                nameTitle={'Loại bản quyền'}
+                                nameIcon={'call-merge'}
                                 isError={true}
                                 valueItem={typeBQ}
                                 noData
@@ -317,7 +295,7 @@ class AddKey extends React.Component {
                                 statusError={typeBQ === 'Chọn loại bản quyền' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
                                 namePlaceholder={typeBQ} />
                             <TextInputModal
-                                nameTitle={'Phần mềm'}
+                                nameIcon={'blender-software'}
                                 isError={true}
                                 valueItem={phanmem}
                                 statusError={phanmem === 'Chọn phần mềm' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
@@ -328,30 +306,31 @@ class AddKey extends React.Component {
                                 click={this.clickItemPhanMem}
                                 namePlaceholder={phanmem}
                             />
-                            <TextInputModal
-                                nameTitle={'Gói bản quyền'}
+                           <TextInputModal
+                               nameIcon={'gift'}
                                 valueItem={goiBQ}
                                 disabled={disableTypeBQ}
                                 dataModal={dataTypyBQ}
                                 noData={isNoData}
                                 click={this.clickItemGoiBQ}
                                 namePlaceholder={goiBQ} />
-                            <TextInputKey
+                               <TextInputKey
                                 onChangeText={(text) => this.onChangeTextMotorCode(text)}
                                 placeholder="Mã máy có thể bỏ trống"
-                                nameText={'Mã máy'}
+                                nameIcon={'qrcode'}
                                 value={motorCode}
                                 editable={true}
                             />
-                            <ItemDisable nameText={'Giá'} value={price} />
-                            <TextInputKey
+                             <ItemDisable nameIcon={'currency-usd'} value={price} />
+                             <TextInputKey
                                 onChangeText={(text) => this.onChangeTextDiscount(text)}
-                                nameText={'Khuyến mãi'}
+                                nameIcon={'sale'}
+                                nameIcon={'currency-usd'}
                                 value={disCount}
                                 editable={true}
                             />
-                            <TextInputModal
-                                nameTitle={'Thanh toán'}
+                          <TextInputModal
+                                nameIcon={'bank'}
                                 valueItem={valuePay}
                                 // disabled={disableTypeBQ}
                                 dataModal={dataPay}
@@ -362,17 +341,17 @@ class AddKey extends React.Component {
                                 nameTitle={'Gói bản quyền'}
                                 onChangeText={(text) => this.onChangeTextMessagebill(text)}
                                 placeholder="Ghi rõ nội dung chuyển khoản"
-                                nameText={'Nội dung chuyển khoản'}
+                                nameIcon={'content-save'}
                                 editable={true}
                                  isError={true}
                                 statusError={messagebill === '' && isErrorState === true ? 'Nội dung chuyển khoản Không được để trống' : ''}
                                 value={messagebill}
                             />
-                            <TextInputKey
+                           <TextInputKey
                                 onChangeText={(text) => this.onChangeTextNote(text)}
                                 placeholder="Ghi chú"
                                 isError={true}
-                                nameText={'Ghi chú'}
+                                nameIcon={'calendar-text'}
                                 editable={true}
                                 value={note}
                                 statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
@@ -393,23 +372,23 @@ class AddKey extends React.Component {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: '#D8D8D8',
+        backgroundColor: '#fff',
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
-        marginVertical: 20,
-        borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
+        // backgroundColor: '#fff',
+        // marginHorizontal: 20,
+        // marginVertical: 20,
+        // borderRadius: 10,
+        // borderColor: '#fff',
+        // shadowColor: '#000',
+        // shadowRadius: 6,
+        // shadowOpacity: 0.16,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 5,
+        // },
+        // elevation: 3,
     },
     containerSearch: {
         flexDirection: 'row',

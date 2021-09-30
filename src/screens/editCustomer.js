@@ -119,19 +119,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
-        marginVertical: 20,
-        borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
+       
     },
     btnContinue: {
         flex: 1,

@@ -7,15 +7,18 @@ import {
     StyleSheet,
     Platform
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowHeight = Dimensions.get('window').height;
 const isIos = Platform.OS === 'ios';
 
-export default function TextInputKey({ nameText, statusError, placeholder, value, isError, onChangeText, editable }) {
+export default function TextInputKey({ nameText, statusError, placeholder, value, isError, onChangeText, editable, nameIcon }) {
     return (
         <View>
             <View>
-                <Text style={styles.txtName}>{nameText}</Text>
+              
+                {/* <Text style={styles.txtName}>{nameText}</Text> */}
                 <View style={[styles.containerInput, { backgroundColor: editable ? '#fff' : '#D8D8D8' }]}>
+                <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginLeft:20 }} />
                     <TextInput
                         editable={editable}
                         style={styles.input}
@@ -33,9 +36,11 @@ export default function TextInputKey({ nameText, statusError, placeholder, value
 
 const styles = StyleSheet.create({
     containerInput: {
+        flexDirection:'row',
         height: windowHeight / 17.8,
         shadowColor: '#000',
         marginHorizontal: 20,
+        alignItems:'center',
         borderRadius: 10,
         shadowRadius: 6,
         shadowOpacity: 0.16,
@@ -52,7 +57,7 @@ const styles = StyleSheet.create({
     txtError: {
         color: 'red',
         fontSize: 13,
-        marginVertical: 5,
+        marginVertical: 8,
         marginLeft: 25
     },
     input: {

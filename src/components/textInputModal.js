@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
 } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemLoaiBanQuyen from '../components/ItemLoaiBanQuyen'
 const windowHeight = Dimensions.get('window').height;
@@ -32,13 +33,13 @@ const windowWidth = Dimensions.get('window').width;
 
 
 
-  renderItem = ({ item }) => (
-    <ItemLoaiBanQuyen  item ={item} onPress={()=> this.clickItem(item) }/>
+  renderItem = ({ item, index }) => (
+    <ItemLoaiBanQuyen  item ={item} index={index} onPress={()=> this.clickItem(item) }/>
   );
 
   render() {
     const {modalVisible} = this.state;
-    const {nameTitle,statusError, isError,stylesInput, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
+    const {nameIcon,statusError, isError,stylesInput, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
     return (
       <View style={styles.containerAll}>
         <Modal
@@ -67,7 +68,7 @@ const windowWidth = Dimensions.get('window').width;
               {noData ?   <FlatList
                 style={{height:450}}
                   data={dataModal}
-                  renderItem={(item)=>this.renderItem(item)}
+                  renderItem={(item, index)=>this.renderItem(item, index)}
                   keyExtractor={(item, index) => index.toString()}
                 />:<Text style={styles.txtNoData}>Không có dữ liệu</Text>
 
@@ -77,12 +78,14 @@ const windowWidth = Dimensions.get('window').width;
           </View>
         </Modal>
         <View>
-        <Text style={styles.txtName}>{nameTitle}</Text>
           <TouchableOpacity
             disabled={disabled}
             style={[styles.containerInput, stylesInput ,{backgroundColor:disabled?'#D8D8D8':'#fff'}]}
             onPress={() => this.setModalVisible(true)}>
+              <View style={styles.containerIcon}>
+              <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginLeft:20 }} />
               <Text style={styles.txtSelect}>{namePlaceholder}</Text>
+              </View>
         
             <View style={styles.iconShow}>
               <Ionicons
@@ -109,6 +112,9 @@ const styles = StyleSheet.create({
   },
   txtNoData:{textAlign:'center',
   marginTop:20,
+},
+containerIcon:{
+  flexDirection:'row'
 },
   txtTitle:{
     color: 'white',
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
   },
   txtError: {
     color: 'red',
-    fontSize: 15,
+    fontSize: 12,
     marginVertical: 5,
     marginLeft: 25,
   },

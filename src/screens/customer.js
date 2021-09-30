@@ -32,8 +32,8 @@ class Customer extends React.Component {
     };
   }
 
-  renderItem = ({ item }) => (
-    <ItemCustomer navigation={this.props.navigation} item={item} />
+  renderItem = ({ item, index }) => (
+    <ItemCustomer navigation={this.props.navigation} item={item} index={index} />
   );
 
   componentDidMount() {
@@ -83,27 +83,26 @@ class Customer extends React.Component {
   };
 
   clickSearch = async () => {
-    // const pass_word = await getLocale(LOCALE_KEY.pass_word);
-    // const email = await getLocale(LOCALE_KEY.email);
-    // const md5 = stringMd5(pass_word);
-    // const timeStamp = common.timeStamp();
-    // const token = common.createToken(timeStamp)
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
 
-    // const objPost = {
-    //   email: email,
-    //   password: md5,
-    //   function: "seachcustomer",
-    //   time: `1`,
-    //   token: 'd1ff52a77a2965156cb8e7e67d4ac931',
-    //   variable: `{'email':'${'hoatv2@ninjateam.vn'}'}`
-    // };
-    // try {
-    //   const response = await Guest.seachcustomer(objPost);
-    //    const data =await response.data
-    //   const datadasdasd =common.DataSeach(data)
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "seachcustomer",
+      time: `1`,
+      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+      variable: `{'email':'${'hoatv2@ninjateam.vn'}'}`
+    };
+    try {
+      const response = await Guest.seachcustomer(objPost);
+      console.log('DSDS',response );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
 
@@ -134,7 +133,7 @@ class Customer extends React.Component {
     };
     
     try {
-      const response = await Guest.loadcustomer(objPost,'message');
+      const response = await Guest.loadcustomer(objPost);
       const data = JSON.parse(response.data)
       if (data !== '[]') {
         const dataFull = this.state.dataCustomer.concat(data)
@@ -172,7 +171,7 @@ class Customer extends React.Component {
           <FlatList
             style={styles.flatList}
             data={dataCustomer}
-            renderItem={(item) => this.renderItem(item)}
+            renderItem={(item, index) => this.renderItem(item, index)}
             keyExtractor={(item, index) => index.toString()}
             ListFooterComponent={this.renderFooter}
             onEndReached={this.handleLoadMore}
@@ -195,19 +194,19 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 10,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    elevation: 3,
+    // backgroundColor: '#FAFAFA',
+    // marginHorizontal: 20,
+    // marginTop: 20,
+    // borderRadius: 10,
+    // borderColor: '#fff',
+    // shadowColor: '#000',
+    // shadowRadius: 6,
+    // shadowOpacity: 0.16,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 5,
+    // },
+    // elevation: 3,
   },
   btnClose: {
     marginRight: 10,
@@ -245,8 +244,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   flatList: {
-    marginTop: 10,
-    paddingBottom: 30
+    marginTop: 20
   },
 
   containerView: {

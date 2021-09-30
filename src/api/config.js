@@ -20,7 +20,7 @@ const onResponse = async (request, result,message) => {
         type: 'object'
       };
       throw exception;
-    }else if (result.status === 200 && message === undefined) {
+    }else if (result.status === 200 && message !== undefined) {
       Alert.alert(
         "Thông báo",
         newBody.message,
