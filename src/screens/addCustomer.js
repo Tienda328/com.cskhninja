@@ -189,12 +189,13 @@ export default class AddCustomer extends React.Component {
                 <NaviHerderFull title={'THÊM KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
                
                 <View style={styles.container}>
-                <View style={styles.bottomKey} />
+                <View style={styles.bottomKey} /> 
                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextSurName(text)}
                         placeholder="Nhập họ tên"
                         nameText={'Họ tên'}
                         editable={true}
+                        nameIcon={'rename-box'}
                         value={surName}
                         isError={true}
                         statusError={stateSurName}
@@ -204,6 +205,7 @@ export default class AddCustomer extends React.Component {
                         placeholder="Email"
                         nameText={'Nhập Email'}
                         value={email}
+                        nameIcon={'email'}
                         isError={true}
                         editable={true}
                         statusError={stateEmail}
@@ -213,6 +215,7 @@ export default class AddCustomer extends React.Component {
                         placeholder="Số điện thoại"
                         nameText={'Nhập số điện thoại'}
                         value={phoneNumber}
+                        nameIcon={'cellphone'}
                         isError={true}
                         editable={true}
                         statusError={statePhoneNumber}
@@ -223,6 +226,7 @@ export default class AddCustomer extends React.Component {
                         nameText={'Mật khẩu'}
                         value={passWord}
                         editable={true}
+                        nameIcon={'lock'}
                         isError={true}
                         statusError={statePassword}
                     />
@@ -256,27 +260,14 @@ export default class AddCustomer extends React.Component {
 const styles = StyleSheet.create({
     containerALL: {
         flex: 1,
-        backgroundColor: "#D8D8D8"
+        backgroundColor: "#fff"
     },
     containerViewButton: {
         flex: 1,
-        backgroundColor: "#D8D8D8"
+        backgroundColor: "#fff"
     },
     container: {
         flex: 1,
-        // backgroundColor: '#fff',
-        // marginHorizontal: 20,
-        // marginTop: 20,
-        // borderRadius: 10,
-        // borderColor: '#fff',
-        // shadowColor: '#000',
-        // shadowRadius: 6,
-        // shadowOpacity: 0.16,
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 5,
-        // },
-        // elevation: 3,
     },
     bottomKey: {
         height: 20

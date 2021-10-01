@@ -114,6 +114,7 @@ class LoginScreen extends Component {
             setLocale(LOCALE_KEY.pass_word, password);
             setLocale(LOCALE_KEY.phone_number, userinfo.phone);
             setLocale(LOCALE_KEY.user_name, userinfo.name);
+            setLocale(LOCALE_KEY.role, userinfo.role);
           } else {
             clearLocale(LOCALE_KEY.email);
             clearLocale(LOCALE_KEY.pass_word);

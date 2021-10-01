@@ -55,16 +55,18 @@ export default class DetailCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: true,
+            modalVisible: false,
             typeDelete: 'Chọn loại bản quyền',
             type:null,
+            statusErrorLyDo:''
         };
     }
     goBack = () => {
         this.props.navigation.goBack()
     };
-    clickEdit = () => {
-        this.props.navigation.navigate('EditCustomerScreen')
+    clickEdit = (email, id, name, phone) => {
+        const item ={email,id,name, phone}
+        this.props.navigation.navigate('EditCustomerScreen',{item})
     };
     clickReset = async (emailReset) => {
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
@@ -102,7 +104,7 @@ export default class DetailCustomer extends React.Component {
         this.setState({ modalVisible: false });
       }
     render() {
-        const { email, id, name, phone
+        const { email, id, name, phone,statusErrorLyDo
         } = this.props.route.params.item
         const { modalVisible, typeDelete } = this.state
         return (
@@ -113,49 +115,63 @@ export default class DetailCustomer extends React.Component {
                     buttonLeft={true} buttonRight={true}
                     nameIcon={'account-edit'}
                     textRight={'Sửa'}
-                    onPressRight={this.clickEdit}
+                    onPressRight={()=>this.clickEdit(email, id, name, phone)}
 
                     buttonRightIcon={true} />
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                >
-                    <View style={styles.containerModelAll}>
-                        <View style={styles.containerModal}>
-                            <View style={styles.modalHerder}>
-                                <Text />
-                                <Text style={styles.txtTitle}>LÝ DO XÓA</Text>
-                                <TouchableOpacity
-                                    style={styles.btnClose}
-                                    onPress={this.onCloseDelite}>
-                                    <Ionicons
-                                        name={'close-outline'}
-                                        size={25}
-                                        style={{ color: '#fff' }}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                            <TextInputModal
-                                dataModal={DataDelete}
-                                nameIcon={'call-merge'}
-                                valueItem={typeDelete}
-                                noData
-                                click={this.clickItemType}
-                                namePlaceholder={typeDelete} />
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
+             <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.containerModelAll}>
+            <View style={styles.containerModal}>
+              <View style={styles.modalHerder}>
+                <Text />
+                <Text style={styles.txtTitle}>LÝ DO XÓA</Text>
+                <TouchableOpacity
+                  style={styles.btnClose}
+                  onPress={this.onCloseDelite}>
+                  <Ionicons
+                    name={'close-outline'}
+                    size={25}
+                    style={{ color: '#fff' }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{ flex: 1, marginTop: 20 }}>
+                <TextInputModal
+                  dataModal={DataDelete}
+                  nameIcon={'call-merge'}
+                  valueItem={typeDelete}
+                  isError={true}
+                  statusError={statusErrorLyDo}
+                  noData
+                  click={this.clickItemType}
+                  namePlaceholder={typeDelete} />
+                <View style={styles.containerBNT}>
+                  <TouchableOpacity 
+                   onPress={this.onCloseDelite}
+                  style={styles.bntCancel}>
+                    <Text style={styles.txtButton}>HỦY</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.bntDelete}
+                    // onPress={() => this.clickDelete(customerid, type)}
+                  >
+                    <Text style={styles.txtButton}>XÓA</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
                 <View style={styles.container}>
 
                     <View style={[styles.View]}>
                         <ItemDetailIcon txtValue={id ? id : ''}
-                            nameIcon={'bank'}
+                            nameIcon={'code-equal'}
                             styleColour={styles.txtColour} />
                         <ItemDetailIcon txtValue={name ? name : ''}
-                            nameIcon={'bank'}
+                            nameIcon={'rename-box'}
                             styleColour={styles.txtColour} />
                         <ItemDetailIcon txtValue={email ? email : ''}
                             nameIcon={'email'}
@@ -186,15 +202,14 @@ export default class DetailCustomer extends React.Component {
                             >
                                 <View style={styles.containerCall}>
                                     <MaterialCommunityIcons name={'delete-circle-outline'} size={25} style={styles.iconCall} />
-                                    <Text style={styles.txtGoi}>XÓA</Text>
-                                    <View style={{ width: 30 }} />
+                                    <Text style={styles.txtGoi}>Xóa</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.btnDuyet}
                                 onPress={() => this.clickReset(email)}>
                                 <View style={styles.containerReset}>
-
-                                    <Text style={styles.txtGoi}>RESET MẬT KHẨU</Text>
+                                <MaterialCommunityIcons name={'lock-reset'} size={25} style={{color:'gray'}} />
+                                    <Text style={styles.txtGoi}>reset passWord</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -218,6 +233,33 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    containerBNT: {
+        flexDirection: 'row'
+      },
+      bntCancel: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        marginLeft: 20,
+        marginRight: 10,
+        backgroundColor: 'gray',
+        borderRadius: 10,
+        marginBottom: 20
+      },
+      bntDelete: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        borderRadius: 10,
+        marginBottom: 20,
+        marginLeft: 10,
+        marginRight: 20,
+        backgroundColor: 'red'
+      },
+      txtButton: {
+        color: '#fff',
+        paddingVertical: 5
+      },
     containerModal: {
         width: 300,
         height: 200,
@@ -267,30 +309,25 @@ const styles = StyleSheet.create({
         color: 'red'
     },
     txtGoi: {
-        color: '#fff',
+        // color: '#fff',
         paddingVertical: 15,
-        fontWeight: '600'
+        fontWeight: '600',
+        marginLeft:5,
     },
     containerReset: {
-        justifyContent: 'center',
-        alignItems: 'center'
-
+        alignItems:'center',
+        flexDirection:'row',
+        marginRight:20
     },
     btnCall: {
         flex: 1,
-        height: 50,
-        borderRadius: 20,
-        backgroundColor: 'red',
-        marginLeft: 20,
-        marginRight: 10,
     },
     iconCall: {
-        color: '#fff',
-        marginLeft: 10
+        color: 'red',
+        marginLeft: 20
     },
     containerCall: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center'
     },
     containerDelete: {
@@ -301,17 +338,10 @@ const styles = StyleSheet.create({
     viewDelete: {
         flex: 1,
     },
-    btnDuyet: {
-        flex: 1,
-        height: 50,
-        borderRadius: 20,
-        backgroundColor: '#6E6E6E',
-        marginLeft: 20,
-        marginRight: 10,
-    },
     containerButton: {
         flexDirection: 'row',
         marginBottom: 20,
+        backgroundColor:'#fff'
     }
 
 })

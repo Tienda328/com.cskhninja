@@ -83,7 +83,7 @@ class Profile extends React.Component {
                     />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.props.navigation.navigate('Customer')}>
                 <View style={styles.containerBtn}>
                   <View style={styles.viewIcon}>
                     <Icon
@@ -101,7 +101,7 @@ class Profile extends React.Component {
                     />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.props.navigation.navigate('CopyrightManagement')}>
                 <View style={styles.containerBtn}>
                   <View style={styles.viewIcon}>
                     <Icon

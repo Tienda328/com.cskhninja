@@ -3,9 +3,11 @@ import React from 'react';
 import {
     View,
     Text,
+    Dimensions,
     TouchableOpacity,
     ScrollView,
-    Image,
+    TextInput,
+    Platform,
     StyleSheet,
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
@@ -17,8 +19,10 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import common from '../utils/common';
+import NumberFormat from 'react-number-format';
 import { stringMd5 } from 'react-native-quick-md5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const windowHeight = Dimensions.get('window').height;
 
 const DataType = [
     {
@@ -39,6 +43,7 @@ class AddKey extends React.Component {
             email: '',
             type: 1,
             isNoData: true,
+            txtDiscount:'',
             disablePhanMem: true,
             disableTypeBQ: true,
             CustomerCode: '0',
@@ -56,7 +61,7 @@ class AddKey extends React.Component {
             productid: null,
             motorCode: '',
             hid: null,
-            disCount: '0',
+            disCount: null,
             goiBQ: 'Gói bản quyền',
             price: '0',
             planid: null,
@@ -66,37 +71,37 @@ class AddKey extends React.Component {
         };
     }
 
-    btnContinue = async() => {
-        const { productid,typeBQ, planid, CustomerCode,phanmem, hid, discount, note, paymentid, messagebill, type } = this.state;
+    btnContinue = async () => {
+        const { productid,txtDiscount, typeBQ, planid, CustomerCode, phanmem, motorCode, note,price, paymentid, messagebill, type } = this.state;
         this.setState({
             isErrorState: true
         })
-        if(CustomerCode !== '0'&&
-            typeBQ !== 'Chọn loại bản quyền'&&
-            phanmem !== 'Chọn phần mềm'&&
+        if (CustomerCode !== '0' &&
+            typeBQ !== 'Chọn loại bản quyền' &&
+            phanmem !== 'Chọn phần mềm' &&
             messagebill !== '' &&
-            note !== '' 
-        ){
+            note !== ''
+        ) {
             const pass_word = await getLocale(LOCALE_KEY.pass_word);
             const email = await getLocale(LOCALE_KEY.email);
             const md5 = stringMd5(pass_word);
             const timeStamp = common.timeStamp();
             const token = common.createToken(timeStamp)
-    
+
             const objPost = {
                 email: email,
                 password: md5,
                 function: "createkey",
                 time: timeStamp,
                 token: token,
-                variable:`{'productid':'${productid}','planid':'${planid}'
-                ,'customerid':'${CustomerCode}','hid':'${hid}'
-                ,'discount':'${discount}','note':'${note}','paymentid':'${productid}'
+                variable: `{'productid':'${productid}','planid':'${planid}'
+                ,'customerid':'${CustomerCode}','hid':'${motorCode}'
+                ,'discount':'${txtDiscount}','note':'${note}','paymentid':'${productid}'
                 ,'messagebill':'${messagebill}','type':'${type}'}`
             };
             try {
-                 await Guest.createkey(objPost);
-    
+                await Guest.createkey(objPost);
+
             } catch (e) {
                 console.log(e);
             }
@@ -104,7 +109,7 @@ class AddKey extends React.Component {
         }
     }
 
-    clearnState= ()=>{
+    clearnState = () => {
         this.setState({
             email: '',
             type: 1,
@@ -138,7 +143,7 @@ class AddKey extends React.Component {
 
     clickItemType = async item => {
         if (item.name === 'Phần mềm') {
-            this.setState({
+            await this.setState({
                 typeBQ: item.name,
                 type: 1,
                 price: 0,
@@ -148,7 +153,7 @@ class AddKey extends React.Component {
                 phanmem: 'Chọn phần mềm',
             })
         } else {
-            this.setState({
+            await this.setState({
                 typeBQ: item.name,
                 type: 2,
                 price: 0,
@@ -167,7 +172,6 @@ class AddKey extends React.Component {
         const md5 = stringMd5(pass_word);
         const timeStamp = common.timeStamp();
         const token = common.createToken(timeStamp)
-
         const objPost = {
             email: email,
             password: md5,
@@ -224,7 +228,7 @@ class AddKey extends React.Component {
         try {
             const response = await Guest.loadplan(objPost);
             const data = JSON.parse(response.data)
-            console.log('dsata',response.data )
+            console.log('dsata', response.data)
             if (response.data === '[]') {
                 this.setState({
                     isNoData: false,
@@ -334,7 +338,7 @@ class AddKey extends React.Component {
                 variable: `{'email':'${this.state.email}'}`
             };
             try {
-                const response = await Guest.seachcustomer(objPost,'message');
+                const response = await Guest.seachcustomer(objPost, 'message');
                 itemInfo = response.data
                 const makh = JSON.parse(itemInfo).id
                 const nameKh = JSON.parse(itemInfo).name
@@ -362,7 +366,6 @@ class AddKey extends React.Component {
             typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,
             goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState,
             phoneNumber, CustomerName } = this.state;
-
         return (
             <View>
                 <NaviHerderFull title={'THÊM KEY'}
@@ -392,11 +395,11 @@ class AddKey extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <ItemDisable nameText={'Mã khách hàng'}
-                            nameIcon={'barcode'}
+                                nameIcon={'code-equal'}
                                 statusError={CustomerCode === '0' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
                                 isError={true}
                                 value={CustomerCode} />
-                            <ItemDisable nameText={'Tên khách hàng'} value={CustomerName}    nameIcon={'rename-box'}/>
+                            <ItemDisable nameText={'Tên khách hàng'} value={CustomerName} nameIcon={'rename-box'} />
                             <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} nameIcon={'cellphone'} />
                             <TextInputModal
                                 dataModal={DataType}
@@ -420,7 +423,7 @@ class AddKey extends React.Component {
                                 namePlaceholder={phanmem}
                             />
                             <TextInputModal
-                               nameIcon={'gift'}
+                                nameIcon={'gift'}
                                 valueItem={goiBQ}
                                 disabled={disableTypeBQ}
                                 dataModal={dataTypyBQ}
@@ -434,13 +437,45 @@ class AddKey extends React.Component {
                                 value={motorCode}
                                 editable={true}
                             />
-                            <ItemDisable nameIcon={'currency-usd'} value={price} />
-                            <TextInputKey
-                                onChangeText={(text) => this.onChangeTextDiscount(text)}
-                                nameIcon={'sale'}
-                                nameIcon={'currency-usd'}
+                            <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
+                            <NumberFormat
                                 value={disCount}
-                                editable={true}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={(value) => (
+                                    <View>
+                                   <View style={[styles.containerInput]}>
+                                    <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft:20 }} />
+                                    <TextInput
+                                        style={[
+                                            styles.txtInput,
+                                            // eslint-disable-next-line react-native/no-inline-styles
+                                            { paddingHorizontal: 0 },
+                                            Platform.OS === 'ios'
+                                                ? { marginBottom: 10, height: 24 }
+                                                : { height: 40 },
+                                        ]}
+                                        underlineColorAndroid="transparent"
+                                        onChangeText={(valueMount) => {
+                                            if (/^0/.test(valueMount)) {
+                                                valueMount = valueMount.replace(/^0/, '');
+                                            }
+                                            this.setState({
+                                                disCount: valueMount.replace(/,/g, ''),
+                                                txtTest:valueMount
+                                            });
+                                        }}
+                                        placeholder="Nhập số tiền khiến mãi"
+                                        placeholderTextColor="gray"
+                                        value={value}
+                                        keyboardType="numeric"
+                                    />
+                                    </View>
+                                   <Text style={styles.txtError}></Text> 
+                                </View>
+                                   
+                                    
+                                )}
                             />
                             <TextInputModal
                                 nameIcon={'bank'}
@@ -451,12 +486,11 @@ class AddKey extends React.Component {
                                 click={this.clickItemPay}
                                 namePlaceholder={valuePay} />
                             <TextInputKey
-                                nameTitle={'Gói bản quyền'}
                                 onChangeText={(text) => this.onChangeTextMessagebill(text)}
                                 placeholder="Ghi rõ nội dung chuyển khoản"
                                 nameIcon={'content-save'}
                                 editable={true}
-                                 isError={true}
+                                isError={true}
                                 statusError={messagebill === '' && isErrorState === true ? 'Nội dung chuyển khoản Không được để trống' : ''}
                                 value={messagebill}
                             />
@@ -469,11 +503,11 @@ class AddKey extends React.Component {
                                 value={note}
                                 statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
                             />
-                             <View style={styles.bottomKey}/>
+                            <View style={styles.bottomKey} />
                         </View>
-                      
+
                     </View>
-                   
+
                 </ScrollView>
             </View>
         )
@@ -486,9 +520,35 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#D8D8D8',
     },
+    containerInput: {
+        flexDirection:'row',
+        height: windowHeight / 17.8,
+        shadowColor: '#000',
+        marginHorizontal: 20,
+        alignItems:'center',
+        borderRadius: 10,
+        shadowRadius: 6,
+        shadowOpacity: 0.16,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        elevation: 3,
+        backgroundColor: "#fff",
+    },
+    txtError: {
+        color: 'red',
+        fontSize: 13,
+        marginVertical: 8,
+        marginLeft: 25
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    txtInput:{
+        width:'85%',
+        marginLeft:20
     },
     containerSearch: {
         flexDirection: 'row',
@@ -510,7 +570,7 @@ const styles = StyleSheet.create({
     },
     btnContinue: {
         marginVertical: 10,
-        backgroundColor:'#D8D8D8'
+        backgroundColor: '#D8D8D8'
     },
 
     viewBottom: {

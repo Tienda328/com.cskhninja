@@ -35,26 +35,31 @@ const DataType = [
 class AddKey extends React.Component {
     constructor(props) {
         super(props);
+        const { customerid, customername, datecreate, customeremail, customerphone,hid,
+            productName, expirationdate, planname, paymentName, messagebill, note, price, discount, type
+          } = this.props.route.params.item
+          const pricers = price- discount;
+          const typeBQClon =type===1?'Phần mềm':'Dịch vụ';
         this.state = {
-            type: 1,
+            type: type,
             isNoData: true,
             disablePhanMem: true,
             disableTypeBQ: true,
             dataBQ: [],
             dataTypyBQ: [],
             dataPay: [],
-            valuePay: '',
-            typeBQ: 'Chọn loại bản quyền',
-            phanmem: 'Chọn phần mềm',
-            note: '',
+            valuePay:paymentName,
+            typeBQ: typeBQClon,
+            phanmem: productName,
+            note: note,
             isErrorState: false,
-            messagebill: '',
+            messagebill: messagebill,
             productid: null,
-            motorCode: '',
+            motorCode: hid,
             hid: null,
-            disCount: '0',
-            goiBQ: 'Gói bản quyền',
-            price: '0',
+            disCount: `${discount}`,
+            goiBQ: planname?planname:'Gói bản quyền',
+            price: pricers,
             planid: null,
             stateError: '',
             paymentid: null,
@@ -96,35 +101,7 @@ class AddKey extends React.Component {
             } catch (e) {
                 console.log(e);
             }
-            this.clearnState
         }
-    }
-
-    clearnState= ()=>{
-        this.setState({
-            type: 1,
-            isNoData: true,
-            disablePhanMem: true,
-            disableTypeBQ: true,
-            dataBQ: [],
-            dataTypyBQ: [],
-            dataPay: [],
-            valuePay: '',
-            typeBQ: 'Chọn loại bản quyền',
-            phanmem: 'Chọn phần mềm',
-            note: '',
-            isErrorState: false,
-            messagebill: '',
-            productid: null,
-            motorCode: '',
-            hid: null,
-            disCount: '0',
-            goiBQ: 'Gói bản quyền',
-            price: '0',
-            planid: null,
-            stateError: '',
-            paymentid: null,
-        })
     }
 
     clickItemType = async item => {
@@ -272,7 +249,6 @@ class AddKey extends React.Component {
             typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,
             goiBQ, isNoData, dataPay, valuePay, isErrorState,
          } = this.state;
-
         return (
             <View>
                 <NaviHerderFull title={'SỬA KEY'}
@@ -321,12 +297,11 @@ class AddKey extends React.Component {
                                 value={motorCode}
                                 editable={true}
                             />
-                             <ItemDisable nameIcon={'currency-usd'} value={price} />
+                             <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
                              <TextInputKey
                                 onChangeText={(text) => this.onChangeTextDiscount(text)}
                                 nameIcon={'sale'}
-                                nameIcon={'currency-usd'}
-                                value={disCount}
+                                value={common.formatNumber(disCount)}
                                 editable={true}
                             />
                           <TextInputModal

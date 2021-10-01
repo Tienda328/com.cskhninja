@@ -11,7 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const windowHeight = Dimensions.get('window').height;
 const isIos = Platform.OS === 'ios';
 
-export default function TextInputKey({ nameText, statusError, placeholder, value, isError, onChangeText, editable, nameIcon }) {
+export default function TextInputKey({ keyboardType, statusError, placeholder, value, isError, onChangeText, editable, nameIcon }) {
     return (
         <View>
             <View>
@@ -25,6 +25,7 @@ export default function TextInputKey({ nameText, statusError, placeholder, value
                         placeholder={placeholder}
                         value={value}
                         onChangeText={onChangeText}
+                        keyboardType={keyboardType}
                     />
                 </View>
 
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     input: {
         marginLeft: 10,
         fontSize: 14,
+        width:'85%',
         marginTop: isIos ? 15 : 0,
         fontWeight: '300'
     },

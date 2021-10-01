@@ -14,10 +14,12 @@ import TextInputModal from '../components/textInputModal';
 export default class DetailKey extends React.Component {
     constructor(props) {
         super(props);
+        const { email, id, name, phone
+        } = this.props.route.params.item
         this.state = {
-            surname: '',
-            email: '',
-            phoneNumber: '',
+            surname: name,
+            email: email,
+            phoneNumber: phone,
             passwork: '',
         };
     }
@@ -25,6 +27,7 @@ export default class DetailKey extends React.Component {
     goBack = () => {
         this.props.navigation.goBack()
     };
+
 
     onChangeTextSuerName = (text) => {
         this.setState({
@@ -49,25 +52,26 @@ export default class DetailKey extends React.Component {
     };
     render() {
         const { surname, email, phoneNumber, passwork } = this.state;
-
+        const item =this.props.route.params;
+    
         return (
             <View
                 style={styles.containerAll}>
                 <NaviHerderFull title={'SỬA TÀI KHOẢN KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
                 <View style={styles.container} >
                     <View style={styles.bottomKey} />
-                    <TextInputKey
+                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextSuerName(text)}
                         placeholder="Họ tên"
-                        nameText={'Trần văn hòa'}
-                        value={surname}
+                        nameIcon={'rename-box'}
                         editable={true}
-                        isError={true}
+                        value={surname}
                     />
                     <TextInputKey
                         onChangeText={(text) => this.onChangeTextEmail(text)}
                         placeholder="hoatv@ninjateam.vn"
                         nameText={'Email'}
+                        nameIcon={'email'}
                         editable={true}
                         value={email}
                     />
@@ -75,6 +79,7 @@ export default class DetailKey extends React.Component {
                         onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
                         placeholder="025447125"
                         nameText={'Số điện thoại'}
+                        nameIcon={'cellphone'}
                         editable={true}
                         value={phoneNumber}
                     />
@@ -82,6 +87,7 @@ export default class DetailKey extends React.Component {
                         onChangeText={(text) => this.onChangeTextPassWork(text)}
                         placeholder="Nhập mật khẩu"
                         nameText={'Mật khẩu'}
+                        nameIcon={'lock'}
                         editable={true}
                         value={passwork}
                     />

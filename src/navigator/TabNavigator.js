@@ -6,15 +6,13 @@ import MainScreen from '../screens/main';
 import ProfileScreen from '../screens/profile';
 import CopyrightManagementScreen from '../screens/copyrightManagement';
 import CustomerScreen from '../screens/customer';
-import TabbarHome from '../resource/image/tabbar_home.svg';
-import TabbarHomeActive from '../resource/image/tabbar_home_active.svg';
 import AddKeyScreen from '../screens/addKey';
 
 const styles = StyleSheet.create({
   tabbarItemCenter: {
-    backgroundColor: '#01DF01',
+    backgroundColor: '#2E64FE',
     position: 'absolute',
-    bottom: 0,
+    bottom: -12,
     padding: 7,
     marginBottom: 10,
     borderRadius: 37,
@@ -56,7 +54,7 @@ class TabNavigator extends React.Component {
     } else if (route.name === 'AddKey') {
       return (
         <View style={styles.tabbarItemCenter}>
-          {focused ? <MaterialCommunityIcons name={'alarm-plus'} size={35} color={'#fff'} /> : <MaterialCommunityIcons name={'alarm-plus'} size={35} color={'#fff'} />}
+          {focused ? <MaterialCommunityIcons name={'alarm-plus'} size={30} color={'#fff'} /> : <MaterialCommunityIcons name={'alarm-plus'} size={30} color={'#fff'} />}
         </View>
       );
     }

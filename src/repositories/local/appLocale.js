@@ -8,6 +8,7 @@ const LOCALE_KEY = {
   user_name:'user_name',
   storage_infor: 'storage_infor',
   fcm_token: 'fcm_token',
+  role : 'role ',
 };
 
 export default LOCALE_KEY;

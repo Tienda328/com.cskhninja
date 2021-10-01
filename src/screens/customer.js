@@ -28,7 +28,8 @@ class Customer extends React.Component {
       dataCustomer: [],
       page: 1,
       isLoading: false,
-      txtError:'',
+      txtError: '',
+      isFetching: false
     };
   }
 
@@ -54,16 +55,15 @@ class Customer extends React.Component {
       function: "loadcustomer",
       time: timeStamp,
       token: token,
-      variable: `{'page':'1','pagesize':'10'}`
+      variable: `{'page':'1','pagesize':'50'}`
     };
     try {
       const response = await Guest.loadcustomer(objPost);
-      const dddd =' token :'+ email + '  password :' +pass_word
       const data = JSON.parse(response.data)
       this.setState({
         dataCustomer: data,
         isLoading: false,
-        txtError:dddd
+        isFetching: false
       })
     } catch (e) {
       console.log(e);
@@ -85,21 +85,31 @@ class Customer extends React.Component {
   clickSearch = async () => {
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
+    const role = await getLocale(LOCALE_KEY.role);
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp)
-
+    let dataTest = [];
     const objPost = {
       email: email,
       password: md5,
-      function: "seachcustomer",
-      time: `1`,
-      token: 'd1ff52a77a2965156cb8e7e67d4ac931',
-      variable: `{'email':'${'hoatv2@ninjateam.vn'}'}`
+      function: "seachmycustomer",
+      time: timeStamp,
+      token: token,
+      variable:`{'keyword':'${this.state.search}','page':'1','pagesize':'50'}`
     };
     try {
-      const response = await Guest.seachcustomer(objPost);
-      console.log('DSDS',response );
+      const response = await Guest.seachmycustomer(objPost);
+      const data = JSON.parse(response.data)
+      if (data === null) {
+        await this.setState({
+          dataCustomer: []
+        });
+      } else {
+        await this.setState({
+          dataCustomer: data
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -129,9 +139,9 @@ class Customer extends React.Component {
       function: "loadcustomer",
       time: timeStamp,
       token: token,
-      variable: `{'page':'${this.state.page}','pagesize':'5'}`
+      variable: `{'page':'${this.state.page}','pagesize':'50'}`
     };
-    
+
     try {
       const response = await Guest.loadcustomer(objPost);
       const data = JSON.parse(response.data)
@@ -140,7 +150,7 @@ class Customer extends React.Component {
         this.setState({
           dataCustomer: dataFull,
         })
-      } 
+      }
     } catch (e) {
       console.log(e);
     }
@@ -154,8 +164,17 @@ class Customer extends React.Component {
     )
   }
 
+  onRefresh = () => {
+    this.setState({
+      isLoading: true,
+      search:''
+    }, () => this.getData())
+  }
+
+
   render() {
     const { search, dataCustomer } = this.state;
+
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'DANH SÁCH KHÁCH HÀNG'}
@@ -163,13 +182,17 @@ class Customer extends React.Component {
           onPressRight={this.addCustomer}
           textRight={'Thêm'}
         />
-        <Search value={search}
-          // clickSearch={this.clickSearch}
-          onPressFilter={this.onFilter}
-          onChangeText={(text) => this.onChangeTextSearch(text)} />
         <View style={styles.container}>
           <FlatList
-            style={styles.flatList}
+            onRefresh={() => this.onRefresh()}
+            refreshing={this.state.isFetching}
+            ListHeaderComponent={
+              <Search value={search}
+              style={{marginBottom:20}}
+              clickSearch={this.clickSearch}
+              onPressFilter={this.onFilter}
+              onChangeText={(text) => this.onChangeTextSearch(text)} />
+            }
             data={dataCustomer}
             renderItem={(item, index) => this.renderItem(item, index)}
             keyExtractor={(item, index) => index.toString()}
@@ -224,12 +247,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: windowHeight/11.8,
+    height: windowHeight / 11.8,
     backgroundColor: '#2E64FE',
   },
   containerModal: {
-    width:  windowWidth/11.8,
-    height: windowHeight/3.58,
+    width: windowWidth / 11.8,
+    height: windowHeight / 3.58,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',

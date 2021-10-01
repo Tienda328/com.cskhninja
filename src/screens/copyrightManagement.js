@@ -19,6 +19,7 @@ import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
+import FilterDateComponent from '../components/FilterDateComponent';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
 const windowHeight = Dimensions.get('window').height;
@@ -37,16 +38,18 @@ const DataType = [
     name: 'Dịch vụ',
   },
 ]
+const today = new Date();
 class CopyrightManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: '',
+      search: null,
       type: 1,
+      fromDate: today,
       page: 1,
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
-      modalVisible: true,
+      modalVisible: false,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,
@@ -57,12 +60,14 @@ class CopyrightManagement extends React.Component {
       disablePhanMem: true,
       phanmem: 'Chọn phần mềm',
       motorCode: '',
+      fromDateStart: null,
+      isFetching:false,
       productid: null,
     };
   }
 
-  renderItem = ({ item }) => (
-    <ItemManage navigation={this.props.navigation} item={item} />
+  renderItem = ({ item, index }) => (
+    <ItemManage navigation={this.props.navigation} item={item} index={index} />
   );
   componentDidMount() {
     this.setState({
@@ -140,21 +145,25 @@ class CopyrightManagement extends React.Component {
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp)
+
     const objPost = {
       email: email,
       password: md5,
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'${productid}','page':'1','pagesize':'10'}`
+      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','bill':'0','approve':'0','page':'1','pagesize':'50'}`
+
     }
     try {
       const response = await Guest.viewallkey(objPost);
       const data = JSON.parse(response.data)
-      this.setState({
-        dataKey: data,
-        isLoading: false,
-      })
+        this.setState({
+          dataKey: data,
+          isLoading: false,
+          isFetching:false,
+        })
+     
     } catch (e) {
       console.log(e);
     }
@@ -163,10 +172,10 @@ class CopyrightManagement extends React.Component {
     this.setState({
       isLoading: true,
       page: this.state.page + 1
-    }, () => this.getataMore())
+    }, () => this.getataMore(''))
   }
-  getataMore = async () => {
-    const { search, page } = this.state
+  getataMore = async (search) => {
+    const { page } = this.state
     await this.setState({
       isLoading: false,
     })
@@ -181,11 +190,13 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','page':'${page}','pagesize':'5'}`
+      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','bill':'0','approve':'0','page':'${page}','pagesize':'50'}`
+
     }
     try {
       const response = await Guest.viewallkey(objPost);
       const data = JSON.parse(response.data)
+      console.log('dssdds', data)
       if (data !== '[]') {
         const dataFull = this.state.dataKey.concat(data)
         this.setState({
@@ -230,16 +241,21 @@ class CopyrightManagement extends React.Component {
     }
 
   }
+
+  onRefresh = () => {
+    this.setState({
+      isLoading: true,
+      search:''
+    }, () => this.getKey('0', '0'))
+  }
+
   render() {
-    const { search, modalVisible, dataKey, typeBQ, phanmem,
-      dataBQ, disablePhanMem } = this.state;
+    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate,
+      dataBQ, disablePhanMem, fromDateStart } = this.state;
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
-        <Search value={search}
-          onPressFilter={this.onFilter}
-          showFilter
-          onChangeText={(text) => this.onChangeTextSearch(text)} />
+      
         <View style={styles.container}>
           <Modal
             animationType="slide"
@@ -279,6 +295,20 @@ class CopyrightManagement extends React.Component {
                   click={this.clickItemPhanMem}
                   namePlaceholder={phanmem}
                 />
+                <FilterDateComponent
+                  isFromDate={true}
+                  title="Ngày bắt đầu"
+                  fromDate={fromDateStart}
+                  date={fromDate}
+                  setDate={(date) => this.setState({ fromDate: date })}
+                />
+                <FilterDateComponent
+                  isFromDate={true}
+                  title="Ngày kết thúc"
+                  fromDate={fromDate}
+                  date={fromDate}
+                  setDate={(date) => this.setState({ fromDate: date })}
+                />
                 <TouchableOpacity style={styles.bntLoc}
                   onPress={this.onClickFilter}>
                   <Text style={styles.txtLoc}>Lọc</Text>
@@ -289,9 +319,18 @@ class CopyrightManagement extends React.Component {
             </View>
           </Modal>
           <FlatList
-            style={styles.flatList}
+            onRefresh={() => this.onRefresh()}
+            refreshing={this.state.isFetching}
+            ListHeaderComponent={
+              <Search value={search}
+              onPressFilter={this.onFilter}
+              showFilter
+              style={{marginBottom:20}}
+              clickSearch={()=>this.getKey(search)}
+              onChangeText={(text) => this.onChangeTextSearch(text)} />
+            }
             data={dataKey}
-            renderItem={(item) => this.renderItem(item)}
+            renderItem={(item, index) => this.renderItem(item, index)}
             keyExtractor={(item, index) => index.toString()}
             ListFooterComponent={this.renderFooter}
             onEndReached={this.handleLoadMore}
@@ -362,7 +401,7 @@ const styles = StyleSheet.create({
   },
   containerModal: {
     width: windowWidth / 1.31,
-    height: windowHeight / 2.39,
+    height: 400,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',

@@ -8,37 +8,40 @@ import {
 } from 'react-native';
 
 export default function ItemCustomer({ index, onPress, navigation, item }) {
-    
-    const clickItem =(item)=>{
-        navigation.navigate('DetailCustomerScreen',{item})
+
+    const clickItem = (item) => {
+        navigation.navigate('DetailCustomerScreen', { item })
     }
-    const itemIndex =index+1
+    const itemIndex = index + 1
     return (
         <TouchableOpacity
             style={styles.containerAll}
-            onPress={()=>clickItem(item)}>
+            onPress={() => clickItem(item)}>
             <View style={styles.containerText}>
                 <View style={styles.container}>
-               <View style={{justifyContent:'center'}}>
-               <Image
-                    style={{width:35,height:35, marginHorizontal:20}}
-                    source={require('../resource/image/icon_user.png')}
-                  />
-               </View>
-                <View>
-                    <Text style={styles.txtLeft}> {itemIndex}</Text>
-                    <Text style={styles.txtLeft}>{item.name? item.name: ''}</Text>
-                    {/* <Text style={styles.txtLeft}> </Text> */}
+                    <View style={{ justifyContent: 'center' ,alignItems:'center',flexDirection:'row'}}>
+                
+                        <Text style={{marginLeft:10}}> {itemIndex}</Text>
+                        
+                        <Image
+                            style={{ width: 35, height: 35,marginHorizontal: 10 }}
+                            source={require('../resource/image/icon_user.png')}
+                        />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                </View>
+
+                        <View style={{ marginLeft: 10 }}>
+                            <Text style={[styles.txtLeft,{width:260}]} numberOfLines={1} >{item.name ? item.name : ''}</Text>
+                            <Text numberOfLines={1} style={[styles.txtPhone ]}>{item.email ? item.email : ''}</Text>
+                            <Text style={styles.txtPhone}>{item.phone ? item.phone : ''}</Text>
+                        </View>
+
+                    </View>
                 </View>
                 <View>
-                    <Text numberOfLines={1} style={styles.txtRight}>{item.email? item.email: ''}</Text>
-                   <View style={styles.viewContainer}>
-                    <View style={{flex:1}} />
-                   <Text style={styles.txtRight}>{item.phone? item.phone: ''}</Text>       
-                 </View>
-  
+                   
+
                 </View>
             </View>
 
@@ -52,27 +55,38 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         flex: 1,
     },
-    container:{
-        flexDirection:'row',
+    container: {
+        flexDirection: 'row',
     },
-    viewContainer:{
-        flexDirection:'row',
-        justifyContent:'space-between'
+    viewContainer: {
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems:'center'
     },
     txtLeft: {
         fontSize: 14,
         fontWeight: '500',
         paddingVertical: 5,
     },
+    txtPhone:{
+        fontSize: 14,
+        fontWeight: '500',
+        paddingVertical: 5,
+        width: 190, 
+        fontSize: 12,
+        color: '#2E2E2E'
+    },
     txtRight: {
         fontSize: 14,
         fontWeight: '500',
         marginRight: 20,
         paddingVertical: 5,
+        color: '#2E64FE'
     },
     containerText: {
         flexDirection: 'row',
-        paddingVertical:5,
+        paddingVertical: 5,
         justifyContent: 'space-between'
     }
 

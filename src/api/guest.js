@@ -5,6 +5,7 @@ const Guest = {
     loadcustomer: (params: Object) => config.post(params),
     addcustomer: (params: Object) => config.post(params),
     seachcustomer: (params: Object, message) => config.post(params, message),
+    seachmycustomer: (params: Object) => config.post(params),
     loadproduct: (params: Object) => config.post(params),
     loadplan: (params: Object) => config.post(params),
     loadpayment: (params: Object) => config.post(params),
