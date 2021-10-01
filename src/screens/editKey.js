@@ -4,8 +4,9 @@ import {
     View,
     Text,
     TouchableOpacity,
+    TextInput,
     ScrollView,
-    Image,
+    Dimensions,
     StyleSheet,
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
@@ -17,9 +18,10 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import common from '../utils/common';
+import NumberFormat from 'react-number-format';
 import { stringMd5 } from 'react-native-quick-md5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+const windowHeight = Dimensions.get('window').height;
 const DataType = [
     {
         id: '111',
@@ -32,7 +34,7 @@ const DataType = [
         name: 'Dịch vụ',
     },
 ]
-class AddKey extends React.Component {
+class EditKey extends React.Component {
     constructor(props) {
         super(props);
         const { customerid, customername, datecreate, customeremail, customerphone,hid,
@@ -48,6 +50,8 @@ class AddKey extends React.Component {
             dataBQ: [],
             dataTypyBQ: [],
             dataPay: [],
+            customerid:customerid,
+            txtDiscount:discount,
             valuePay:paymentName,
             typeBQ: typeBQClon,
             phanmem: productName,
@@ -66,8 +70,8 @@ class AddKey extends React.Component {
         };
     }
 
-    btnContinue = async() => {
-        const { productid,typeBQ, planid,phanmem, hid, discount, note, paymentid, messagebill, type } = this.state;
+    btnSave = async() => {
+        const { productid,typeBQ,customerid, planid,phanmem, hid, txtDiscount, note, paymentid, messagebill, type } = this.state;
         this.setState({
             isErrorState: true
         })
@@ -87,16 +91,14 @@ class AddKey extends React.Component {
             const objPost = {
                 email: email,
                 password: md5,
-                function: "createkey",
+                function: "editkey",
                 time: timeStamp,
                 token: token,
-                variable:`{'productid':'${22}','planid':'${68}'
-                ,'customerid':'${62348}','hid':'${'NINJA-SYSTEM-1'}'
-                ,'discount':'${0}','note':'${'cấp key test'}','paymentid':'${1}'
-                ,'messagebill':'${'key test'}','type':'${1}'}`
+                variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${hid},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'hi'}"
+            }`
             };
             try {
-                const response = await Guest.createkey(objPost);
+                await Guest.editkey(objPost,'message');
     
             } catch (e) {
                 console.log(e);
@@ -193,12 +195,12 @@ class AddKey extends React.Component {
             const response = await Guest.loadplan(objPost);
             const data = JSON.parse(response.data)
             if (response.data === '[]') {
-                this.setState({
+                await   this.setState({
                     isNoData: false,
                     productid: item.id
                 })
             } else {
-                this.setState({
+                await   this.setState({
                     dataTypyBQ: data,
                     isNoData: true,
                     productid: item.id
@@ -210,7 +212,7 @@ class AddKey extends React.Component {
     };
 
     async componentDidMount() {
-      
+      console.log('dsdsds', this.props.route.params.item)
     }
     clickItemPay = item => {
         this.setState({
@@ -255,6 +257,7 @@ class AddKey extends React.Component {
                     buttonRight={true} nameIcon={'check-bold'}
                     onPressRight={this.btnContinue}
                     onPressBack={this.goBack}
+                    onPressRight={this.btnSave}
                     buttonLeft={true}
                     textRight={'Lưu'} />
                 <ScrollView>
@@ -298,11 +301,42 @@ class AddKey extends React.Component {
                                 editable={true}
                             />
                              <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
-                             <TextInputKey
-                                onChangeText={(text) => this.onChangeTextDiscount(text)}
-                                nameIcon={'sale'}
-                                value={common.formatNumber(disCount)}
-                                editable={true}
+                             <NumberFormat
+                                value={disCount}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={(value) => (
+                                    <View>
+                                   <View style={[styles.containerInput]}>
+                                    <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft:20 }} />
+                                    <TextInput
+                                        style={[
+                                            styles.txtInput,
+                                            // eslint-disable-next-line react-native/no-inline-styles
+                                            { paddingHorizontal: 0 },
+                                            Platform.OS === 'ios'
+                                                ? { marginBottom: 10, height: 24 }
+                                                : { height: 40 },
+                                        ]}
+                                        underlineColorAndroid="transparent"
+                                        onChangeText={(valueMount) => {
+                                            if (/^0/.test(valueMount)) {
+                                                valueMount = valueMount.replace(/^0/, '');
+                                            }
+                                            this.setState({
+                                                disCount: valueMount.replace(/,/g, ''),
+                                                txtDiscount:valueMount
+                                            });
+                                        }}
+                                        placeholder="Nhập số tiền khiến mãi"
+                                        placeholderTextColor="gray"
+                                        value={value}
+                                        keyboardType="numeric"
+                                    />
+                                    </View>
+                                   <Text style={styles.txtError}></Text> 
+                                </View>                                    
+                                )}
                             />
                           <TextInputModal
                                 nameIcon={'bank'}
@@ -351,23 +385,36 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        // backgroundColor: '#fff',
-        // marginHorizontal: 20,
-        // marginVertical: 20,
-        // borderRadius: 10,
-        // borderColor: '#fff',
-        // shadowColor: '#000',
-        // shadowRadius: 6,
-        // shadowOpacity: 0.16,
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 5,
-        // },
-        // elevation: 3,
+    },
+    txtInput:{
+        width:'85%',
+        marginLeft:20
+    },
+    txtError: {
+        color: 'red',
+        fontSize: 13,
+        marginVertical: 8,
+        marginLeft: 25
     },
     containerSearch: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    containerInput: {
+        flexDirection:'row',
+        height: windowHeight / 17.8,
+        shadowColor: '#000',
+        marginHorizontal: 20,
+        alignItems:'center',
+        borderRadius: 10,
+        shadowRadius: 6,
+        shadowOpacity: 0.16,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        elevation: 3,
+        backgroundColor: "#fff",
     },
     bntSearch: {
         width: 40,
@@ -398,5 +445,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddKey;
+export default EditKey;
 

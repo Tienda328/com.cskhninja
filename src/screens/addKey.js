@@ -462,7 +462,7 @@ class AddKey extends React.Component {
                                             }
                                             this.setState({
                                                 disCount: valueMount.replace(/,/g, ''),
-                                                txtTest:valueMount
+                                                txtDiscount:valueMount
                                             });
                                         }}
                                         placeholder="Nhập số tiền khiến mãi"
@@ -472,9 +472,7 @@ class AddKey extends React.Component {
                                     />
                                     </View>
                                    <Text style={styles.txtError}></Text> 
-                                </View>
-                                   
-                                    
+                                </View>                                    
                                 )}
                             />
                             <TextInputModal

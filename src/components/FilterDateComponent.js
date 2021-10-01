@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
-import DateIcon from '../resource/image/date.svg';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import common from '../utils/common';
 import colors from '../constants/colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const FilterDateComponent = ({
   date,
@@ -54,7 +54,7 @@ const FilterDateComponent = ({
           onPress={() => {
             setDatePickerVisibility(true);
           }}>
-          <DateIcon />
+          <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE' }} />
         </TouchableOpacity>
       )}
       <DateTimePickerModal

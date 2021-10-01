@@ -10,6 +10,7 @@ const Guest = {
     loadplan: (params: Object) => config.post(params),
     loadpayment: (params: Object) => config.post(params),
     createkey: (params: Object) => config.post(params),
+    editkey: (params: Object,message) => config.post(params, message),
     viewallkey:(params: Object) => config.post(params),
     resetpasswordcustomer: (params: Object, message) => config.post(params, message),
     resetpassword: (params: Object, message) => config.post(params, message),

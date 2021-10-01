@@ -38,18 +38,55 @@ const DataType = [
     name: 'Dịch vụ',
   },
 ]
-const today = new Date();
+const DataBill = [
+  {
+    id: '11dd1',
+    typeBill: '0',
+    name: 'All',
+  },
+  {
+    id: '11sd2',
+    typeBill: '1',
+    name: 'Up',
+  },
+  {
+    id: '112ssd',
+    typeBill: '2',
+    name: 'Chưa up',
+  },
+]
+const DataApprove  = [
+  {
+    id: '11dsdds1',
+    typeApprove: '0',
+    name: 'All',
+  },
+  {
+    id: '1eewe12',
+    typeApprove: '1',
+    name: 'Đã duyệt',
+  },
+  {
+    id: '112wewesd',
+    typeApprove: '2',
+    name: 'Chưa duyệt',
+  },
+]
 class CopyrightManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       search: null,
       type: 1,
-      fromDate: today,
+      fromDate: null,
       page: 1,
+      typeApprove:0,
+      typeBill: 0,
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
-      modalVisible: false,
+      textBill: 'Chọn loại hóa đơn',
+      textApprove: 'Chọn loại duyệt thanh toán',
+      modalVisible: true,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,
@@ -61,7 +98,7 @@ class CopyrightManagement extends React.Component {
       phanmem: 'Chọn phần mềm',
       motorCode: '',
       fromDateStart: null,
-      isFetching:false,
+      isFetching: false,
       productid: null,
     };
   }
@@ -70,9 +107,10 @@ class CopyrightManagement extends React.Component {
     <ItemManage navigation={this.props.navigation} item={item} index={index} />
   );
   componentDidMount() {
+    const { typeBill, typeApprove } = this.state
     this.setState({
       isLoading: true
-    }, () => this.getKey('', '0'))
+    }, () => this.getKey('', '0', '0', '0', '0', typeBill, typeApprove))
   }
   clickItemType = async item => {
     if (item.name === 'Phần mềm') {
@@ -95,6 +133,19 @@ class CopyrightManagement extends React.Component {
       })
     }
     await this.clickType();
+  };
+
+  clickItemBill = async item => {
+    this.setState({
+      typeBill: item.typeBill,
+      textBill: item.name,
+    })
+  };
+  clickItemApprove = async item => {
+    this.setState({
+      typeApprove: item.typeApprove,
+      textApprove: item.name,
+    })
   };
   clickType = async () => {
     const { type } = this.state;
@@ -138,7 +189,7 @@ class CopyrightManagement extends React.Component {
       price: item.price
     })
   };
-  getKey = async (search, productid) => {
+  getKey = async (search, startdate, enddate, userid, productid, bill, approve) => {
     // const { search } = this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
@@ -152,18 +203,18 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','bill':'0','approve':'0','page':'1','pagesize':'50'}`
+      variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
 
     }
     try {
       const response = await Guest.viewallkey(objPost);
       const data = JSON.parse(response.data)
-        this.setState({
-          dataKey: data,
-          isLoading: false,
-          isFetching:false,
-        })
-     
+      this.setState({
+        dataKey: data,
+        isLoading: false,
+        isFetching: false,
+      })
+
     } catch (e) {
       console.log(e);
     }
@@ -196,7 +247,6 @@ class CopyrightManagement extends React.Component {
     try {
       const response = await Guest.viewallkey(objPost);
       const data = JSON.parse(response.data)
-      console.log('dssdds', data)
       if (data !== '[]') {
         const dataFull = this.state.dataKey.concat(data)
         this.setState({
@@ -227,35 +277,36 @@ class CopyrightManagement extends React.Component {
     )
   }
   onClickFilter = () => {
-    const { search, productid, } = this.state;
-    if (productid === null) {
-      this.setState({
-        modalVisible: false,
-        isLoading: true
-      }, () => this.getKey(search, '0'))
-    } else {
-      this.setState({
-        modalVisible: false,
-        isLoading: true
-      }, () => this.getKey(search, productid))
-    }
+    const { search, productid, fromDateStart,typeApprove, fromDate, typeBill } = this.state;
+    console.log('productid', productid)
+    // if (productid === null) {
+    //   this.setState({
+    //     modalVisible: false,
+    //     isLoading: true
+    //   }, () => this.getKey(search, '0'))
+    // } else {
+    //   this.setState({
+    //     modalVisible: false,
+    //     isLoading: true
+    //   }, () => this.getKey(search, productid))
+    // }
 
   }
 
   onRefresh = () => {
     this.setState({
       isLoading: true,
-      search:''
+      search: ''
     }, () => this.getKey('0', '0'))
   }
 
   render() {
-    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate,
+    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill,textApprove,
       dataBQ, disablePhanMem, fromDateStart } = this.state;
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
-      
+
         <View style={styles.container}>
           <Modal
             animationType="slide"
@@ -295,12 +346,28 @@ class CopyrightManagement extends React.Component {
                   click={this.clickItemPhanMem}
                   namePlaceholder={phanmem}
                 />
+                <TextInputModal
+                  dataModal={DataBill}
+                  nameIcon={'billboard'}
+                  isError={true}
+                  valueItem={textBill}
+                  noData
+                  click={this.clickItemBill}
+                  namePlaceholder={textBill} />
+                <TextInputModal
+                  dataModal={DataApprove}
+                  nameIcon={'billboard'}
+                  isError={true}
+                  valueItem={textApprove}
+                  noData
+                  click={this.clickItemApprove}
+                  namePlaceholder={textApprove} />
                 <FilterDateComponent
                   isFromDate={true}
                   title="Ngày bắt đầu"
                   fromDate={fromDateStart}
-                  date={fromDate}
-                  setDate={(date) => this.setState({ fromDate: date })}
+                  date={fromDateStart}
+                  setDate={(date) => this.setState({ fromDateStart: date })}
                 />
                 <FilterDateComponent
                   isFromDate={true}
@@ -323,11 +390,11 @@ class CopyrightManagement extends React.Component {
             refreshing={this.state.isFetching}
             ListHeaderComponent={
               <Search value={search}
-              onPressFilter={this.onFilter}
-              showFilter
-              style={{marginBottom:20}}
-              clickSearch={()=>this.getKey(search)}
-              onChangeText={(text) => this.onChangeTextSearch(text)} />
+                onPressFilter={this.onFilter}
+                showFilter
+                style={{ marginBottom: 20 }}
+                clickSearch={() => this.getKey(search)}
+                onChangeText={(text) => this.onChangeTextSearch(text)} />
             }
             data={dataKey}
             renderItem={(item, index) => this.renderItem(item, index)}
@@ -401,7 +468,7 @@ const styles = StyleSheet.create({
   },
   containerModal: {
     width: windowWidth / 1.31,
-    height: 400,
+    height: 600,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',
