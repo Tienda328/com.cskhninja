@@ -13,8 +13,9 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import common from '../utils/common';
+import ItemDetailIcon from '../components/itemDetailIcon';
 import { stringMd5 } from 'react-native-quick-md5';
- 
+
 class DetailProfile extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +28,7 @@ class DetailProfile extends React.Component {
             stateEmail: null,
             statePhoneNumber: null,
             statePassword: null,
-            txtEdit:'Sửa'
+            txtEdit: 'Sửa'
         };
     }
 
@@ -36,11 +37,11 @@ class DetailProfile extends React.Component {
         const email = await getLocale(LOCALE_KEY.email);
         const phone_number = await getLocale(LOCALE_KEY.phone_number);
         this.setState({
-          email: email,
-          surName: user_name,
-          phoneNumber:phone_number
+            email: email,
+            surName: user_name,
+            phoneNumber: phone_number
         })
-      }
+    }
 
     validate = () => {
         this.validateUserName();
@@ -129,16 +130,16 @@ class DetailProfile extends React.Component {
         }
     }
 
-    addCustomer =  () => {
-        const{editable, txtEdit}=this.state
+    addCustomer = () => {
+        const { editable, txtEdit } = this.state
         this.setState({
-            editable:true,
-            txtEdit:'Lưu'
+            editable: true,
+            txtEdit: 'Lưu'
         });
-        if(editable===true&&txtEdit==='Lưu'){
+        if (editable === true && txtEdit === 'Lưu') {
             console.log('dongs')
         }
-        
+
     }
     goBack = () => {
         this.props.navigation.goBack()
@@ -164,37 +165,17 @@ class DetailProfile extends React.Component {
         return (
             <View style={styles.containerALL}>
                 <NaviHerderFull title={'THÔNG TIN CÁ NHÂN'} buttonLeft={true} onPressBack={this.goBack} />
-               
+
                 <View style={styles.container}>
-                <View style={styles.bottomKey} />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextSurName(text)}
-                        placeholder="Nhập họ tên"
-                        nameText={'Họ tên'}
-                        editable={editable}
-                        value={surName}
-                        isError={true}
-                        statusError={stateSurName}
-                    />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextEmail(text)}
-                        placeholder="Email"
-                        nameText={'Nhập Email'}
-                        value={email}
-                        isError={true}
-                        editable={editable}
-                        statusError={stateEmail}
-                    />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
-                        placeholder="Số điện thoại"
-                        nameText={'Nhập số điện thoại'}
-                        value={phoneNumber}
-                        isError={true}
-                        editable={editable}
-                        statusError={statePhoneNumber}
-                    />
-                    <View style={styles.containerViewButton} />
+                    <ItemDetailIcon txtValue={surName}
+                        nameIcon={'rename-box'}
+                        styleColour={styles.txtColour} />
+                        <ItemDetailIcon txtValue={email}
+                        nameIcon={'email'}
+                        styleColour={styles.txtColour} />
+                         <ItemDetailIcon txtValue={phoneNumber}
+                        nameIcon={'cellphone'}
+                        styleColour={styles.txtColour} />
                     {/* <View style={styles.containerButton}>
                         <TouchableOpacity
                             activeOpacity={0.8}
@@ -222,31 +203,20 @@ export default DetailProfile;
 const styles = StyleSheet.create({
     containerALL: {
         flex: 1,
-        backgroundColor: "#D8D8D8"
+        backgroundColor: "#F2F2F2"
     },
     containerViewButton: {
         flex: 1,
         backgroundColor: "#fff"
     },
     container: {
-        flex: 1,
         backgroundColor: '#fff',
-        marginHorizontal: 20,
-        marginVertical: 20,
+        marginTop: 10,
         borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
     },
-    bottomKey: {
-        height: 20
-    },
+    txtColour: {
+        fontSize: 18,
+      },
     btnHuy: {
         flex: 1,
         backgroundColor: '#FF0000',

@@ -7,7 +7,7 @@ const colors = {
   text: '#4F4F4F',
   main: '#27AE60',
   logo: '#0E9549',
-  colourStatus: "#2E64FE",
+  colourStatus: "#F7941D",
   green: '#089845',
   gray: '#707070',
   background: '#F9F9F9',

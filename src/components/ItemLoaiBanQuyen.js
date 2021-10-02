@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         marginLeft:10
     },
     viewHeight: {
-        height: 1,
+        height: 0.5,
         backgroundColor: 'gray'
     }
 

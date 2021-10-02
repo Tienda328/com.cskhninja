@@ -392,7 +392,7 @@ class CopyrightManagement extends React.Component {
               <Search value={search}
                 onPressFilter={this.onFilter}
                 showFilter
-                style={{ marginBottom: 20 }}
+                style={{ marginBottom: 10 }}
                 clickSearch={() => this.getKey(search)}
                 onChangeText={(text) => this.onChangeTextSearch(text)} />
             }
@@ -412,7 +412,7 @@ class CopyrightManagement extends React.Component {
 const styles = StyleSheet.create({
   containerAll: {
     flex: 1,
-    backgroundColor: "#D8D8D8"
+    backgroundColor: "#F2F2F2"
   },
   loader: {
     marginTop: 10,
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2E64FE',
+    backgroundColor: '#F7941D',
     borderRadius: 10,
     marginBottom: 20
   },
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: windowHeight / 11.9,
-    backgroundColor: '#2E64FE',
+    backgroundColor: '#F7941D',
   },
   containerModal: {
     width: windowWidth / 1.31,

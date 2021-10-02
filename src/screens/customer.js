@@ -188,7 +188,7 @@ class Customer extends React.Component {
             refreshing={this.state.isFetching}
             ListHeaderComponent={
               <Search value={search}
-              style={{marginBottom:20}}
+              style={{marginBottom:10}}
               clickSearch={this.clickSearch}
               onPressFilter={this.onFilter}
               onChangeText={(text) => this.onChangeTextSearch(text)} />
@@ -209,7 +209,7 @@ class Customer extends React.Component {
 const styles = StyleSheet.create({
   containerAll: {
     flex: 1,
-    backgroundColor: "#D8D8D8"
+    backgroundColor: "#F2F2F2"
   },
   loader: {
     marginTop: 10,

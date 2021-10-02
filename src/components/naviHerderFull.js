@@ -31,10 +31,10 @@ class NaviHerderFull extends React.Component {
           style={styles.bntback}
         >
           <MaterialCommunityIcons name={'chevron-left'} size={25} style={{ color: '#fff' }} />
-          <Text style={styles.txtBack}>Back</Text>
+          {/* <Text style={styles.txtBack}>Back</Text> */}
         </TouchableOpacity> : <View />
         }
-        <View style={[styles.containerTitle, { marginRight: buttonLeft ? 30 : 0, marginLeft: buttonRight ? 10 : 0 }]}>
+        <View style={[styles.containerTitle, { marginRight: buttonLeft ? 30 : 0, marginLeft: buttonRight ? 40 : 0 }]}>
           <Text style={styles.txtTitle}>{title}</Text>
         </View>
         {buttonRight ? <TouchableOpacity
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: windowHeight/17.8,
     flexDirection: 'row',
     marginTop: isIos ? common.getStatusBarHeight() + 12 : 0,
-    backgroundColor: '#013ADF',
+    backgroundColor: '#F7941D',
     justifyContent: 'space-between'
   },
   iconAdd:{ color: '#fff' },

@@ -10,7 +10,7 @@ import AddKeyScreen from '../screens/addKey';
 
 const styles = StyleSheet.create({
   tabbarItemCenter: {
-    backgroundColor: '#2E64FE',
+    backgroundColor: '#F7941D',
     position: 'absolute',
     bottom: -12,
     padding: 7,
@@ -46,7 +46,7 @@ class TabNavigator extends React.Component {
         ? 'home'
         : 'home';
     } else if (route.name === 'Profile') {
-      iconName = focused ? 'account' : 'account';
+      iconName = focused ? 'menu' : 'menu';
     } else if (route.name === 'CopyrightManagement') {
       iconName = focused ? 'briefcase' : 'briefcase';
     } else if (route.name === 'Customer') {
@@ -64,19 +64,19 @@ class TabNavigator extends React.Component {
   tabBarLabel = (route, focused, color, size) => {
     let routeName;
     if (route.name === 'Home') {
-      color = focused ? '#2E64FE' : 'gray'
+      color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'Home'
     } else if (route.name === 'Profile') {
-      color = focused ? '#2E64FE' : 'gray'
+      color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'Menu';
     } else if (route.name === 'CopyrightManagement') {
-      color = focused ? '#2E64FE' : 'gray'
+      color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'Manager';
     } else if (route.name === 'Customer') {
-      color = focused ? '#2E64FE' : 'gray'
+      color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'Customer';
     } else if (route.name === 'AddKey') {
-      color = focused ? '#2E64FE' : 'gray'
+      color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'New Key';
     }
     return <Text style={{ color: color }}>{routeName}</Text>
@@ -95,8 +95,8 @@ class TabNavigator extends React.Component {
           tabBarLabel: ({ focused, color, size }) => {
             return this.tabBarLabel(route, focused, color, size);
           },
-          tabBarActiveTintColor: '#2E64FE',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: '#F7941D',
+          tabBarInactiveTintColor: '#A4A4A4',
           headerShown: false,
 
         })}>

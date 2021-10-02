@@ -17,6 +17,7 @@ import ItemDisable from '../components/itemDisable';
 import LOCALE_KEY, {
     getLocale,
 } from '../repositories/local/appLocale';
+import ItemComponentTitle from '../components/itemComponentTitle';
 import Guest from '../api/guest';
 import common from '../utils/common';
 import NumberFormat from 'react-number-format';
@@ -43,7 +44,7 @@ class AddKey extends React.Component {
             email: '',
             type: 1,
             isNoData: true,
-            txtDiscount:'',
+            txtDiscount: '',
             disablePhanMem: true,
             disableTypeBQ: true,
             CustomerCode: '0',
@@ -72,7 +73,7 @@ class AddKey extends React.Component {
     }
 
     btnContinue = async () => {
-        const { productid,txtDiscount, typeBQ, planid, CustomerCode, phanmem, motorCode, note,price, paymentid, messagebill, type } = this.state;
+        const { productid, txtDiscount, typeBQ, planid, CustomerCode, phanmem, motorCode, note, price, paymentid, messagebill, type } = this.state;
         this.setState({
             isErrorState: true
         })
@@ -367,44 +368,52 @@ class AddKey extends React.Component {
             goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState,
             phoneNumber, CustomerName } = this.state;
         return (
-            <View>
+            <View style={{flex:1}}>
                 <NaviHerderFull title={'THÊM KEY'}
                     buttonRight={true} nameIcon={'check-bold'}
                     onPressRight={this.btnContinue}
                     textRight={'Lưu'} />
                 <ScrollView>
                     <View style={[styles.containerAll]}>
-                        <View style={[styles.container]}>
-                            <View style={styles.bottomKey} />
-                            <View style={styles.containerSearch}>
-                                <View style={{ flex: 1 }}>
-                                    <TextInputKey
-                                        onChangeText={(text) => this.onChangeTextEmail(text)}
-                                        placeholder="Nhập Email khách hàng"
-                                        nameIcon={'email'}
-                                        value={email}
-                                        isError={true}
-                                        editable={true}
-                                        statusError={stateEmail}
-                                    />
+                        <ItemComponentTitle
+                            nameTitle={'Thông tin khách hàng'}
+                            drawIconLeft={
+                                <View>
+                                    <View style={styles.containerSearch}>
+                                        <View style={{ flex: 1 }}>
+                                            <TextInputKey
+                                                onChangeText={(text) => this.onChangeTextEmail(text)}
+                                                placeholder="Nhập Email khách hàng"
+                                                nameIcon={'email'}
+                                                value={email}
+                                                // isError={true}
+                                                editable={true}
+                                                statusError={stateEmail}
+                                            />
+                                        </View>
+                                        <TouchableOpacity style={styles.bntSearch}
+                                            onPress={this.clickSearch}
+                                        >
+                                            <MaterialCommunityIcons name={'magnify'} size={23} style={{ color: 'gray' }} />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <ItemDisable nameText={'Mã khách hàng'}
+                                        nameIcon={'code-equal'}
+                                        statusError={CustomerCode === '0' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
+                                        // isError={true}
+                                        value={CustomerCode} />
+                                    <ItemDisable nameText={'Tên khách hàng'} value={CustomerName} nameIcon={'rename-box'} />
+                                    <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} nameIcon={'cellphone'} styleWith={{ borderBottomColor: '#fff' }} />
                                 </View>
-                                <TouchableOpacity style={styles.bntSearch}
-                                    onPress={this.clickSearch}
-                                >
-                                    <MaterialCommunityIcons name={'magnify'} size={23} style={{ color: '#fff' }} />
-                                </TouchableOpacity>
-                            </View>
-                            <ItemDisable nameText={'Mã khách hàng'}
-                                nameIcon={'code-equal'}
-                                statusError={CustomerCode === '0' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
-                                isError={true}
-                                value={CustomerCode} />
-                            <ItemDisable nameText={'Tên khách hàng'} value={CustomerName} nameIcon={'rename-box'} />
-                            <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} nameIcon={'cellphone'} />
-                            <TextInputModal
+                            } />
+                        <ItemComponentTitle
+                            nameTitle={'Thông tin phần mềm'}
+                            drawIconLeft={
+                                <View>
+                                    <TextInputModal
                                 dataModal={DataType}
                                 nameIcon={'call-merge'}
-                                isError={true}
+                                // isError={true}
                                 valueItem={typeBQ}
                                 noData
                                 click={this.clickItemType}
@@ -412,7 +421,7 @@ class AddKey extends React.Component {
                                 namePlaceholder={typeBQ} />
                             <TextInputModal
                                 nameIcon={'blender-software'}
-                                isError={true}
+                                // isError={true}
                                 valueItem={phanmem}
                                 statusError={phanmem === 'Chọn phần mềm' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
                                 noData
@@ -444,35 +453,34 @@ class AddKey extends React.Component {
                                 thousandSeparator={true}
                                 renderText={(value) => (
                                     <View>
-                                   <View style={[styles.containerInput]}>
-                                    <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft:20 }} />
-                                    <TextInput
-                                        style={[
-                                            styles.txtInput,
-                                            // eslint-disable-next-line react-native/no-inline-styles
-                                            { paddingHorizontal: 0 },
-                                            Platform.OS === 'ios'
-                                                ? { marginBottom: 10, height: 24 }
-                                                : { height: 40 },
-                                        ]}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(valueMount) => {
-                                            if (/^0/.test(valueMount)) {
-                                                valueMount = valueMount.replace(/^0/, '');
-                                            }
-                                            this.setState({
-                                                disCount: valueMount.replace(/,/g, ''),
-                                                txtDiscount:valueMount
-                                            });
-                                        }}
-                                        placeholder="Nhập số tiền khiến mãi"
-                                        placeholderTextColor="gray"
-                                        value={value}
-                                        keyboardType="numeric"
-                                    />
+                                        <View style={[styles.containerInput]}>
+                                            <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft: 20 }} />
+                                            <TextInput
+                                                style={[
+                                                    styles.txtInput,
+
+                                                    { paddingHorizontal: 0 },
+                                                    Platform.OS === 'ios'
+                                                        ? { marginBottom: 10, height: 24 }
+                                                        : { height: 40 },
+                                                ]}
+                                                underlineColorAndroid="transparent"
+                                                onChangeText={(valueMount) => {
+                                                    if (/^0/.test(valueMount)) {
+                                                        valueMount = valueMount.replace(/^0/, '');
+                                                    }
+                                                    this.setState({
+                                                        disCount: valueMount.replace(/,/g, ''),
+                                                        txtDiscount: valueMount
+                                                    });
+                                                }}
+                                                placeholder="Nhập số tiền khiến mãi"
+                                                placeholderTextColor="gray"
+                                                value={value}
+                                                keyboardType="numeric"
+                                            />
+                                        </View>
                                     </View>
-                                   <Text style={styles.txtError}></Text> 
-                                </View>                                    
                                 )}
                             />
                             <TextInputModal
@@ -483,26 +491,31 @@ class AddKey extends React.Component {
                                 noData
                                 click={this.clickItemPay}
                                 namePlaceholder={valuePay} />
+                                </View>
+                            } />
+                        <View style={styles.containerView}>
+
                             <TextInputKey
                                 onChangeText={(text) => this.onChangeTextMessagebill(text)}
                                 placeholder="Ghi rõ nội dung chuyển khoản"
                                 nameIcon={'content-save'}
                                 editable={true}
-                                isError={true}
+                                // isError={true}
                                 statusError={messagebill === '' && isErrorState === true ? 'Nội dung chuyển khoản Không được để trống' : ''}
                                 value={messagebill}
                             />
-                            <TextInputKey
-                                onChangeText={(text) => this.onChangeTextNote(text)}
-                                placeholder="Ghi chú"
-                                isError={true}
-                                nameIcon={'calendar-text'}
-                                editable={true}
-                                value={note}
-                                statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
-                            />
-                            <View style={styles.bottomKey} />
                         </View>
+                        <TextInputKey
+                            onChangeText={(text) => this.onChangeTextNote(text)}
+                            placeholder="Ghi chú"
+                            styleInput={{borderBottomColor:'#fff'}}
+                            // isError={true}
+                            nameIcon={'calendar-text'}
+                            editable={true}
+                            value={note}
+                            statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
+                        />
+                        <View style={styles.bottomKey} />
 
                     </View>
 
@@ -516,23 +529,15 @@ class AddKey extends React.Component {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: '#D8D8D8',
+        backgroundColor: '#F2F2F2',
     },
     containerInput: {
-        flexDirection:'row',
+        flexDirection: 'row',
         height: windowHeight / 17.8,
         shadowColor: '#000',
-        marginHorizontal: 20,
-        alignItems:'center',
-        borderRadius: 10,
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
+        alignItems: 'center',
         backgroundColor: "#fff",
+
     },
     txtError: {
         color: 'red',
@@ -541,12 +546,17 @@ const styles = StyleSheet.create({
         marginLeft: 25
     },
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
     },
-    txtInput:{
-        width:'85%',
-        marginLeft:20
+    containerView: {
+        marginTop: 10,
+        borderRadius: 10,
+        backgroundColor: '#fff'
+    },
+    txtInput: {
+        width: '100%',
+        marginLeft: 20,
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 0.5,
     },
     containerSearch: {
         flexDirection: 'row',
@@ -554,11 +564,9 @@ const styles = StyleSheet.create({
     bntSearch: {
         width: 40,
         height: 40,
-        marginRight: 20,
-        borderRadius: 4,
         justifyContent: 'center',
+        backgroundColor: '#fff',
         alignItems: 'center',
-        backgroundColor: '#2E2EFE'
     },
     txtDangNhap: {
         color: 'white',

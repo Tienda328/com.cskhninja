@@ -209,7 +209,7 @@ export default class DetailCustomer extends React.Component {
                                 onPress={() => this.clickReset(email)}>
                                 <View style={styles.containerReset}>
                                 <MaterialCommunityIcons name={'lock-reset'} size={25} style={{color:'gray'}} />
-                                    <Text style={styles.txtGoi}>reset passWord</Text>
+                                    <Text style={styles.txtGoi}>Reset password</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -225,7 +225,7 @@ export default class DetailCustomer extends React.Component {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: '#D8D8D8'
+        backgroundColor: '#F2F2F2'
     },
     containerModelAll: {
         flex: 1,
@@ -293,8 +293,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     View: {
-        marginTop: 30,
-        backgroundColor: "#fff"
+        marginTop: 10,
+        backgroundColor: "#fff",
+        borderRadius:10,
     },
     txtColour: {
         fontSize: 18,
@@ -340,7 +341,8 @@ const styles = StyleSheet.create({
     },
     containerButton: {
         flexDirection: 'row',
-        marginBottom: 20,
+        marginBottom: 10,
+        borderRadius:10,
         backgroundColor:'#fff'
     }
 

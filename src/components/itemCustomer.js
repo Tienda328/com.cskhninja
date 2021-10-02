@@ -52,7 +52,7 @@ export default function ItemCustomer({ index, onPress, navigation, item }) {
 const styles = StyleSheet.create({
     containerAll: {
         backgroundColor: '#fff',
-        marginBottom: 20,
+        marginBottom: 10,
         flex: 1,
     },
     container: {

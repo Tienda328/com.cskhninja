@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     containerAll: {
         backgroundColor: '#fff',
         flex: 1,
-        marginBottom:20,
+        marginBottom:10,
     },
     containerLeft:{
         // alignItems:'center',

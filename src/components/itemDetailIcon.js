@@ -21,14 +21,13 @@ export default function ItemDetailIcon({ nameIcon, txtValue,isIconRight, style,c
 const styles = StyleSheet.create({
     containerAll:{
         flexDirection:'row',
-      
         alignItems:'center'
     },
     containerText:{
         flex:1,
         marginLeft:20,
-        borderBottomWidth:1,
-        borderBottomColor:'gray',
+        borderBottomWidth:0.5,
+        borderBottomColor:'#D8D8D8',
         justifyContent:'space-between',
         alignItems:'center',
         flexDirection:'row'

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Modal,
   StyleSheet,
@@ -14,19 +14,19 @@ import ItemLoaiBanQuyen from '../components/ItemLoaiBanQuyen'
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
- class TextInputModal extends Component {
+class TextInputModal extends Component {
   state = {
     modalVisible: false,
   };
 
   setModalVisible = visible => {
-    this.setState({modalVisible: visible});
+    this.setState({ modalVisible: visible });
   };
 
-  clickItem =item  => {
+  clickItem = item => {
     this.setState({
       // namePlaceholder: item.title,
-      modalVisible:false
+      modalVisible: false
     });
     this.props.click(item)
   };
@@ -34,16 +34,16 @@ const windowWidth = Dimensions.get('window').width;
 
 
   renderItem = ({ item, index }) => (
-    <ItemLoaiBanQuyen  item ={item} index={index} onPress={()=> this.clickItem(item) }/>
+    <ItemLoaiBanQuyen item={item} index={index} onPress={() => this.clickItem(item)} />
   );
 
   render() {
-    const {modalVisible} = this.state;
-    const {nameIcon,statusError, isError,stylesInput, disabled,noData, dataModal,namePlaceholder, valueItem} = this.props;
+    const { modalVisible } = this.state;
+    const { nameIcon, statusError, isError, stylesInput, disabled, noData, dataModal, namePlaceholder, valueItem } = this.props;
     return (
       <View style={styles.containerAll}>
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
@@ -52,7 +52,7 @@ const windowWidth = Dimensions.get('window').width;
           <View style={styles.containerHide}>
             <View style={styles.containerModal}>
               <View style={styles.modalHerder}>
-                <Text  />
+                <Text />
                 <Text style={styles.txtTitle}>{valueItem}</Text>
                 <TouchableOpacity
                   style={styles.btnClose}
@@ -60,19 +60,18 @@ const windowWidth = Dimensions.get('window').width;
                   <Ionicons
                     name={'close-outline'}
                     size={25}
-                    style={{color: '#fff'}}
+                    style={{ color: '#fff' }}
                   />
                 </TouchableOpacity>
               </View>
               <View>
-              {noData ?   <FlatList
-                style={{height:450}}
+                {noData ? <FlatList
+                  style={{ height: 450 }}
                   data={dataModal}
-                  renderItem={(item, index)=>this.renderItem(item, index)}
+                  renderItem={(item, index) => this.renderItem(item, index)}
                   keyExtractor={(item, index) => index.toString()}
-                />:<Text style={styles.txtNoData}>Không có dữ liệu</Text>
-
-              }
+                /> : <Text style={styles.txtNoData}>Không có dữ liệu</Text>
+                }
               </View>
             </View>
           </View>
@@ -80,18 +79,18 @@ const windowWidth = Dimensions.get('window').width;
         <View>
           <TouchableOpacity
             disabled={disabled}
-            style={[styles.containerInput, stylesInput ,{backgroundColor:disabled?'#D8D8D8':'#fff'}]}
+            style={[styles.containerInput, stylesInput]}
             onPress={() => this.setModalVisible(true)}>
-              <View style={styles.containerIcon}>
-              <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginLeft:20 }} />
-              <Text style={styles.txtSelect}>{namePlaceholder}</Text>
-              </View>
-        
+            <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginHorizontal: 20 }} />
+
+
             <View style={styles.iconShow}>
+              <Text style={styles.txtSelect}>{namePlaceholder}</Text>
+
               <Ionicons
                 name={'caret-down-outline'}
-                size={25}
-                style={{color: 'gray'}}
+                size={20}
+                style={{ color: 'gray', marginRight: 20 }}
               />
             </View>
           </TouchableOpacity>
@@ -110,47 +109,43 @@ const styles = StyleSheet.create({
   containerAll: {
     flex: 1,
   },
-  txtNoData:{textAlign:'center',
-  marginTop:20,
-},
-containerIcon:{
-  flexDirection:'row'
-},
-  txtTitle:{
+  txtNoData: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  containerIcon: {
+    // flexDirection:'row'
+  },
+  txtTitle: {
     color: 'white',
     fontSize: 15,
     fontWeight: '600',
-    marginLeft:30,
+    marginLeft: 30,
   },
   modalHerder: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: windowHeight/11.8,
-    backgroundColor: '#2E64FE',
+    height: windowHeight / 11.8,
+    backgroundColor: '#F7941D',
   },
   btnClose: {
     marginRight: 10,
   },
   iconShow: {
-    marginRight: 10,
-    justifyContent: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: windowHeight / 17.8,
+    borderBottomColor: '#D8D8D8',
+    borderBottomWidth: 0.5,
   },
   containerModal: {
-    width: windowWidth/1.31,
-    height: windowHeight/1.43,
-    borderRadius: 10,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    elevation: 8,
-    backgroundColor: '#fff',
+    width: windowWidth / 1.31,
+    height: windowHeight / 1.43,
     marginHorizontal: 20,
+    backgroundColor:'#fff'
   },
   txtError: {
     color: 'red',
@@ -161,7 +156,6 @@ containerIcon:{
   txtSelect: {
     color: 'gray',
     fontSize: 14,
-    marginLeft:10,
   },
   txtName: {
     fontSize: 14,
@@ -170,7 +164,7 @@ containerIcon:{
     marginLeft: 20,
   },
   viewHeight: {
-    height: 20,
+    // height: 20,
   },
   containerHide: {
     flex: 1,
@@ -179,20 +173,12 @@ containerIcon:{
     alignItems: 'center',
   },
   containerInput: {
-    height: windowHeight/17.8,
-    borderRadius: 10,
-    justifyContent:'space-between',
-    alignItems:'center',
+    height: windowHeight / 17.8,
+    alignItems: 'center',
     flexDirection: 'row',
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-        width: 0,
-        height: 5,
-    },
-    elevation: 3,
+    marginBottom:1,
     backgroundColor: "#fff",
-    marginHorizontal: 20,
+
   },
 });
 

@@ -11,7 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const windowHeight = Dimensions.get('window').height;
 const isIos = Platform.OS === 'ios';
 
-export default function TextInputKey({ keyboardType, statusError, placeholder, value, isError, onChangeText, editable, nameIcon }) {
+export default function TextInputKey({ keyboardType, statusError,styleInput, placeholder, value, isError, onChangeText, editable, nameIcon }) {
     return (
         <View>
             <View>
@@ -21,7 +21,7 @@ export default function TextInputKey({ keyboardType, statusError, placeholder, v
                 <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: 'gray', marginLeft:20 }} />
                     <TextInput
                         editable={editable}
-                        style={styles.input}
+                        style={[styles.input,styleInput]}
                         placeholder={placeholder}
                         value={value}
                         onChangeText={onChangeText}
@@ -39,21 +39,12 @@ const styles = StyleSheet.create({
     containerInput: {
         flexDirection:'row',
         height: windowHeight / 17.8,
-        shadowColor: '#000',
-        marginHorizontal: 20,
         alignItems:'center',
-        borderRadius: 10,
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        elevation: 3,
         backgroundColor: "#fff",
+        marginBottom:1,
     },
     bottomKey: {
-        height: 20
+        // height: 20
     },
     txtError: {
         color: 'red',
@@ -62,9 +53,11 @@ const styles = StyleSheet.create({
         marginLeft: 25
     },
     input: {
-        marginLeft: 10,
+        marginLeft: 20,
         fontSize: 14,
-        width:'85%',
+        width:'100%',
+        borderBottomWidth:0.5,
+        borderBottomColor:'#D8D8D8',
         marginTop: isIos ? 15 : 0,
         fontWeight: '300'
     },

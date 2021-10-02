@@ -97,18 +97,17 @@ export default class DetailKey extends React.Component {
                         isError={true}
                         placeholder={'active'} /> */}
 
-                    <View style={styles.containerButton}>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            style={styles.btnHuy}>
-                            <Text style={styles.txtClick}>Hủy</Text>
-                        </TouchableOpacity>
                         <TouchableOpacity
                             activeOpacity={0.8}
                             style={styles.btnContinue}>
                             <Text style={styles.txtClick}>Lưu</Text>
                         </TouchableOpacity>
-                    </View>
+                        <TouchableOpacity
+                            on
+                            activeOpacity={0.8}
+                            style={styles.btnHuy}>
+                            <Text style={styles.txtHuy}>Hủy</Text>
+                        </TouchableOpacity>
                 </View>
             </View>
         );
@@ -128,30 +127,34 @@ const styles = StyleSheet.create({
        
     },
     btnContinue: {
-        flex: 1,
-        marginLeft: 10,
-        backgroundColor: '#2E64FE',
+        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: 10,
+    },
+    btnHuy:{
+        marginBottom:30,
+        marginTop:10,
+        backgroundColor:'#fff',
+        justifyContent: 'center',
+        borderRadius:10,
+        alignItems: 'center',
     },
     txtClick: {
-        color: 'white',
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: '600',
+        color:"#2E64FE",
+        paddingVertical: 10
+    },
+    txtHuy:{
+        fontSize: 15,
+        fontWeight: '600',
+        color:"red",
         paddingVertical: 10
     },
     containerButton: {
         flexDirection: 'row',
-        marginHorizontal: 20,
-        marginBottom: 30
-    },
-    btnHuy: {
-        flex: 1,
-        backgroundColor: '#FF0000',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30,
-        marginRight: 10
+        marginBottom: 10,
+        borderRadius:10,
     },
 })

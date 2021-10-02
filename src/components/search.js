@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     containerALL: {
         flexDirection: 'row',
         marginHorizontal:20,
-        marginTop:25,
+        marginTop:10,
     },
     container: {
         flex:1,

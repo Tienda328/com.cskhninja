@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import ItemDetailIcon from '../components/itemDetailIcon';
 import TextInputModal from '../components/textInputModal';
+import ItemComponentTitle from '../components/itemComponentTitle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NaviHerderFull from '../components/naviHerderFull';
 import common from '../utils/common';
@@ -69,19 +70,21 @@ export default class DetailKey extends React.Component {
     })
   };
   clickEdit = (item) => {
-    this.props.navigation.navigate('EditKeyScreen',{item})
+    this.props.navigation.navigate('EditKeyScreen', { item })
   };
   onDelite = () => {
-    this.setState({ modalVisible: true,
+    this.setState({
+      modalVisible: true,
       typeDelete: 'Chọn lý do xóa',
       statusErrorLyDo: ''
-     });
+    });
   }
   onCloseDelite = () => {
-    this.setState({ modalVisible: false,
+    this.setState({
+      modalVisible: false,
       typeDelete: 'Chọn lý do xóa',
       statusErrorLyDo: ''
-     });
+    });
   }
 
   clickDelete = async (customerid, type) => {
@@ -105,7 +108,7 @@ export default class DetailKey extends React.Component {
         variable: `{'id':'${customerid}','type':'${type}','note':'${this.state.typeNote}'}`
       };
       try {
-        await Guest.removekey(objPost,'message');
+        await Guest.removekey(objPost, 'message');
         this.setState({
           statusErrorLyDo: '',
           modalVisible: false,
@@ -121,7 +124,7 @@ export default class DetailKey extends React.Component {
     } = this.props.route.params.item
     const { modalVisible, typeDelete, statusErrorLyDo } = this.state
     const pricenew = price - discount;
-    const dsddsd =this.props.route.params.item;
+    const dsddsd = this.props.route.params.item;
     return (
       <View
         style={styles.containerAll}>
@@ -130,7 +133,7 @@ export default class DetailKey extends React.Component {
           buttonLeft={true} buttonRight={true}
           nameIcon={'account-edit'}
           textRight={'Sửa'}
-          onPressRight={()=>this.clickEdit(dsddsd)} />
+          onPressRight={() => this.clickEdit(dsddsd)} />
         <Modal
           animationType="slide"
           transparent={true}
@@ -163,7 +166,7 @@ export default class DetailKey extends React.Component {
                   namePlaceholder={typeDelete} />
                 <View style={styles.containerBNT}>
                   <TouchableOpacity style={styles.bntCancel}
-                onPress={this.onCloseDelite}
+                    onPress={this.onCloseDelite}
                   >
                     <Text style={styles.txtButton}>HỦY</Text>
                   </TouchableOpacity>
@@ -178,74 +181,83 @@ export default class DetailKey extends React.Component {
           </View>
         </Modal>
         <ScrollView style={styles.container}>
-          <View style={[styles.View, { marginTop: 0 }]}>
-            <ItemDetailIcon txtValue={customerid ? customerid : ''}
-              nameIcon={'code-equal'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={datecreate ? common.formatDate(datecreate) : ''}
-              nameIcon={'calendar-range'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={customername ? customername : ''}
-              nameIcon={'account'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={customeremail ? customeremail : ''}
-              nameIcon={'email'}
-              styleColour={styles.txtColour} />
-            <TouchableOpacity onPress={() => {
-              if (customerphone !== ''
-              ) {
-                Linking.openURL(
-                  'tel:' + customerphone,
-                );
-              }
-            }}>
-              <ItemDetailIcon txtValue={customerphone ? customerphone : ''}
-                nameIcon={'cellphone'}
-                colorss={true}
-                isIconRight
-                iconRight={'phone'}
-                style={{ color: '#2E64FE' }}
+          <ItemComponentTitle
+            nameTitle={'Thông tin khách hàng'}
+            drawIconLeft={
+              <View>
+                <ItemDetailIcon txtValue={customerid ? customerid : ''}
+                  nameIcon={'code-equal'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={datecreate ? common.formatDate(datecreate) : ''}
+                  nameIcon={'calendar-range'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={customername ? customername : ''}
+                  nameIcon={'account'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={customeremail ? customeremail : ''}
+                  nameIcon={'email'}
+                  styleColour={styles.txtColour} />
+                <TouchableOpacity onPress={() => {
+                  if (customerphone !== ''
+                  ) {
+                    Linking.openURL(
+                      'tel:' + customerphone,
+                    );
+                  }
+                }}>
+                  <ItemDetailIcon txtValue={customerphone ? customerphone : ''}
+                    nameIcon={'cellphone'}
+                    colorss={true}
+                    isIconRight
+                    iconRight={'phone'}
+                    style={{ color: '#2E64FE' }}
+                    containerText={{ borderBottomColor: '#fff' }}
+                    styleColour={styles.txtColour} />
+                </TouchableOpacity>
+              </View>
+            } />
+          <ItemComponentTitle
+            nameTitle={'Thông tin phần mềm'}
+            drawIconLeft={
+              <View>
+                <ItemDetailIcon txtValue={productName ? productName : ''}
+                  nameIcon={'blender-software'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={customername ? customername : ''}
+                  nameIcon={'rename-box'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={expirationdate ? common.formatDate(expirationdate) : ''}
+                  nameIcon={'calendar-range'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={conlai ? conlai : ''}
+                  nameIcon={'timer-sand'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={price ? common.formatNumber(pricenew) : ''}
+                  nameIcon={'currency-usd'}
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
+                  nameIcon={'bank'}
+
+                  styleColour={styles.txtColour} />
+                <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
+                  nameIcon={'receipt'}
+                  containerText={{ borderBottomColor: '#fff' }}
+                  styleColour={styles.txtColour} />
+
+              </View>
+            } />
+
+          <View style={styles.View}>
+            {note === '' || note === null ?
+              <ItemDetailIcon txtValue={'ghi chú'}
+                nameIcon={'calendar-text'}
+                style={{ color: '#BDBDBD', fontStyle: 'italic' }}
+                containerText={{ borderBottomColor: '#fff' }}
+                styleColour={styles.txtColour} /> :
+              <ItemDetailIcon txtValue={note ? note : ''}
+                nameIcon={'calendar-text'}
                 containerText={{ borderBottomColor: '#fff' }}
                 styleColour={styles.txtColour} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.View}>
-            <ItemDetailIcon txtValue={productName ? productName : ''}
-              nameIcon={'call-merge'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={customername ? customername : ''}
-              nameIcon={'rename-box'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={expirationdate ? common.formatDate(expirationdate) : ''}
-              nameIcon={'calendar-range'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={conlai ? conlai : ''}
-              nameIcon={'timer-sand'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={price ? common.formatNumber(pricenew) : ''}
-              nameIcon={'currency-usd'}
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
-              nameIcon={'bank'}
-
-              styleColour={styles.txtColour} />
-            <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
-              nameIcon={'calendar-text'}
-              containerText={{ borderBottomColor: '#fff' }}
-              styleColour={styles.txtColour} />
-
-          </View>
-          <View style={styles.View}>
-            {note===''||note ===null ?
-            <ItemDetailIcon txtValue={ 'ghi chú'}
-            nameIcon={'calendar-text'}
-            style={{color:'#BDBDBD', fontStyle: 'italic'}}
-            containerText={{ borderBottomColor: '#fff' }}
-            styleColour={styles.txtColour} />:
-            <ItemDetailIcon txtValue={note ? note : ''}
-              nameIcon={'calendar-text'}
-              containerText={{ borderBottomColor: '#fff' }}
-              styleColour={styles.txtColour} />
             }
           </View>
           <TouchableOpacity style={styles.View}>
@@ -283,8 +295,8 @@ export default class DetailKey extends React.Component {
           <TouchableOpacity style={styles.containerDelete}
             onPress={this.onDelite}
           >
-            <MaterialCommunityIcons name={'delete-circle-outline'} size={40} style={{ color: '#FE2E2E' }} />
-            {/* <Text style={styles.txtDelete}> Xóa key</Text> */}
+            <MaterialCommunityIcons name={'delete-circle-outline'} size={30} style={{ color: '#FE2E2E' }} />
+            <Text style={styles.txtDelete}> Xóa key</Text>
           </TouchableOpacity>
         </ScrollView>
 
@@ -297,8 +309,7 @@ export default class DetailKey extends React.Component {
 const styles = StyleSheet.create({
   containerAll: {
     flex: 1,
-    // backgroundColor: '#D8D8D8'
-    backgroundColor: '#D8D8D8'
+    backgroundColor: '#F2F2F2'
   },
   containerBNT: {
     flexDirection: 'row'
@@ -368,13 +379,22 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   View: {
-    marginTop: 30,
-    backgroundColor: "#fff"
+    marginTop: 10,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+  txtTitleKey: {
+    fontSize: 15,
+    fontWeight: '500',
+    marginLeft: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#D8D8D8',
   },
   txtDelete: {
-    fontWeight: '400',
-    fontSize: 15,
-    color: 'red'
+    paddingVertical: 11,
+    fontWeight: '600',
+    marginLeft: 5,
   },
   txtButton: {
     color: '#fff',
@@ -406,8 +426,11 @@ const styles = StyleSheet.create({
   containerDelete: {
     alignItems: 'flex-end',
     justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
-    marginVertical: 20
+    marginVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#fff'
   },
   viewDelete: {
     flex: 1,
