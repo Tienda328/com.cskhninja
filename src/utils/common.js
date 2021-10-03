@@ -15,7 +15,7 @@ function formatNumber(number) {
 
   function formatDate(date) {
     if (date) {
-      return moment(date).utc().format('DD/MM/YYYY');
+      return moment(date).utc().format('MM/DD/YYYY');
     } else {
       return '';
     }

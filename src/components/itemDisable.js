@@ -20,7 +20,7 @@ export default function ItemDisaBle({ styleWith, statusError, isError, value, na
                 </View>
 
             </View>
-            {isError ? <Text style={styles.txtError}> {statusError}</Text> : <View style={styles.bottomKey} />}
+            {isError && statusError !== '' ? <Text style={styles.txtError}> {statusError}</Text> : <View style={styles.bottomKey} />}
         </View>
     );
 }
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     txtError: {
         color: 'red',
         fontSize: 12,
-        marginVertical: 8,
+        marginVertical: 5,
         marginLeft: 25
     },
     input: {

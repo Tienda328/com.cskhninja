@@ -76,17 +76,17 @@ class CopyrightManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: null,
+      search: '',
       type: 1,
       fromDate: null,
       page: 1,
-      typeApprove:0,
-      typeBill: 0,
+      typeApprove:'0',
+      typeBill: '0',
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
       textBill: 'Chọn loại hóa đơn',
       textApprove: 'Chọn loại duyệt thanh toán',
-      modalVisible: true,
+      modalVisible: false,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,
@@ -99,7 +99,7 @@ class CopyrightManagement extends React.Component {
       motorCode: '',
       fromDateStart: null,
       isFetching: false,
-      productid: null,
+      productid: '0',
     };
   }
 
@@ -223,10 +223,12 @@ class CopyrightManagement extends React.Component {
     this.setState({
       isLoading: true,
       page: this.state.page + 1
-    }, () => this.getataMore(''))
+    }, () => this.getataMore())
   }
-  getataMore = async (search) => {
-    const { page } = this.state
+  getataMore = async () => {
+    const { search, productid, fromDateStart,typeApprove, fromDate, typeBill, page } = this.state;
+    const dataStart =fromDateStart!==null ? common.formatDate(fromDateStart):'0'
+    const dataEnd =fromDate!==null ? common.formatDate(fromDate):'0'
     await this.setState({
       isLoading: false,
     })
@@ -241,7 +243,7 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'0','enddate':'0','userid':'0','productid':'0','bill':'0','approve':'0','page':'${page}','pagesize':'50'}`
+      variable: `{'keyword':'${search}','startdate':'${dataStart}','enddate':'${dataEnd}','userid':'0','productid':'${productid}','bill':'${typeBill}','approve':'${typeApprove}','page':'${page}','pagesize':'50'}`
 
     }
     try {
@@ -278,26 +280,21 @@ class CopyrightManagement extends React.Component {
   }
   onClickFilter = () => {
     const { search, productid, fromDateStart,typeApprove, fromDate, typeBill } = this.state;
-    console.log('productid', productid)
-    // if (productid === null) {
-    //   this.setState({
-    //     modalVisible: false,
-    //     isLoading: true
-    //   }, () => this.getKey(search, '0'))
-    // } else {
-    //   this.setState({
-    //     modalVisible: false,
-    //     isLoading: true
-    //   }, () => this.getKey(search, productid))
-    // }
-
+    const dataStart =fromDateStart!==null ? common.formatDate(fromDateStart):'0'
+    const dataEnd =fromDate!==null ? common.formatDate(fromDate):'0'
+      this.setState({
+        modalVisible: false,
+        isLoading: true
+      }, () => this.getKey(search, dataStart, dataEnd, '0', productid, typeBill, typeApprove))
+    
   }
 
   onRefresh = () => {
+    const { typeBill, typeApprove } = this.state
     this.setState({
       isLoading: true,
       search: ''
-    }, () => this.getKey('0', '0'))
+    }, () => this.getKey('', '0', '0', '0', '0', '0', '0'))
   }
 
   render() {
@@ -331,7 +328,6 @@ class CopyrightManagement extends React.Component {
                 <TextInputModal
                   dataModal={DataType}
                   nameIcon={'call-merge'}
-                  isError={true}
                   valueItem={typeBQ}
                   noData
                   click={this.clickItemType}
@@ -349,7 +345,6 @@ class CopyrightManagement extends React.Component {
                 <TextInputModal
                   dataModal={DataBill}
                   nameIcon={'billboard'}
-                  isError={true}
                   valueItem={textBill}
                   noData
                   click={this.clickItemBill}
@@ -357,7 +352,6 @@ class CopyrightManagement extends React.Component {
                 <TextInputModal
                   dataModal={DataApprove}
                   nameIcon={'billboard'}
-                  isError={true}
                   valueItem={textApprove}
                   noData
                   click={this.clickItemApprove}
@@ -468,7 +462,7 @@ const styles = StyleSheet.create({
   },
   containerModal: {
     width: windowWidth / 1.31,
-    height: 600,
+    height: 500,
     borderRadius: 10,
     borderColor: '#fff',
     shadowColor: '#000',

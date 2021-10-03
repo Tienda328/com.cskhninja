@@ -69,45 +69,49 @@ class AddKey extends React.Component {
             stateEmail: '',
             stateError: '',
             paymentid: null,
+            isCustomerCode: false
         };
     }
 
     btnContinue = async () => {
         const { productid, txtDiscount, typeBQ, planid, CustomerCode, phanmem, motorCode, note, price, paymentid, messagebill, type } = this.state;
         this.setState({
-            isErrorState: true
+            isErrorState: true,
         })
-        if (CustomerCode !== '0' &&
-            typeBQ !== 'Chọn loại bản quyền' &&
-            phanmem !== 'Chọn phần mềm' &&
-            messagebill !== '' &&
-            note !== ''
-        ) {
-            const pass_word = await getLocale(LOCALE_KEY.pass_word);
-            const email = await getLocale(LOCALE_KEY.email);
-            const md5 = stringMd5(pass_word);
-            const timeStamp = common.timeStamp();
-            const token = common.createToken(timeStamp)
+            if (CustomerCode !== '0' &&
+                typeBQ !== 'Chọn loại bản quyền' &&
+                phanmem !== 'Chọn phần mềm' &&
+                messagebill !== '' &&
+                note !== ''
+            ) {
+                const pass_word = await getLocale(LOCALE_KEY.pass_word);
+                const email = await getLocale(LOCALE_KEY.email);
+                const md5 = stringMd5(pass_word);
+                const timeStamp = common.timeStamp();
+                const token = common.createToken(timeStamp)
 
-            const objPost = {
-                email: email,
-                password: md5,
-                function: "createkey",
-                time: timeStamp,
-                token: token,
-                variable: `{'productid':'${productid}','planid':'${planid}'
+                const objPost = {
+                    email: email,
+                    password: md5,
+                    function: "createkey",
+                    time: timeStamp,
+                    token: token,
+                    variable: `{'productid':'${productid}','planid':'${planid}'
                 ,'customerid':'${CustomerCode}','hid':'${motorCode}'
                 ,'discount':'${txtDiscount}','note':'${note}','paymentid':'${productid}'
                 ,'messagebill':'${messagebill}','type':'${type}'}`
-            };
-            try {
-                await Guest.createkey(objPost);
+                };
+                try {
+                    await Guest.createkey(objPost);
+                    this.setState({
+                        isCustomerCode: false
+                    })
 
-            } catch (e) {
-                console.log(e);
+                } catch (e) {
+                    console.log(e);
+                }
+                this.clearnState
             }
-            this.clearnState
-        }
     }
 
     clearnState = () => {
@@ -365,10 +369,10 @@ class AddKey extends React.Component {
     render() {
         const { email, CustomerCode, note, messagebill, motorCode, price, disCount,
             typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,
-            goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState,
+            goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState, isCustomerCode,
             phoneNumber, CustomerName } = this.state;
         return (
-            <View style={{flex:1}}>
+            <View style={{ flex: 1 }}>
                 <NaviHerderFull title={'THÊM KEY'}
                     buttonRight={true} nameIcon={'check-bold'}
                     onPressRight={this.btnContinue}
@@ -386,7 +390,7 @@ class AddKey extends React.Component {
                                                 placeholder="Nhập Email khách hàng"
                                                 nameIcon={'email'}
                                                 value={email}
-                                                // isError={true}
+                                                isError={true}
                                                 editable={true}
                                                 statusError={stateEmail}
                                             />
@@ -400,7 +404,7 @@ class AddKey extends React.Component {
                                     <ItemDisable nameText={'Mã khách hàng'}
                                         nameIcon={'code-equal'}
                                         statusError={CustomerCode === '0' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
-                                        // isError={true}
+                                        isError={isErrorState}
                                         value={CustomerCode} />
                                     <ItemDisable nameText={'Tên khách hàng'} value={CustomerName} nameIcon={'rename-box'} />
                                     <ItemDisable nameText={'Số điện thoại'} value={phoneNumber} nameIcon={'cellphone'} styleWith={{ borderBottomColor: '#fff' }} />
@@ -411,86 +415,86 @@ class AddKey extends React.Component {
                             drawIconLeft={
                                 <View>
                                     <TextInputModal
-                                dataModal={DataType}
-                                nameIcon={'call-merge'}
-                                // isError={true}
-                                valueItem={typeBQ}
-                                noData
-                                click={this.clickItemType}
-                                statusError={typeBQ === 'Chọn loại bản quyền' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
-                                namePlaceholder={typeBQ} />
-                            <TextInputModal
-                                nameIcon={'blender-software'}
-                                // isError={true}
-                                valueItem={phanmem}
-                                statusError={phanmem === 'Chọn phần mềm' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
-                                noData
-                                disabled={disablePhanMem}
-                                dataModal={dataBQ}
-                                placeholder={'Phần mềm'}
-                                click={this.clickItemPhanMem}
-                                namePlaceholder={phanmem}
-                            />
-                            <TextInputModal
-                                nameIcon={'gift'}
-                                valueItem={goiBQ}
-                                disabled={disableTypeBQ}
-                                dataModal={dataTypyBQ}
-                                noData={isNoData}
-                                click={this.clickItemGoiBQ}
-                                namePlaceholder={goiBQ} />
-                            <TextInputKey
-                                onChangeText={(text) => this.onChangeTextMotorCode(text)}
-                                placeholder="Mã máy có thể bỏ trống"
-                                nameIcon={'qrcode'}
-                                value={motorCode}
-                                editable={true}
-                            />
-                            <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
-                            <NumberFormat
-                                value={disCount}
-                                displayType={'text'}
-                                thousandSeparator={true}
-                                renderText={(value) => (
-                                    <View>
-                                        <View style={[styles.containerInput]}>
-                                            <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft: 20 }} />
-                                            <TextInput
-                                                style={[
-                                                    styles.txtInput,
+                                        dataModal={DataType}
+                                        nameIcon={'call-merge'}
+                                        isError={isErrorState}
+                                        valueItem={typeBQ}
+                                        noData
+                                        click={this.clickItemType}
+                                        statusError={typeBQ === 'Chọn loại bản quyền' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
+                                        namePlaceholder={typeBQ} />
+                                    <TextInputModal
+                                        nameIcon={'blender-software'}
+                                        isError={isErrorState}
+                                        valueItem={phanmem}
+                                        statusError={phanmem === 'Chọn phần mềm' && isErrorState === true ? 'Phần mềm không được để trống' : ''}
+                                        noData
+                                        disabled={disablePhanMem}
+                                        dataModal={dataBQ}
+                                        placeholder={'Phần mềm'}
+                                        click={this.clickItemPhanMem}
+                                        namePlaceholder={phanmem}
+                                    />
+                                    <TextInputModal
+                                        nameIcon={'gift'}
+                                        valueItem={goiBQ}
+                                        disabled={disableTypeBQ}
+                                        dataModal={dataTypyBQ}
+                                        noData={isNoData}
+                                        click={this.clickItemGoiBQ}
+                                        namePlaceholder={goiBQ} />
+                                    <TextInputKey
+                                        onChangeText={(text) => this.onChangeTextMotorCode(text)}
+                                        placeholder="Mã máy có thể bỏ trống"
+                                        nameIcon={'qrcode'}
+                                        value={motorCode}
+                                        editable={true}
+                                    />
+                                    <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
+                                    <NumberFormat
+                                        value={disCount}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        renderText={(value) => (
+                                            <View>
+                                                <View style={[styles.containerInput]}>
+                                                    <MaterialCommunityIcons name={'sale'} size={20} style={{ color: 'gray', marginLeft: 20 }} />
+                                                    <TextInput
+                                                        style={[
+                                                            styles.txtInput,
 
-                                                    { paddingHorizontal: 0 },
-                                                    Platform.OS === 'ios'
-                                                        ? { marginBottom: 10, height: 24 }
-                                                        : { height: 40 },
-                                                ]}
-                                                underlineColorAndroid="transparent"
-                                                onChangeText={(valueMount) => {
-                                                    if (/^0/.test(valueMount)) {
-                                                        valueMount = valueMount.replace(/^0/, '');
-                                                    }
-                                                    this.setState({
-                                                        disCount: valueMount.replace(/,/g, ''),
-                                                        txtDiscount: valueMount
-                                                    });
-                                                }}
-                                                placeholder="Nhập số tiền khiến mãi"
-                                                placeholderTextColor="gray"
-                                                value={value}
-                                                keyboardType="numeric"
-                                            />
-                                        </View>
-                                    </View>
-                                )}
-                            />
-                            <TextInputModal
-                                nameIcon={'bank'}
-                                valueItem={valuePay}
-                                // disabled={disableTypeBQ}
-                                dataModal={dataPay}
-                                noData
-                                click={this.clickItemPay}
-                                namePlaceholder={valuePay} />
+                                                            { paddingHorizontal: 0 },
+                                                            Platform.OS === 'ios'
+                                                                ? { marginBottom: 10, height: 24 }
+                                                                : { height: 40 },
+                                                        ]}
+                                                        underlineColorAndroid="transparent"
+                                                        onChangeText={(valueMount) => {
+                                                            if (/^0/.test(valueMount)) {
+                                                                valueMount = valueMount.replace(/^0/, '');
+                                                            }
+                                                            this.setState({
+                                                                disCount: valueMount.replace(/,/g, ''),
+                                                                txtDiscount: valueMount
+                                                            });
+                                                        }}
+                                                        placeholder="Nhập số tiền khiến mãi"
+                                                        placeholderTextColor="gray"
+                                                        value={value}
+                                                        keyboardType="numeric"
+                                                    />
+                                                </View>
+                                            </View>
+                                        )}
+                                    />
+                                    <TextInputModal
+                                        nameIcon={'bank'}
+                                        valueItem={valuePay}
+                                        // disabled={disableTypeBQ}
+                                        dataModal={dataPay}
+                                        noData
+                                        click={this.clickItemPay}
+                                        namePlaceholder={valuePay} />
                                 </View>
                             } />
                         <View style={styles.containerView}>
@@ -500,7 +504,7 @@ class AddKey extends React.Component {
                                 placeholder="Ghi rõ nội dung chuyển khoản"
                                 nameIcon={'content-save'}
                                 editable={true}
-                                // isError={true}
+                                isError={isErrorState}
                                 statusError={messagebill === '' && isErrorState === true ? 'Nội dung chuyển khoản Không được để trống' : ''}
                                 value={messagebill}
                             />
@@ -508,8 +512,8 @@ class AddKey extends React.Component {
                         <TextInputKey
                             onChangeText={(text) => this.onChangeTextNote(text)}
                             placeholder="Ghi chú"
-                            styleInput={{borderBottomColor:'#fff'}}
-                            // isError={true}
+                            styleInput={{ borderBottomColor: '#fff' }}
+                            isError={isErrorState}
                             nameIcon={'calendar-text'}
                             editable={true}
                             value={note}

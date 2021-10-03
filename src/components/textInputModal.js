@@ -94,7 +94,7 @@ class TextInputModal extends Component {
               />
             </View>
           </TouchableOpacity>
-          {isError ? (
+          {isError && statusError!=='' ? (
             <Text style={styles.txtError}>{statusError}</Text>
           ) : (
             <View style={styles.viewHeight} />

@@ -30,7 +30,7 @@ export default function TextInputKey({ keyboardType, statusError,styleInput, pla
                 </View>
 
             </View>
-            {isError ? <Text style={styles.txtError}> {statusError}</Text> : <View style={styles.bottomKey} />}
+            {isError && statusError !== '' ? <Text style={styles.txtError}> {statusError}</Text> : <View style={styles.bottomKey} />}
         </View>
     );
 }
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     txtError: {
         color: 'red',
         fontSize: 13,
-        marginVertical: 8,
+        marginVertical: 5,
         marginLeft: 25
     },
     input: {

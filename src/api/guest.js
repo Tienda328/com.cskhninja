@@ -12,8 +12,11 @@ const Guest = {
     createkey: (params: Object) => config.post(params),
     editkey: (params: Object,message) => config.post(params, message),
     viewallkey:(params: Object) => config.post(params),
+    viewkey:(params: Object) => config.post(params),
+    viewkeycustomer:(params: Object) => config.post(params),
     resetpasswordcustomer: (params: Object, message) => config.post(params, message),
     resetpassword: (params: Object, message) => config.post(params, message),
     removekey: (params: Object, message) => config.post(params, message),
+    
 }
 export default Guest;

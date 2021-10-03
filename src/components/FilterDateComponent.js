@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import common from '../utils/common';
 import colors from '../constants/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const FilterDateComponent = ({
   date,
@@ -27,16 +28,17 @@ const FilterDateComponent = ({
       <View style={styles.container}>
         <TouchableOpacity
           activeOpacity={0.8}
+          style={styles.containerDate}
           onPress={() => {
             setDatePickerVisibility(true);
           }}>
-          <Text style={styles.txtTitle}>{title}</Text>
+          <Ionicons name={'calendar-outline'} size={23} style={{ color: 'gray', marginHorizontal: 20, }} />
           <Text style={date ? styles.txtDate : styles.txtDate1}>
             {date
               ? Platform.OS === 'ios'
                 ? common.formatDateLocale(date)
                 : common.formatDate(date)
-              : 'Chọn ngày'}
+              : `${title}`}
           </Text>
         </TouchableOpacity>
       </View>
@@ -46,7 +48,7 @@ const FilterDateComponent = ({
           onPress={() => {
             setDate(null);
           }}>
-          <Text>Xoá</Text>
+          <Text style={styles.txtDelete}>Xoá</Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
@@ -54,7 +56,7 @@ const FilterDateComponent = ({
           onPress={() => {
             setDatePickerVisibility(true);
           }}>
-          <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE' }} />
+          <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE', marginRight: 20, }} />
         </TouchableOpacity>
       )}
       <DateTimePickerModal
@@ -91,26 +93,19 @@ const HeaderToDateIOS = () => {
 
 const styles = StyleSheet.create({
   viewInputPicker: {
-    elevation: 3,
-    shadowColor: colors.black,
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
     flexDirection: 'row',
-    marginTop: 10,
-    marginVertical: 10,
-    paddingTop: 14,
     paddingBottom: 14,
     backgroundColor: '#fff',
+    marginBottom: 5,
     alignItems: 'center',
-    borderRadius: 6,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginLeft: 20,
+  },
+  containerDate: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  txtDelete: {
     marginRight: 20,
+    paddingVertical: 8
   },
   headerIOS: {
     backgroundColor: '#27AE60',
@@ -120,15 +115,25 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  container: {flex: 1},
+  container: { flex: 1 },
   txtTitle: {
     color: 'rgba(13, 12, 12, 0.5)',
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 6,
   },
-  txtDate: {color: '#05375a'},
-  txtDate1: {color: 'rgba(47, 47, 47, 0.5)'},
+  txtDate: {
+    color: '#05375a',
+    borderBottomColor: '#D8D8D8',
+    borderBottomWidth: 0.5,
+    flex: 1, paddingVertical: 8,
+  },
+  txtDate1: {
+    color: 'rgba(47, 47, 47, 0.5)',
+    borderBottomColor: '#D8D8D8',
+    borderBottomWidth: 0.5,
+    flex: 1, paddingVertical: 8,
+  },
 });
 
 export default FilterDateComponent;

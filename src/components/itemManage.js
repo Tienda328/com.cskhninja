@@ -8,11 +8,14 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../utils/common';
-export default function ItemManage({ navigation, item, index }) {
+export default function ItemManage({ navigation, item, index ,isclick}) {
 
     const ItemIndex =index +1;
     const clickItem =(item)=>{
-        navigation.navigate('DetailKeyScreen',{item})
+        if(!isclick){
+            navigation.navigate('DetailKeyScreen',{item})
+        }
+       
     }
     const pricenew =item.price -item.discount
 

@@ -14,6 +14,7 @@ import LOCALE_KEY, {
 import Guest from '../api/guest';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
+import ItemComponentTitle from '../components/itemComponentTitle';
 
 export default class AddCustomer extends React.Component {
     constructor(props) {
@@ -23,10 +24,10 @@ export default class AddCustomer extends React.Component {
             email: '',
             phoneNumber: '',
             passWord: '',
-            stateSurName: null,
-            stateEmail: null,
-            statePhoneNumber: null,
-            statePassword: null,
+            stateSurName: '',
+            stateEmail: '',
+            statePhoneNumber: '',
+            statePassword: '',
         };
     }
 
@@ -50,7 +51,7 @@ export default class AddCustomer extends React.Component {
                 this.setState({ stateEmail: 'Email không đúng định dạng' });
                 return false;
             } else {
-                this.setState({ stateEmail: null });
+                this.setState({ stateEmail: '' });
                 return true;
             }
         } else {
@@ -77,7 +78,7 @@ export default class AddCustomer extends React.Component {
             return false;
         } else {
             this.setState({
-                statePhoneNumber: null,
+                statePhoneNumber: '',
             });
             return true;
         }
@@ -92,7 +93,7 @@ export default class AddCustomer extends React.Component {
             this.setState({ statePassword: 'Mật khẩu không được ít hơn 6 ký tự' });
             return false;
         } else {
-            this.setState({ statePassword: null });
+            this.setState({ statePassword: '' });
             return true;
         }
     };
@@ -111,7 +112,8 @@ export default class AddCustomer extends React.Component {
             return false;
         } else {
             this.setState({
-                stateSurName: null,
+                stateSurName: '',
+
             });
             return true;
         }
@@ -135,7 +137,6 @@ export default class AddCustomer extends React.Component {
             };
             try {
                 const response = await Guest.addcustomer(objPost);
-                console.log('response', response)
                 if (response.status === true) {
                     Alert.alert(
                         "Thông báo",
@@ -186,54 +187,64 @@ export default class AddCustomer extends React.Component {
             stateSurName, stateEmail, statePhoneNumber, statePassword } = this.state
         return (
             <View style={styles.containerALL}>
-                <NaviHerderFull title={'THÊM KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack} />
-               
+                <NaviHerderFull title={'THÊM KHÁCH HÀNG'} buttonLeft={true} onPressBack={this.goBack}
+                    buttonRight={true} nameIcon={'check-bold'}
+                    onPressRight={this.addCustomer}
+                    textRight={'Lưu'}
+                />
+
                 <View style={styles.container}>
-                <View style={styles.bottomKey} /> 
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextSurName(text)}
-                        placeholder="Nhập họ tên"
-                        nameText={'Họ tên'}
-                        editable={true}
-                        nameIcon={'rename-box'}
-                        value={surName}
-                        isError={true}
-                        statusError={stateSurName}
-                    />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextEmail(text)}
-                        placeholder="Email"
-                        nameText={'Nhập Email'}
-                        value={email}
-                        nameIcon={'email'}
-                        isError={true}
-                        editable={true}
-                        statusError={stateEmail}
-                    />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
-                        placeholder="Số điện thoại"
-                        nameText={'Nhập số điện thoại'}
-                        value={phoneNumber}
-                        nameIcon={'cellphone'}
-                        isError={true}
-                        editable={true}
-                        statusError={statePhoneNumber}
-                    />
-                    <TextInputKey
-                        onChangeText={(text) => this.onChangeTextPassWord(text)}
-                        placeholder="Mật khẩu"
-                        nameText={'Mật khẩu'}
-                        value={passWord}
-                        editable={true}
-                        nameIcon={'lock'}
-                        isError={true}
-                        statusError={statePassword}
-                    />
-                    {/* <TextInputModal
+                    <ItemComponentTitle
+                        nameTitle={'Thông tin khách hàng'}
+                        drawIconLeft={
+                            <View>
+                                <TextInputKey
+                                    onChangeText={(text) => this.onChangeTextSurName(text)}
+                                    placeholder="Nhập họ tên"
+                                    nameText={'Họ tên'}
+                                    editable={true}
+                                    nameIcon={'rename-box'}
+                                    value={surName}
+                                    isError={true}
+                                    statusError={stateSurName}
+                                />
+                                <TextInputKey
+                                    onChangeText={(text) => this.onChangeTextEmail(text)}
+                                    placeholder="Email"
+                                    nameText={'Nhập Email'}
+                                    value={email}
+                                    nameIcon={'email'}
+                                    isError={true}
+                                    editable={true}
+                                    statusError={stateEmail}
+                                />
+                                <TextInputKey
+                                    onChangeText={(text) => this.onChangeTextPhoneNumber(text)}
+                                    placeholder="Số điện thoại"
+                                    nameText={'Nhập số điện thoại'}
+                                    value={phoneNumber}
+                                    nameIcon={'cellphone'}
+                                    isError={true}
+                                    editable={true}
+                                    statusError={statePhoneNumber}
+                                />
+                                <TextInputKey
+                                    onChangeText={(text) => this.onChangeTextPassWord(text)}
+                                    placeholder="Mật khẩu"
+                                    nameText={'Mật khẩu'}
+                                    value={passWord}
+                                    editable={true}
+                                    nameIcon={'lock'}
+                                    isError={true}
+                                    statusError={statePassword}
+                                />
+                                {/* <TextInputModal
                     nameTitle={'Trạng thái'}
                     isError={true}
                     placeholder={'Chọn loại trạng thái'} /> */}
+                            </View>
+                        } />
+
                     <View style={styles.containerViewButton} />
                     <View style={styles.containerButton}>
                         <TouchableOpacity
@@ -241,12 +252,6 @@ export default class AddCustomer extends React.Component {
                             onPress={() => this.props.navigation.goBack()}
                             style={styles.btnHuy}>
                             <Text style={styles.txtClick}>Hủy</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={this.addCustomer}
-                            style={styles.btnContinue}>
-                            <Text style={styles.txtClick}>Lưu</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -260,11 +265,11 @@ export default class AddCustomer extends React.Component {
 const styles = StyleSheet.create({
     containerALL: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#F2F2F2"
     },
     containerViewButton: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: "#F2F2F2"
     },
     container: {
         flex: 1,
@@ -274,27 +279,25 @@ const styles = StyleSheet.create({
     },
     btnHuy: {
         flex: 1,
-        backgroundColor: '#FF0000',
+        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
-        marginRight: 10
+        borderRadius: 10,
     },
     btnContinue: {
         flex: 1,
         marginLeft: 10,
-        backgroundColor: '#2E64FE',
+        backgroundColor: '#F7941D',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 30,
+        borderRadius: 10,
     },
     containerButton: {
         flexDirection: 'row',
-        marginHorizontal: 20,
         marginBottom: 30
     },
     txtClick: {
-        color: 'white',
+        color: 'red',
         fontSize: 18,
         fontWeight: '600',
         paddingVertical: 10

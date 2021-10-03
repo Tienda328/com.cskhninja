@@ -56,7 +56,24 @@ export default class DetailKey extends React.Component {
       modalVisible: false,
       typeDelete: 'Chọn lý do xóa',
       typeNote: null,
-      statusErrorLyDo: ''
+      statusErrorLyDo: '',
+      customerid: null,
+      customername: null,
+      customeremail: null,
+      datecreate: null,
+      customerphone: null,
+      planname: null,
+      productName: null,
+      expirationdate: null,
+      conlai: null,
+      paymentName: null,
+      note: null,
+      messagebill: null,
+      price: null,
+      discount: null,
+      type: null,
+      userSeller: null,
+      advance:null
     };
   }
 
@@ -85,6 +102,50 @@ export default class DetailKey extends React.Component {
       typeDelete: 'Chọn lý do xóa',
       statusErrorLyDo: ''
     });
+  }
+
+  async componentDidMount() {
+    const { id, type
+    } = this.props.route.params.item
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "viewkey",
+      time: timeStamp,
+      token: token,
+      variable: `{'type':'${type}','id':'${id}'}`
+    };
+    try {
+      const response = await Guest.viewkey(objPost);
+    
+      const data = JSON.parse(response.data)
+      this.setState({
+        customerid: data.customerid,
+        customername: data.customername,
+        datecreate: data.datecreate,
+        customeremail: data.customeremail,
+        customerphone: data.customerphone,
+        planname: data.planname,
+        productName: data.productName,
+        expirationdate: data.expirationdate,
+        conlai: data.conlai,
+        paymentName: data.paymentName,
+        messagebill: data.messagebill,
+        note: data.note,
+        price: data.price,
+        discount: data.discount,
+        type: data.type,
+        userSeller: data.username,
+        advance: data.advance 
+      })
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   clickDelete = async (customerid, type) => {
@@ -119,12 +180,12 @@ export default class DetailKey extends React.Component {
     }
   }
   render() {
-    const { customerid, customername, datecreate, customeremail, customerphone,
-      productName, expirationdate, conlai, paymentName, messagebill, note, price, discount, type
-    } = this.props.route.params.item
-    const { modalVisible, typeDelete, statusErrorLyDo } = this.state
+    const { customerid, customername, datecreate, customeremail, customerphone, planname,
+      productName, expirationdate, conlai, paymentName, messagebill, note, userSeller,
+      price, discount, type, modalVisible, typeDelete, statusErrorLyDo,advance
+    } = this.state
     const pricenew = price - discount;
-    const dsddsd = this.props.route.params.item;
+    const itemProps = this.props.route.params.item;
     return (
       <View
         style={styles.containerAll}>
@@ -133,7 +194,7 @@ export default class DetailKey extends React.Component {
           buttonLeft={true} buttonRight={true}
           nameIcon={'account-edit'}
           textRight={'Sửa'}
-          onPressRight={() => this.clickEdit(dsddsd)} />
+          onPressRight={() => this.clickEdit(itemProps)} />
         <Modal
           animationType="slide"
           transparent={true}
@@ -223,7 +284,7 @@ export default class DetailKey extends React.Component {
                 <ItemDetailIcon txtValue={productName ? productName : ''}
                   nameIcon={'blender-software'}
                   styleColour={styles.txtColour} />
-                <ItemDetailIcon txtValue={customername ? customername : ''}
+                <ItemDetailIcon txtValue={planname ? planname : ''}
                   nameIcon={'rename-box'}
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={expirationdate ? common.formatDate(expirationdate) : ''}
@@ -237,7 +298,6 @@ export default class DetailKey extends React.Component {
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
                   nameIcon={'bank'}
-
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
                   nameIcon={'receipt'}
@@ -246,52 +306,42 @@ export default class DetailKey extends React.Component {
 
               </View>
             } />
-
-          <View style={styles.View}>
-            {note === '' || note === null ?
-              <ItemDetailIcon txtValue={'ghi chú'}
-                nameIcon={'calendar-text'}
-                style={{ color: '#BDBDBD', fontStyle: 'italic' }}
-                containerText={{ borderBottomColor: '#fff' }}
-                styleColour={styles.txtColour} /> :
-              <ItemDetailIcon txtValue={note ? note : ''}
-                nameIcon={'calendar-text'}
-                containerText={{ borderBottomColor: '#fff' }}
-                styleColour={styles.txtColour} />
-            }
-          </View>
-          <TouchableOpacity style={styles.View}>
-            <ItemDetailIcon txtValue={'Thêm Hóa đơn'}
-              nameIcon={'folder-image'}
-              style={{ color: '#2E64FE' }}
-              containerText={{ borderBottomColor: '#fff' }}
-              styleColour={styles.txtColour} />
-          </TouchableOpacity>
-          {/* <View style={styles.containerButton}>
-                        <TouchableOpacity style={styles.btnCall}
-                          onPress={() => {
-                            if (customerphone !== ''
-                            ) {
-                              Linking.openURL(
-                                'tel:' + customerphone,
-                              );
-                            }
-                          }}
-                        >
-                            <View style={styles.containerCall}>
-                                <MaterialCommunityIcons name={'phone'} size={25} style={styles.iconCall} />
-                                <Text style={styles.txtGoi}>GỌI</Text>
-                                <View style={{ width: 30 }} />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.btnDuyet}>
-                            <View style={styles.containerCall}>
-                                <MaterialCommunityIcons name={'checkbox-blank-outline'} size={25} style={styles.iconCall} />
-                                <Text style={styles.txtGoi}>DUYỆT</Text>
-                                <View style={{ width: 30 }} />
-                            </View>
-                        </TouchableOpacity>
-                    </View> */}
+          <ItemComponentTitle
+            nameTitle={'Thông tin người bán'}
+            drawIconLeft={
+              <View>
+                <ItemDetailIcon txtValue={userSeller ? userSeller : ''}
+                  nameIcon={'account-child'}
+                  styleColour={styles.txtColour} />
+                {note === '' || note === null ?
+                  <ItemDetailIcon txtValue={'ghi chú'}
+                    nameIcon={'calendar-text'}
+                    style={{ color: '#BDBDBD', fontStyle: 'italic' }}
+                    styleColour={styles.txtColour} /> :
+                  <ItemDetailIcon txtValue={note ? note : ''}
+                    nameIcon={'calendar-text'}
+                    styleColour={styles.txtColour} />
+                }
+                <TouchableOpacity style={styles.View}>
+                  <ItemDetailIcon txtValue={'Thêm Hóa đơn'}
+                    nameIcon={'folder-image'}
+                    style={{ color: '#2E64FE' }}
+                    colorss={true}
+                    styleColour={styles.txtColour} />
+                </TouchableOpacity>
+                {advance === '' || advance === null ?
+                  <ItemDetailIcon txtValue={'ghi chú nâng cao'}
+                    nameIcon={'content-save'}
+                    style={{ color: '#BDBDBD', fontStyle: 'italic' }}
+                    containerText={{ borderBottomColor: '#fff' }}
+                    styleColour={styles.txtColour} /> :
+                  <ItemDetailIcon txtValue={advance ? advance : ''}
+                    nameIcon={'content-save'}
+                    containerText={{ borderBottomColor: '#fff' }}
+                    styleColour={styles.txtColour} />
+                }
+              </View>
+            } />
           <TouchableOpacity style={styles.containerDelete}
             onPress={this.onDelite}
           >
@@ -370,7 +420,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#2E64FE',
+    backgroundColor: '#F7941D',
   },
   txtTitle: {
     color: 'white',

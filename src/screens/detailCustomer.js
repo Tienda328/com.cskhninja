@@ -4,9 +4,10 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
+    FlatList,
     Linking,
     Modal,
+    ActivityIndicator,
     StyleSheet
 } from 'react-native';
 import ItemFlexRow from '../components/itemFlexRow';
@@ -22,51 +23,104 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
+import ItemManage from '../components/itemManage';
+import ItemComponentTitle from '../components/itemComponentTitle';
 
-const DataDelete = [
-    {
-        id: '111',
-        type: '1',
-        name: 'Khách hàng không mua',
-    },
-    {
-        id: '112',
-        type: '2',
-        name: 'Khách hàng dùng thử',
-    },
-     {
-        id: '113',
-        type: '3',
-        name: 'Khách hàng đổi key',
-    },
-    {
-        id: '11442',
-        type: '4',
-        name: 'Khách hàng refund',
-    },
-    {
-        id: 'dsdsd11442',
-        type: '5',
-        name: 'Khách hàng Nâng cấp',
-    },
-]
 
 export default class DetailCustomer extends React.Component {
     constructor(props) {
         super(props);
+        const { id } = this.props.route.params.item
         this.state = {
-            modalVisible: false,
-            typeDelete: 'Chọn loại bản quyền',
-            type:null,
-            statusErrorLyDo:''
+            dataKey: [],
+            customerid: id,
+            page: 1,
+            isLoading: false,
         };
     }
     goBack = () => {
         this.props.navigation.goBack()
     };
+    handleLoadMore = () => {
+        this.setState({
+          isLoading: true,
+          page: this.state.page + 1
+        }, () => this.getataMore())
+      }
+
+       getataMore = async () => {
+    const {  customerid, page } = this.state;
+    await this.setState({
+      isLoading: false,
+    })
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "viewkeycustomer",
+      time: timeStamp,
+      token: token,
+      variable: `{'customerid':'${customerid}','page':'${page}','pagesize':'50'}`
+
+    }
+    try {
+      const response = await Guest.viewkeycustomer(objPost);
+      const data = JSON.parse(response.data)
+      if (data !== '[]') {
+        const dataFull = this.state.dataKey.concat(data)
+        this.setState({
+          dataKey: dataFull,
+        })
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+    componentDidMount() {
+        this.setState({
+            isLoading: true
+        }, () => this.getKey())
+    }
+
+    renderItem = ({ item, index }) => (
+        <ItemManage navigation={this.props.navigation} item={item} index={index} isclick />
+    );
+
+    getKey = async () => {
+        const { customerid } = this.state
+        const pass_word = await getLocale(LOCALE_KEY.pass_word);
+        const email = await getLocale(LOCALE_KEY.email);
+        const md5 = stringMd5(pass_word);
+        const timeStamp = common.timeStamp();
+        const token = common.createToken(timeStamp)
+
+        const objPost = {
+            email: email,
+            password: md5,
+            function: "viewkeycustomer",
+            time: timeStamp,
+            token: token,
+            variable: `{'customerid':'${customerid}','page':'1','pagesize':'50'}`
+
+        }
+        try {
+            const response = await Guest.viewallkey(objPost);
+            const data = JSON.parse(response.data)
+            this.setState({
+                dataKey: data,
+            })
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
     clickEdit = (email, id, name, phone) => {
-        const item ={email,id,name, phone}
-        this.props.navigation.navigate('EditCustomerScreen',{item})
+        const item = { email, id, name, phone }
+        this.props.navigation.navigate('EditCustomerScreen', { item })
     };
     clickReset = async (emailReset) => {
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
@@ -90,23 +144,18 @@ export default class DetailCustomer extends React.Component {
             console.log(e);
         }
     };
+    renderFooter = () => {
+        return (this.state.isLoading ?
+          <View style={styles.loader}>
+            <ActivityIndicator size='large' />
+          </View> : null
+        )
+      }
 
-    clickItemType = async item => {
-            this.setState({
-                typeDelete: item.name,
-                type:item.type
-            })
-    };
-    onDelite = () => {
-        this.setState({ modalVisible: true });
-      }
-    onCloseDelite = () => {
-        this.setState({ modalVisible: false });
-      }
     render() {
-        const { email, id, name, phone,statusErrorLyDo
+        const { email, id, name, phone, statusErrorLyDo
         } = this.props.route.params.item
-        const { modalVisible, typeDelete } = this.state
+        const { dataKey } = this.state
         return (
             <View
                 style={styles.containerAll}>
@@ -115,104 +164,68 @@ export default class DetailCustomer extends React.Component {
                     buttonLeft={true} buttonRight={true}
                     nameIcon={'account-edit'}
                     textRight={'Sửa'}
-                    onPressRight={()=>this.clickEdit(email, id, name, phone)}
+                    onPressRight={() => this.clickEdit(email, id, name, phone)}
 
                     buttonRightIcon={true} />
-             <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-        >
-          <View style={styles.containerModelAll}>
-            <View style={styles.containerModal}>
-              <View style={styles.modalHerder}>
-                <Text />
-                <Text style={styles.txtTitle}>LÝ DO XÓA</Text>
-                <TouchableOpacity
-                  style={styles.btnClose}
-                  onPress={this.onCloseDelite}>
-                  <Ionicons
-                    name={'close-outline'}
-                    size={25}
-                    style={{ color: '#fff' }}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, marginTop: 20 }}>
-                <TextInputModal
-                  dataModal={DataDelete}
-                  nameIcon={'call-merge'}
-                  valueItem={typeDelete}
-                  isError={true}
-                  statusError={statusErrorLyDo}
-                  noData
-                  click={this.clickItemType}
-                  namePlaceholder={typeDelete} />
-                <View style={styles.containerBNT}>
-                  <TouchableOpacity 
-                   onPress={this.onCloseDelite}
-                  style={styles.bntCancel}>
-                    <Text style={styles.txtButton}>HỦY</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.bntDelete}
-                    // onPress={() => this.clickDelete(customerid, type)}
-                  >
-                    <Text style={styles.txtButton}>XÓA</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </View>
-        </Modal>
                 <View style={styles.container}>
 
-                    <View style={[styles.View]}>
-                        <ItemDetailIcon txtValue={id ? id : ''}
-                            nameIcon={'code-equal'}
-                            styleColour={styles.txtColour} />
-                        <ItemDetailIcon txtValue={name ? name : ''}
-                            nameIcon={'rename-box'}
-                            styleColour={styles.txtColour} />
-                        <ItemDetailIcon txtValue={email ? email : ''}
-                            nameIcon={'email'}
-                            styleColour={styles.txtColour} />
-                        <TouchableOpacity onPress={() => {
-                            if (phone !== ''
-                            ) {
-                                Linking.openURL(
-                                    'tel:' + phone,
-                                );
-                            }
-                        }}>
-                            <ItemDetailIcon txtValue={phone ? phone : ''}
-                                nameIcon={'cellphone'}
-                                colorss={true}
-                                isIconRight
-                                iconRight={'phone'}
-                                style={{ color: '#2E64FE' }}
-                                containerText={{ borderBottomColor: '#fff' }}
-                                styleColour={styles.txtColour} />
-                        </TouchableOpacity>
-                    </View>
                     <View style={styles.containerAll} >
-                        <View style={styles.containerAll} />
-                        <View style={styles.containerButton}>
-                            <TouchableOpacity style={styles.btnCall}
-                                onPress={this.onDelite}
-                            >
-                                <View style={styles.containerCall}>
-                                    <MaterialCommunityIcons name={'delete-circle-outline'} size={25} style={styles.iconCall} />
-                                    <Text style={styles.txtGoi}>Xóa</Text>
+
+                        <FlatList
+                            ListHeaderComponent={
+                                <View>
+                                    <ItemComponentTitle
+                                        nameTitle={'Thông tin khách hàng'}
+                                        drawIconLeft={
+                                            <View>
+                                                <ItemDetailIcon txtValue={id ? id : ''}
+                                                    nameIcon={'code-equal'}
+                                                    styleColour={styles.txtColour} />
+                                                <ItemDetailIcon txtValue={name ? name : ''}
+                                                    nameIcon={'rename-box'}
+                                                    styleColour={styles.txtColour} />
+                                                <ItemDetailIcon txtValue={email ? email : ''}
+                                                    nameIcon={'email'}
+                                                    styleColour={styles.txtColour} />
+                                                <TouchableOpacity onPress={() => {
+                                                    if (phone !== ''
+                                                    ) {
+                                                        Linking.openURL(
+                                                            'tel:' + phone,
+                                                        );
+                                                    }
+                                                }}>
+                                                    <ItemDetailIcon txtValue={phone ? phone : ''}
+                                                        nameIcon={'cellphone'}
+                                                        colorss={true}
+                                                        isIconRight
+                                                        iconRight={'phone'}
+                                                        style={{ color: '#2E64FE' }}
+                                                        containerText={{ borderBottomColor: '#fff' }}
+                                                        styleColour={styles.txtColour} />
+                                                </TouchableOpacity>
+
+                                            </View>
+                                        } />
+
+                                    <TouchableOpacity style={styles.containerReset}
+                                        onPress={() => this.clickReset(email)}>
+                                        {/* <MaterialCommunityIcons name={'lock-reset'} size={25} style={{ color: 'gray' }} /> */}
+                                        <Text style={styles.txtGoi}>Reset password</Text>
+
+                                    </TouchableOpacity>
+                                    <View style={styles.containerTitle}>
+                                        <Text style={styles.txtTitle}>Danh Sách các key</Text>
+                                    </View>
                                 </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnDuyet}
-                                onPress={() => this.clickReset(email)}>
-                                <View style={styles.containerReset}>
-                                <MaterialCommunityIcons name={'lock-reset'} size={25} style={{color:'gray'}} />
-                                    <Text style={styles.txtGoi}>Reset password</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                            }
+                            data={dataKey}
+                            renderItem={(item, index) => this.renderItem(item, index)}
+                            keyExtractor={(item, index) => index.toString()}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={this.handleLoadMore}
+                            onEndThreshold={0}
+                        />
                     </View>
                 </View>
 
@@ -227,123 +240,48 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F2F2F2'
     },
-    containerModelAll: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    containerBNT: {
-        flexDirection: 'row'
+    loader: {
+        marginTop: 10,
+        alignItems: 'center'
       },
-      bntCancel: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        marginLeft: 20,
-        marginRight: 10,
-        backgroundColor: 'gray',
-        borderRadius: 10,
-        marginBottom: 20
-      },
-      bntDelete: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        borderRadius: 10,
-        marginBottom: 20,
-        marginLeft: 10,
-        marginRight: 20,
-        backgroundColor: 'red'
-      },
-      txtButton: {
-        color: '#fff',
-        paddingVertical: 5
-      },
-    containerModal: {
-        width: 300,
-        height: 200,
-        borderRadius: 10,
-        borderColor: '#fff',
-        shadowColor: '#000',
-        shadowRadius: 6,
-        shadowOpacity: 0.16,
-        shadowOffset: {
-          width: 0,
-          height: 5,
-        },
-        elevation: 8,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
-      },
-      modalHerder: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height:50,
-        backgroundColor: '#2E64FE',
-      },
-      txtTitle: {
-        color: 'white',
+    txtTitle: {
         fontSize: 15,
-        fontWeight: '600',
-        marginLeft: 30,
-      },
+        fontWeight: '500',
+        marginLeft: 20,
+        paddingVertical: 10,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#D8D8D8',
+    },
+    containerTitle: {
+        backgroundColor: "#fff",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
     container: {
         flex: 1,
     },
     View: {
-        marginTop: 10,
+        marginBottom: 10,
         backgroundColor: "#fff",
-        borderRadius:10,
+        borderRadius: 10,
     },
     txtColour: {
         fontSize: 18,
         color: '#000'
     },
-      btnClose: {
-    marginRight: 10,
-  },
-    txtDelete: {
-        fontWeight: '400',
-        fontSize: 15,
-        color: 'red'
-    },
     txtGoi: {
-        // color: '#fff',
+        color: '#2E64FE',
         paddingVertical: 15,
         fontWeight: '600',
-        marginLeft:5,
+        marginLeft: 5,
     },
     containerReset: {
-        alignItems:'center',
-        flexDirection:'row',
-        marginRight:20
-    },
-    btnCall: {
-        flex: 1,
-    },
-    iconCall: {
-        color: 'red',
-        marginLeft: 20
-    },
-    containerCall: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
         flexDirection: 'row',
-        alignItems: 'center'
-    },
-    containerDelete: {
         justifyContent: 'center',
-        flexDirection: 'row',
-        marginBottom: 20
+        marginVertical: 10,
+        borderRadius: 10,
     },
-    viewDelete: {
-        flex: 1,
-    },
-    containerButton: {
-        flexDirection: 'row',
-        marginBottom: 10,
-        borderRadius:10,
-        backgroundColor:'#fff'
-    }
 
 })
