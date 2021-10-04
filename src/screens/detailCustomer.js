@@ -43,43 +43,43 @@ export default class DetailCustomer extends React.Component {
     };
     handleLoadMore = () => {
         this.setState({
-          isLoading: true,
-          page: this.state.page + 1
+            isLoading: true,
+            page: this.state.page + 1
         }, () => this.getataMore())
-      }
-
-       getataMore = async () => {
-    const {  customerid, page } = this.state;
-    await this.setState({
-      isLoading: false,
-    })
-    const pass_word = await getLocale(LOCALE_KEY.pass_word);
-    const email = await getLocale(LOCALE_KEY.email);
-    const md5 = stringMd5(pass_word);
-    const timeStamp = common.timeStamp();
-    const token = common.createToken(timeStamp)
-    const objPost = {
-      email: email,
-      password: md5,
-      function: "viewkeycustomer",
-      time: timeStamp,
-      token: token,
-      variable: `{'customerid':'${customerid}','page':'${page}','pagesize':'50'}`
-
     }
-    try {
-      const response = await Guest.viewkeycustomer(objPost);
-      const data = JSON.parse(response.data)
-      if (data !== '[]') {
-        const dataFull = this.state.dataKey.concat(data)
-        this.setState({
-          dataKey: dataFull,
+
+    getataMore = async () => {
+        const { customerid, page } = this.state;
+        await this.setState({
+            isLoading: false,
         })
-      }
-    } catch (e) {
-      console.log(e);
+        const pass_word = await getLocale(LOCALE_KEY.pass_word);
+        const email = await getLocale(LOCALE_KEY.email);
+        const md5 = stringMd5(pass_word);
+        const timeStamp = common.timeStamp();
+        const token = common.createToken(timeStamp)
+        const objPost = {
+            email: email,
+            password: md5,
+            function: "viewkeycustomer",
+            time: timeStamp,
+            token: token,
+            variable: `{'customerid':'${customerid}','page':'${page}','pagesize':'50'}`
+
+        }
+        try {
+            const response = await Guest.viewkeycustomer(objPost);
+            const data = JSON.parse(response.data)
+            if (data !== '[]') {
+                const dataFull = this.state.dataKey.concat(data)
+                this.setState({
+                    dataKey: dataFull,
+                })
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
-  }
     componentDidMount() {
         this.setState({
             isLoading: true
@@ -146,11 +146,11 @@ export default class DetailCustomer extends React.Component {
     };
     renderFooter = () => {
         return (this.state.isLoading ?
-          <View style={styles.loader}>
-            <ActivityIndicator size='large' />
-          </View> : null
+            <View style={styles.loader}>
+                <ActivityIndicator size='large' />
+            </View> : null
         )
-      }
+    }
 
     render() {
         const { email, id, name, phone, statusErrorLyDo
@@ -169,57 +169,55 @@ export default class DetailCustomer extends React.Component {
                     buttonRightIcon={true} />
                 <View style={styles.container}>
 
-                    <View style={styles.containerAll} >
-
-                        <FlatList
-                            ListHeaderComponent={
-                                <View>
-                                    <ItemComponentTitle
-                                        nameTitle={'Thông tin khách hàng'}
-                                        drawIconLeft={
-                                            <View>
-                                                <ItemDetailIcon txtValue={id ? id : ''}
-                                                    nameIcon={'code-equal'}
-                                                    styleColour={styles.txtColour} />
-                                                <ItemDetailIcon txtValue={name ? name : ''}
-                                                    nameIcon={'rename-box'}
-                                                    styleColour={styles.txtColour} />
-                                                <ItemDetailIcon txtValue={email ? email : ''}
-                                                    nameIcon={'email'}
-                                                    styleColour={styles.txtColour} />
-                                                <TouchableOpacity onPress={() => {
-                                                    if (phone !== ''
-                                                    ) {
-                                                        Linking.openURL(
-                                                            'tel:' + phone,
-                                                        );
-                                                    }
-                                                }}>
-                                                    <ItemDetailIcon txtValue={phone ? phone : ''}
-                                                        nameIcon={'cellphone'}
-                                                        colorss={true}
-                                                        isIconRight
-                                                        iconRight={'phone'}
-                                                        style={{ color: '#2E64FE' }}
-                                                        containerText={{ borderBottomColor: '#fff' }}
-                                                        styleColour={styles.txtColour} />
-                                                </TouchableOpacity>
-
-                                            </View>
-                                        } />
-
-                                    <TouchableOpacity style={styles.containerReset}
-                                        onPress={() => this.clickReset(email)}>
-                                        {/* <MaterialCommunityIcons name={'lock-reset'} size={25} style={{ color: 'gray' }} /> */}
-                                        <Text style={styles.txtGoi}>Reset password</Text>
-
-                                    </TouchableOpacity>
-                                    <View style={styles.containerTitle}>
-                                        <Text style={styles.txtTitle}>Danh Sách các key</Text>
-                                    </View>
+                    <View style={{ backgroundColor: "#f2f2f2", flex: 1 }} >
+                        <View style={{ backgroundColor: "#fff" }}>
+                            <ItemDetailIcon txtValue={id ? id : ''}
+                                nameIcon={'code-equal'}
+                                styleColour={styles.txtColour} />
+                            <ItemDetailIcon txtValue={name ? name : ''}
+                                nameIcon={'rename-box'}
+                                styleColour={styles.txtColour} />
+                            <ItemDetailIcon txtValue={email ? email : ''}
+                                nameIcon={'email'}
+                                styleColour={styles.txtColour} />
+                            <TouchableOpacity onPress={() => {
+                                if (phone !== ''
+                                ) {
+                                    Linking.openURL(
+                                        'tel:' + phone,
+                                    );
+                                }
+                            }}>
+                                <ItemDetailIcon txtValue={phone ? phone : ''}
+                                    nameIcon={'cellphone'}
+                                    colorss={true}
+                                    isIconRight
+                                    iconRight={'phone'}
+                                    style={{ color: '#2E64FE' }}
+                                    containerText={{ borderBottomColor: '#fff' }}
+                                    styleColour={styles.txtColour} />
+                            </TouchableOpacity>
+                            <View style={styles.containerTitle}>
+                                <Text style={styles.txtTitle}>Danh Sách các key</Text>
+                            </View>
+                            <View style={{
+                                flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10, borderBottomWidth: 0.5,
+                                borderBottomColor: '#D8D8D8',
+                            }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ marginLeft: 20 }}>Tổng KH:</Text>
+                                    <Text> 32323</Text>
                                 </View>
-                            }
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text>Tổng DT:</Text>
+                                    <Text style={{ marginRight: 20, color:'#2E64FE' }}> 32323</Text>
+                                </View>
+                            </View>
+
+                        </View>
+                        <FlatList
                             data={dataKey}
+                            style={{ flex: 1 }}
                             renderItem={(item, index) => this.renderItem(item, index)}
                             keyExtractor={(item, index) => index.toString()}
                             ListFooterComponent={this.renderFooter}
@@ -227,6 +225,12 @@ export default class DetailCustomer extends React.Component {
                             onEndThreshold={0}
                         />
                     </View>
+                    <TouchableOpacity style={styles.containerReset}
+                        onPress={() => this.clickReset(email)}>
+                        {/* <MaterialCommunityIcons name={'lock-reset'} size={25} style={{ color: 'gray' }} /> */}
+                        <Text style={styles.txtGoi}>Reset password</Text>
+
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -243,19 +247,22 @@ const styles = StyleSheet.create({
     loader: {
         marginTop: 10,
         alignItems: 'center'
-      },
+    },
     txtTitle: {
         fontSize: 15,
         fontWeight: '500',
         marginLeft: 20,
         paddingVertical: 10,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#D8D8D8',
+        // borderBottomWidth: 0.5,
+        // borderBottomColor: '#D8D8D8',
+        // flex:1
     },
     containerTitle: {
         backgroundColor: "#fff",
+        flexDirection: 'row',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+        alignItems: 'center'
     },
     container: {
         flex: 1,

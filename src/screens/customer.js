@@ -5,12 +5,14 @@ import {
   Text,
   FlatList,
   StyleSheet,
+  Image,
   Dimensions,
   ActivityIndicator
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import ItemCustomer from '../components/itemCustomer';
 import Search from '../components/search';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
@@ -96,7 +98,7 @@ class Customer extends React.Component {
       function: "seachmycustomer",
       time: timeStamp,
       token: token,
-      variable:`{'keyword':'${this.state.search}','page':'1','pagesize':'50'}`
+      variable: `{'keyword':'${this.state.search}','page':'1','pagesize':'50'}`
     };
     try {
       const response = await Guest.seachmycustomer(objPost);
@@ -167,13 +169,14 @@ class Customer extends React.Component {
   onRefresh = () => {
     this.setState({
       isLoading: true,
-      search:''
+      search: ''
     }, () => this.getData())
   }
 
 
   render() {
     const { search, dataCustomer } = this.state;
+    console.log('fsdf', windowHeight)
 
     return (
       <View style={styles.containerAll}>
@@ -187,11 +190,21 @@ class Customer extends React.Component {
             onRefresh={() => this.onRefresh()}
             refreshing={this.state.isFetching}
             ListHeaderComponent={
-              <Search value={search}
-              style={{marginBottom:10}}
-              clickSearch={this.clickSearch}
-              onPressFilter={this.onFilter}
-              onChangeText={(text) => this.onChangeTextSearch(text)} />
+              <View>
+                <Search value={search}
+                  style={{ marginBottom: 10 }}
+                  clickSearch={this.clickSearch}
+                  onPressFilter={this.onFilter}
+                  onChangeText={(text) => this.onChangeTextSearch(text)} />
+                {dataCustomer === null || dataCustomer===[] ? <View style={{ alignItems: 'center', height: windowHeight/1.5, justifyContent:'center' }}>
+                <Image
+                    style={{ width: 120, height: 120, resizeMode: 'contain' }}
+                    source={require('../resource/image/icon_null_customer.png')}
+                  />
+                  <Text>Bạn không có khách hàng nào !</Text>
+                </View> : null
+                }
+              </View>
             }
             data={dataCustomer}
             renderItem={(item, index) => this.renderItem(item, index)}

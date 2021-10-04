@@ -12,13 +12,14 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
 
     const ItemIndex =index +1;
     const clickItem =(item)=>{
-        if(!isclick){
-            navigation.navigate('DetailKeyScreen',{item})
-        }
+        console.log('item.conlai', item.conlai)
+        // if(!isclick){
+        //     navigation.navigate('DetailKeyScreen',{item})
+        // }
        
     }
     const pricenew =item.price -item.discount
-
+   
     return (
         <TouchableOpacity
             style={styles.containerAll}
@@ -48,15 +49,15 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
                 <View >
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />
-                  <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?common.formatDate(item.expirationdate):''}</Text>
+                  <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?common.formatDate2(item.expirationdate):''}</Text>
                   </View>
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />
-                      <Text style={[styles.txtRight,{color:item.approve? '#2E64FE':'red'}]} numberOfLines={1}>{item.price?common.formatNumber(pricenew):''}</Text>            
+                      <Text style={[styles.txtRight,{color:item.approve? '#2E64FE':'red'}]} numberOfLines={1}>{item.price?common.formatNumber(pricenew):'0 đ'}</Text>            
                   </View>
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />
-                      <Text style={[styles.txtRight]} numberOfLines={1}>{item.conlai?item.conlai+ ' ngày':''}</Text>            
+                      <Text style={[styles.txtRight]} numberOfLines={1}>{item.conlai?item.conlai+ ' ngày':'0 ngày'}</Text>            
                   </View>                  
                    
                 </View>

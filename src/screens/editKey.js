@@ -59,7 +59,7 @@ class EditKey extends React.Component {
             typeBQ: typeBQClon,
             phanmem: productName,
             note: note,
-            advance:advance,
+            advance: advance,
             isErrorState: false,
             messagebill: messagebill,
             productid: null,
@@ -75,7 +75,7 @@ class EditKey extends React.Component {
     }
 
     btnSave = async () => {
-        const { productid, typeBQ, customerid, planid, phanmem, hid, txtDiscount, note, paymentid, messagebill, type } = this.state;
+        const { productid, typeBQ, customerid, planid, phanmem, hid, txtDiscount, note, paymentid, messagebill, type, advance } = this.state;
 
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
         const email = await getLocale(LOCALE_KEY.email);
@@ -89,7 +89,7 @@ class EditKey extends React.Component {
             function: "editkey",
             time: timeStamp,
             token: token,
-            variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${hid},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'hi'}"
+            variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${hid},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}"
             }`
         };
         try {
@@ -246,7 +246,7 @@ class EditKey extends React.Component {
         this.props.navigation.goBack()
     };
     render() {
-        const { note, messagebill, motorCode, price, disCount,advance,
+        const { note, messagebill, motorCode, price, disCount, advance,
             typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,
             goiBQ, isNoData, dataPay, valuePay, isErrorState, customername, customerid, customerphone
         } = this.state;
@@ -259,7 +259,7 @@ class EditKey extends React.Component {
                     onPressRight={this.btnSave}
                     buttonLeft={true}
                     textRight={'Lưu'} />
-                <ScrollView style={{flex:1}}>
+                <ScrollView style={{ flex: 1 }}>
                     <View style={[styles.containerAll]}>
                         <ItemComponentTitle
                             nameTitle={'Thông tin khách hàng'}
@@ -384,8 +384,8 @@ class EditKey extends React.Component {
                                         value={note}
                                         statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
                                     />
-                                         <TextInputKey
-                                        onChangeText={(text) => this.onChangeTextNote(text)}
+                                    <TextInputKey
+                                        onChangeText={(text) => this.onChangeTextNoteHight(text)}
                                         placeholder="ghi chú nâng cao"
                                         styleInput={{ borderBottomColor: '#fff' }}
                                         // isError={true}
@@ -396,7 +396,7 @@ class EditKey extends React.Component {
                                     />
                                 </View>
                             } />
-                            <Text></Text>
+                        <Text></Text>
 
 
                     </View>

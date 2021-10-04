@@ -21,6 +21,14 @@ function formatNumber(number) {
     }
   }
 
+  function formatDate2(date) {
+    if (date) {
+      return moment(date).utc().format('DD/MM/YYYY');
+    } else {
+      return '';
+    }
+  }
+
   function DataSeach(string) {
     const data=[];
     data.push(string);
@@ -75,6 +83,7 @@ export function ifIphoneX(iphoneXStyle, regularStyle) {
     formatDate,
     createToken,
     getStatusBarHeight,
+    formatDate2,
   };
   
   export default common;

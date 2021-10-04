@@ -73,7 +73,9 @@ export default class DetailKey extends React.Component {
       discount: null,
       type: null,
       userSeller: null,
-      advance:null
+      advance:null,
+      hid:null,
+      id:null
     };
   }
 
@@ -122,7 +124,6 @@ export default class DetailKey extends React.Component {
     };
     try {
       const response = await Guest.viewkey(objPost);
-    
       const data = JSON.parse(response.data)
       this.setState({
         customerid: data.customerid,
@@ -141,20 +142,21 @@ export default class DetailKey extends React.Component {
         discount: data.discount,
         type: data.type,
         userSeller: data.username,
-        advance: data.advance 
+        advance: data.advance ,
+        hid: data.hid,
+        id:data.id
       })
     } catch (e) {
       console.log(e);
     }
   }
 
-  clickDelete = async (customerid, type) => {
+  clickDelete = async (id, type) => {
     if (this.state.typeNote === null) {
       this.setState({
         statusErrorLyDo: 'cần chọn lý do xóa'
       })
     } else {
-
       const pass_word = await getLocale(LOCALE_KEY.pass_word);
       const email = await getLocale(LOCALE_KEY.email);
       const md5 = stringMd5(pass_word);
@@ -166,26 +168,31 @@ export default class DetailKey extends React.Component {
         function: "removekey",
         time: timeStamp,
         token: token,
-        variable: `{'id':'${customerid}','type':'${type}','note':'${this.state.typeNote}'}`
+        variable: `{'id':'${id}','type':'${type}','note':'${this.state.typeNote}'}`
       };
-      try {
-        await Guest.removekey(objPost, 'message');
-        this.setState({
-          statusErrorLyDo: '',
-          modalVisible: false,
-        })
-      } catch (e) {
-        console.log(e);
-      }
+      console.log('dssd', id)
+      // try {
+      //  const response= await Guest.removekey(objPost, 'message');
+      //  console.log('data',response )
+      //   this.setState({
+      //     statusErrorLyDo: '',
+      //     modalVisible: false,
+      //   })
+      
+      //   this.props.navigation.goBack()
+      // } catch (e) {
+      //   console.log(e);
+      // }
     }
   }
   render() {
     const { customerid, customername, datecreate, customeremail, customerphone, planname,
       productName, expirationdate, conlai, paymentName, messagebill, note, userSeller,
-      price, discount, type, modalVisible, typeDelete, statusErrorLyDo,advance
+      price, discount, type, modalVisible, typeDelete, statusErrorLyDo,advance,hid,id
     } = this.state
     const pricenew = price - discount;
     const itemProps = this.props.route.params.item;
+    console.log('sdsdd', type)
     return (
       <View
         style={styles.containerAll}>
@@ -232,7 +239,7 @@ export default class DetailKey extends React.Component {
                     <Text style={styles.txtButton}>HỦY</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.bntDelete}
-                    onPress={() => this.clickDelete(customerid, type)}
+                    onPress={() => this.clickDelete(id, type)}
                   >
                     <Text style={styles.txtButton}>XÓA</Text>
                   </TouchableOpacity>
@@ -285,8 +292,11 @@ export default class DetailKey extends React.Component {
                   nameIcon={'blender-software'}
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={planname ? planname : ''}
-                  nameIcon={'rename-box'}
+                  nameIcon={'gift'}
                   styleColour={styles.txtColour} />
+                 { type==='2'? <ItemDetailIcon txtValue={hid ? hid : ''}
+                  nameIcon={'qrcode'}
+                  styleColour={styles.txtColour} /> :null}
                 <ItemDetailIcon txtValue={expirationdate ? common.formatDate(expirationdate) : ''}
                   nameIcon={'calendar-range'}
                   styleColour={styles.txtColour} />
@@ -296,6 +306,9 @@ export default class DetailKey extends React.Component {
                 <ItemDetailIcon txtValue={price ? common.formatNumber(pricenew) : ''}
                   nameIcon={'currency-usd'}
                   styleColour={styles.txtColour} />
+                  <ItemDetailIcon txtValue={price ? common.formatNumber(discount) : ''}
+                  nameIcon={'sale'}
+                  styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
                   nameIcon={'bank'}
                   styleColour={styles.txtColour} />
@@ -303,7 +316,6 @@ export default class DetailKey extends React.Component {
                   nameIcon={'receipt'}
                   containerText={{ borderBottomColor: '#fff' }}
                   styleColour={styles.txtColour} />
-
               </View>
             } />
           <ItemComponentTitle

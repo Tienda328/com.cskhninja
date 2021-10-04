@@ -2,23 +2,39 @@ import * as React from 'react';
 import { Animated, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
-const FirstRoute = () => (
+const SecondRoute1 = () => (
   <View style={[styles.container]} >
        <Text>FirstRoute</Text>
   </View>
 );
-const SecondRoute = () => (
+const SecondRoute2 = () => (
+  <View style={[styles.container]} >
+      <Text>SecondRoute</Text>
+  </View>
+);
+const SecondRoute3 = () => (
   <View style={[styles.container]} >
       <Text>SecondRoute</Text>
   </View>
 );
 
+const SecondRoute4 = () => (
+  <View style={[styles.container]} >
+      <Text>SecondRoute</Text>
+  </View>
+);
+
+
 export default class TabViewExample extends React.Component {
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: 'First' },
-      { key: 'second', title: 'Second' },
+      // { key: 'tab1', title: 'Sản Phẩm' },
+      // { key: 'tab2', title: 'Thanh Toán' },
+      // { key: 'tab3', title: 'BXH' },
+      // { key: 'tab4', title: 'Theo Team' },
+      { key: 'tab1', title: 'Kích hoạt lại bản quyền' },
+      { key: 'tab2', title: 'Reset mật khẩu' },
     ],
   };
 
@@ -41,7 +57,7 @@ export default class TabViewExample extends React.Component {
             <TouchableOpacity
               style={styles.tabItem}
               onPress={() => this.setState({ index: i })}>
-              <Animated.Text style={{ opacity }}>{route.title}</Animated.Text>
+              <Animated.Text key={route} style={{ opacity }}>{route.title}</Animated.Text>
             </TouchableOpacity>
           );
         })}
@@ -50,18 +66,26 @@ export default class TabViewExample extends React.Component {
   };
 
   _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
+    tab1: SecondRoute1,
+    tab2: SecondRoute2,
+    // tab3: SecondRoute3,
+    // tab4: SecondRoute4,
   });
 
   render() {
+    const {nameTitle}=this.props
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderTabBar={this._renderTabBar}
-        onIndexChange={this._handleIndexChange}
-      />
+  <View style={{flex:1}}>
+    <View style={styles.containerTitle}>
+    <Text style={styles.txtTitleKey}>{nameTitle} </Text>
+      </View>
+        <TabView
+      navigationState={this.state}
+      renderScene={this._renderScene}
+      renderTabBar={this._renderTabBar}
+      onIndexChange={this._handleIndexChange}
+    />
+  </View>
     );
   }
 }
@@ -69,15 +93,28 @@ export default class TabViewExample extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'#f2f2',
+    backgroundColor:'#fff',
     justifyContent:'center',
     alignItems:'center'
 
   },
+  containerTitle:{
+    marginTop: 10,
+    backgroundColor: "#fff",
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
+},
+  txtTitleKey:{
+    fontSize:15,
+    fontWeight:'500',
+    marginLeft:20,
+    paddingVertical:10,
+    borderBottomWidth:1,
+    borderBottomColor:'#D8D8D8',
+  },
   tabBar: {
     flexDirection: 'row',
     backgroundColor:'#fff',
-    marginTop:10,
   },
   tabItem: {
     flex: 1,

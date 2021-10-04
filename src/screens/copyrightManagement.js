@@ -8,7 +8,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  Image
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,10 +21,20 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import FilterDateComponent from '../components/FilterDateComponent';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
+import MenuMain from '../components/menuMain';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+
+const dataMenu = [
+  { id: '1', title: '7 ngày qua' },
+  { id: '2', title: 'Hôm nay' },
+  { id: '34', title: 'Hôm qua' },
+  { id: '4', title: 'Tuần này' },
+  { id: '5', title: 'Tuần trước' },
+];
 
 
 const DataType = [
@@ -55,7 +66,7 @@ const DataBill = [
     name: 'Chưa up',
   },
 ]
-const DataApprove  = [
+const DataApprove = [
   {
     id: '11dsdds1',
     typeApprove: '0',
@@ -80,7 +91,7 @@ class CopyrightManagement extends React.Component {
       type: 1,
       fromDate: null,
       page: 1,
-      typeApprove:'0',
+      typeApprove: '0',
       typeBill: '0',
       isNoData: true,
       typeBQ: 'Chọn loại bản quyền',
@@ -100,6 +111,8 @@ class CopyrightManagement extends React.Component {
       fromDateStart: null,
       isFetching: false,
       productid: '0',
+      visible: false,
+      nameTitleMenu: 'Tháng Trước'
     };
   }
 
@@ -206,8 +219,10 @@ class CopyrightManagement extends React.Component {
       variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
 
     }
+    console.log('objPost', objPost)
     try {
       const response = await Guest.viewallkey(objPost);
+      console.log('dssdsd', response)
       const data = JSON.parse(response.data)
       this.setState({
         dataKey: data,
@@ -226,9 +241,9 @@ class CopyrightManagement extends React.Component {
     }, () => this.getataMore())
   }
   getataMore = async () => {
-    const { search, productid, fromDateStart,typeApprove, fromDate, typeBill, page } = this.state;
-    const dataStart =fromDateStart!==null ? common.formatDate(fromDateStart):'0'
-    const dataEnd =fromDate!==null ? common.formatDate(fromDate):'0'
+    const { search, productid, fromDateStart, typeApprove, fromDate, typeBill, page } = this.state;
+    const dataStart = fromDateStart !== null ? common.formatDate(fromDateStart) : '0'
+    const dataEnd = fromDate !== null ? common.formatDate(fromDate) : '0'
     await this.setState({
       isLoading: false,
     })
@@ -279,27 +294,65 @@ class CopyrightManagement extends React.Component {
     )
   }
   onClickFilter = () => {
-    const { search, productid, fromDateStart,typeApprove, fromDate, typeBill } = this.state;
-    const dataStart =fromDateStart!==null ? common.formatDate(fromDateStart):'0'
-    const dataEnd =fromDate!==null ? common.formatDate(fromDate):'0'
-      this.setState({
-        modalVisible: false,
-        isLoading: true
-      }, () => this.getKey(search, dataStart, dataEnd, '0', productid, typeBill, typeApprove))
-    
+    const { search, productid, fromDateStart, typeApprove, fromDate, typeBill } = this.state;
+    const dataStart = fromDateStart !== null ? common.formatDate(fromDateStart) : '0'
+    const dataEnd = fromDate !== null ? common.formatDate(fromDate) : '0'
+    this.setState({
+      modalVisible: false,
+      isLoading: true
+    }, () => this.getKey(search, dataStart, dataEnd, '0', productid, typeBill, typeApprove))
+
   }
 
   onRefresh = () => {
-    const { typeBill, typeApprove } = this.state
     this.setState({
       isLoading: true,
-      search: ''
+      search: '',
+      search: '',
+      type: 1,
+      fromDate: null,
+      page: 1,
+      typeApprove: '0',
+      typeBill: '0',
+      isNoData: true,
+      typeBQ: 'Chọn loại bản quyền',
+      textBill: 'Chọn loại hóa đơn',
+      textApprove: 'Chọn loại duyệt thanh toán',
+      modalVisible: false,
+      dataKey: [],
+      dataTypyBQ: [],
+      disableTypeBQ: true,
+      dataBQ: [],
+      goiBQ: 'Gói bản quyền',
+      hid: null,
+      disablePhanMem: true,
+      phanmem: 'Chọn phần mềm',
+      motorCode: '',
+      fromDateStart: null,
+      isFetching: false,
+      productid: '0',
+      visible: false,
+      nameTitleMenu: 'Tháng Trước'
+
     }, () => this.getKey('', '0', '0', '0', '0', '0', '0'))
   }
 
+  onShowMenu = () => {
+    this.setState({
+      visible: true
+    })
+  }
+  hideMenu = (item) => {
+    console.log('tiem', item)
+    this.setState({
+      visible: false,
+      nameTitleMenu: item.title
+    })
+  }
+
   render() {
-    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill,textApprove,
-      dataBQ, disablePhanMem, fromDateStart } = this.state;
+    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill, textApprove,
+      dataBQ, disablePhanMem, fromDateStart, visible, nameTitleMenu } = this.state;
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
@@ -379,16 +432,44 @@ class CopyrightManagement extends React.Component {
               </View>
             </View>
           </Modal>
+
           <FlatList
             onRefresh={() => this.onRefresh()}
             refreshing={this.state.isFetching}
             ListHeaderComponent={
-              <Search value={search}
-                onPressFilter={this.onFilter}
-                showFilter
-                style={{ marginBottom: 10 }}
-                clickSearch={() => this.getKey(search)}
-                onChangeText={(text) => this.onChangeTextSearch(text)} />
+              <View>
+                <Search value={search}
+                  onPressFilter={this.onFilter}
+                  showFilter
+                  style={{ marginBottom: 10 }}
+                  clickSearch={() => this.getKey(search,'0','0','0','0','0','0')}
+                  onChangeText={(text) => this.onChangeTextSearch(text)} />
+                <MenuMain visible={visible}
+                  nameTitle={nameTitleMenu}
+                  showMenu={this.onShowMenu}
+                  hideMenu={this.hideMenu}
+                  dataMenu={dataMenu}
+                />
+                <View style={styles.containerTitle}>
+                  <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 20 }}>
+
+                    <Text>Hóa Đơn : </Text>
+                    <Text style={{ marginLeft: 5 }}>2</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 15 }}>
+                    <Text>Tổng :</Text>
+                    <Text style={{ marginLeft: 5, color: '#2E64FE', marginRight: 20 }}>3223232323</Text>
+                  </TouchableOpacity>
+                </View>
+                {dataKey === null ? <View style={{ alignItems: 'center', height: windowHeight / 1.5, justifyContent: 'center' }}>
+                  <Image
+                    style={{ width: 150, height: 150, resizeMode: 'contain' }}
+                    source={require('../resource/image/icon_null_key.png')}
+                  />
+                  <Text>Không có dữ liệu</Text>
+                </View> : null
+                }
+              </View>
             }
             data={dataKey}
             renderItem={(item, index) => this.renderItem(item, index)}
@@ -417,6 +498,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600'
   },
+  containerTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D8D8D8',
+  },
   bntLoc: {
     marginHorizontal: 20,
     justifyContent: 'center',
@@ -426,7 +515,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   container: {
-    // flex: 1,
+    flex: 1,
     // backgroundColor: '#FAFAFA',
     // marginHorizontal: 20,
     // marginTop: 20,

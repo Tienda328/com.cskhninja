@@ -28,14 +28,17 @@ export default function ItemCustomer({ index, onPress, navigation, item }) {
                             source={require('../resource/image/icon_user.png')}
                         />
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' ,justifyContent:'space-between',flex:1}}>
 
 
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={[styles.txtLeft,{width:260}]} numberOfLines={1} >{item.name ? item.name : ''}</Text>
+                            <Text style={[styles.txtLeft]} numberOfLines={1} >{item.name ? item.name : ''}</Text>
                             <Text numberOfLines={1} style={[styles.txtPhone ]}>{item.email ? item.email : ''}</Text>
                             <Text style={styles.txtPhone}>{item.phone ? item.phone : ''}</Text>
                         </View>
+                        {/* <View style={{ marginRight:10 }}>
+                            <Text style={styles.txtPrice}>{item.phone ? item.phone : ''}</Text>
+                        </View> */}
 
                     </View>
                 </View>
@@ -57,6 +60,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flexDirection: 'row',
+        flex:1
+    },
+    txtPrice:{
+        color:'#2E64FE'
     },
     viewContainer: {
         flex:1,
