@@ -199,7 +199,7 @@ class Customer extends React.Component {
                 {dataCustomer === null || dataCustomer===[] ? <View style={{ alignItems: 'center', height: windowHeight/1.5, justifyContent:'center' }}>
                 <Image
                     style={{ width: 120, height: 120, resizeMode: 'contain' }}
-                    source={require('../resource/image/icon_null_customer.png')}
+                    source={require('../resource/image/iconNullClient.png')}
                   />
                   <Text>Bạn không có khách hàng nào !</Text>
                 </View> : null

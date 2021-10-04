@@ -12,10 +12,9 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
 
     const ItemIndex =index +1;
     const clickItem =(item)=>{
-        console.log('item.conlai', item.conlai)
-        // if(!isclick){
-        //     navigation.navigate('DetailKeyScreen',{item})
-        // }
+        if(!isclick){
+            navigation.navigate('DetailKeyScreen',{item})
+        }
        
     }
     const pricenew =item.price -item.discount

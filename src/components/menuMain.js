@@ -18,7 +18,7 @@ export default function App({hideMenu, showMenu, nameTitle, visible, dataMenu}) 
             >
                 {dataMenu.map((item, index) => {
                     return (
-                        <MenuItem onPress={() => hideMenu(item)}>{item.title}</MenuItem>
+                        <MenuItem key={index.toString()} onPress={() => hideMenu(item)}>{item.title}</MenuItem>
                     )
                 })}
             </Menu>

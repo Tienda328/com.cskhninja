@@ -168,21 +168,19 @@ export default class DetailKey extends React.Component {
         function: "removekey",
         time: timeStamp,
         token: token,
-        variable: `{'id':'${id}','type':'${type}','note':'${this.state.typeNote}'}`
+        variable: `{'id':'${id}','type':'${type}','advance':'${this.state.typeNote}'}`
       };
-      console.log('dssd', id)
-      // try {
-      //  const response= await Guest.removekey(objPost, 'message');
-      //  console.log('data',response )
-      //   this.setState({
-      //     statusErrorLyDo: '',
-      //     modalVisible: false,
-      //   })
+      try {
+       const response= await Guest.removekey(objPost, 'message');
+        this.setState({
+          statusErrorLyDo: '',
+          modalVisible: false,
+        })
       
-      //   this.props.navigation.goBack()
-      // } catch (e) {
-      //   console.log(e);
-      // }
+        this.props.navigation.goBack()
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
   render() {

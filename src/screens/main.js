@@ -7,16 +7,17 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Animated,
   Dimensions
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
-import TabView from '../components/tabView';
+
+import TabSales from '../components/TabSales';
 import ChartTest from '../components/chartTest';
 import colors from '../constants/colors';
 import ItemComponentTitle from '../components/itemComponentTitle';
 import MenuMain from '../components/menuMain';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
@@ -38,6 +39,7 @@ class Main extends React.Component {
       visible: false,
       nameTitleMenu: 'Tháng Trước'
     };
+    this.indexPage = 0;
   }
 
   onShowMenu = () => {
@@ -45,8 +47,11 @@ class Main extends React.Component {
       visible: true
     })
   }
+
+  currentPage = (currentpage) => {
+    this.indexPage = currentpage.i;
+  };
   hideMenu = (item) => {
-    console.log('tiem', item)
     this.setState({
       visible: false,
       nameTitleMenu: item.title
@@ -82,9 +87,7 @@ class Main extends React.Component {
             </View>
           </View>
           <ChartTest />
-      
-          <TabView nameTitle={'Doanh số theo'}/>
-          <TabView nameTitle={'Tiện ích'}/>
+          <TabSales />
 
         </View>
 
@@ -95,7 +98,6 @@ class Main extends React.Component {
 };
 
 export default Main;
-
 const styles = StyleSheet.create({
   containerAll: {
     flex: 1,

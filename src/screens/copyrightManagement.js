@@ -464,7 +464,7 @@ class CopyrightManagement extends React.Component {
                 {dataKey === null ? <View style={{ alignItems: 'center', height: windowHeight / 1.5, justifyContent: 'center' }}>
                   <Image
                     style={{ width: 150, height: 150, resizeMode: 'contain' }}
-                    source={require('../resource/image/icon_null_key.png')}
+                    source={require('../resource/image/iconNullKey.png')}
                   />
                   <Text>Không có dữ liệu</Text>
                 </View> : null
