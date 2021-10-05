@@ -14,7 +14,7 @@ export default class ChartTest extends React.Component {
     return (
       <View style={styles.containerAll}>
         <View style={styles.container}>
-          <LineChart style={styles.chart}
+          {/* <LineChart style={styles.chart}
             data={{ dataSets: [
               {
                 values: [5, 40, 77, 81, 43]
@@ -23,7 +23,7 @@ export default class ChartTest extends React.Component {
                 values: [10, 32, 323, 1, 33]
               },
           ]}}
-          />
+          /> */}
         </View>
       </View>
     );

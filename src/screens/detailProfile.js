@@ -14,6 +14,7 @@ import LOCALE_KEY, {
 import Guest from '../api/guest';
 import common from '../utils/common';
 import ItemDetailIcon from '../components/itemDetailIcon';
+import ItemComponentTitle from '../components/itemComponentTitle';
 import { stringMd5 } from 'react-native-quick-md5';
 
 class DetailProfile extends React.Component {
@@ -167,29 +168,22 @@ class DetailProfile extends React.Component {
                 <NaviHerderFull title={'THÔNG TIN CÁ NHÂN'} buttonLeft={true} onPressBack={this.goBack} />
 
                 <View style={styles.container}>
-                    <ItemDetailIcon txtValue={surName}
-                        nameIcon={'rename-box'}
-                        styleColour={styles.txtColour} />
-                        <ItemDetailIcon txtValue={email}
-                        nameIcon={'email'}
-                        styleColour={styles.txtColour} />
-                         <ItemDetailIcon txtValue={phoneNumber}
-                        nameIcon={'cellphone'}
-                        styleColour={styles.txtColour} />
-                    {/* <View style={styles.containerButton}>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() => this.props.navigation.goBack()}
-                            style={styles.btnHuy}>
-                            <Text style={styles.txtClick}>Hủy</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={this.addCustomer}
-                            style={styles.btnContinue}>
-                            <Text style={styles.txtClick}>{txtEdit}</Text>
-                        </TouchableOpacity>
-                    </View> */}
+                    <ItemComponentTitle
+                        nameTitle={'Thông tin cá nhân'}
+                        drawIconLeft={
+                            <View>
+                                <ItemDetailIcon txtValue={surName}
+                                    nameIcon={'rename-box'}
+                                    styleColour={styles.txtColour} />
+                                <ItemDetailIcon txtValue={email}
+                                    nameIcon={'email'}
+                                    styleColour={styles.txtColour} />
+                                <ItemDetailIcon txtValue={phoneNumber}
+                                    nameIcon={'cellphone'}
+                                    styleColour={styles.txtColour} />
+                            </View>
+                        } />
+
                 </View>
 
             </View>
@@ -216,7 +210,7 @@ const styles = StyleSheet.create({
     },
     txtColour: {
         fontSize: 18,
-      },
+    },
     btnHuy: {
         flex: 1,
         backgroundColor: '#FF0000',

@@ -27,14 +27,14 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
                 <View style={styles.containerLeft}>
              <View style={{ justifyContent: 'center' ,alignItems:'center',flexDirection:'row'}}>
                 
-                <Text style={{marginLeft:10}}> {ItemIndex}</Text>
+                <Text style={{width:40, textAlign:'center'}} numberOfLines={1}> {ItemIndex}</Text>
                 
              {item.type===1?  <Image
-                      style={{width:40,height:40,marginHorizontal:5}}
+                      style={{width:35,height:35,marginRight:5}}
                       source={require('../resource/image/icon-product.png')}
                     />:
                     <Image
-                    style={{width:40,height:40,marginHorizontal:5 }}
+                    style={{width:35,height:35,marginRight:5 }}
                     source={require('../resource/image/icon_servic.png')}
                   />}
              </View>
@@ -48,7 +48,7 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
                 <View >
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />
-                  <Text style={styles.txtRight} numberOfLines={1}>{item.expirationdate?common.formatDate2(item.expirationdate):''}</Text>
+                  <Text style={styles.txtRight} numberOfLines={1}>{item.saledate?common.formatDate2(item.saledate):''}</Text>
                   </View>
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />

@@ -75,7 +75,8 @@ export default class DetailKey extends React.Component {
       userSeller: null,
       advance:null,
       hid:null,
-      id:null
+      id:null,
+      itemKey:null,
     };
   }
 
@@ -88,8 +89,9 @@ export default class DetailKey extends React.Component {
       typeNote: item.type
     })
   };
-  clickEdit = (item) => {
-    this.props.navigation.navigate('EditKeyScreen', { item })
+  clickEdit = () => {
+    const {itemKey}=this.state
+    this.props.navigation.navigate('EditKeyScreen', {itemKey})
   };
   onDelite = () => {
     this.setState({
@@ -144,7 +146,9 @@ export default class DetailKey extends React.Component {
         userSeller: data.username,
         advance: data.advance ,
         hid: data.hid,
-        id:data.id
+        id:data.id,
+        itemKey:data,
+
       })
     } catch (e) {
       console.log(e);
@@ -189,8 +193,6 @@ export default class DetailKey extends React.Component {
       price, discount, type, modalVisible, typeDelete, statusErrorLyDo,advance,hid,id
     } = this.state
     const pricenew = price - discount;
-    const itemProps = this.props.route.params.item;
-    console.log('sdsdd', type)
     return (
       <View
         style={styles.containerAll}>
@@ -199,7 +201,7 @@ export default class DetailKey extends React.Component {
           buttonLeft={true} buttonRight={true}
           nameIcon={'account-edit'}
           textRight={'Sửa'}
-          onPressRight={() => this.clickEdit(itemProps)} />
+          onPressRight={this.clickEdit} />
         <Modal
           animationType="slide"
           transparent={true}
@@ -262,8 +264,9 @@ export default class DetailKey extends React.Component {
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={customeremail ? customeremail : ''}
                   nameIcon={'email'}
+                  containerText={{ borderBottomColor:customerphone?'#D8D8D8': '#fff' }}
                   styleColour={styles.txtColour} />
-                <TouchableOpacity onPress={() => {
+                {customerphone?<TouchableOpacity onPress={() => {
                   if (customerphone !== ''
                   ) {
                     Linking.openURL(
@@ -279,7 +282,7 @@ export default class DetailKey extends React.Component {
                     style={{ color: '#2E64FE' }}
                     containerText={{ borderBottomColor: '#fff' }}
                     styleColour={styles.txtColour} />
-                </TouchableOpacity>
+                </TouchableOpacity>:null}
               </View>
             } />
           <ItemComponentTitle
@@ -310,10 +313,17 @@ export default class DetailKey extends React.Component {
                 <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
                   nameIcon={'bank'}
                   styleColour={styles.txtColour} />
-                <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
-                  nameIcon={'receipt'}
-                  containerText={{ borderBottomColor: '#fff' }}
-                  styleColour={styles.txtColour} />
+                  {messagebill === '' || messagebill === null ?
+                  <ItemDetailIcon txtValue={'Nội dung hóa đơn'}
+                    nameIcon={'receipt'}
+                    style={{ color: '#BDBDBD', fontStyle: 'italic' }}
+                    styleColour={styles.txtColour} /> :
+                    <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
+                    nameIcon={'receipt'}
+                    containerText={{ borderBottomColor: '#fff' }}
+                    styleColour={styles.txtColour} />
+                }
+               
               </View>
             } />
           <ItemComponentTitle
@@ -333,7 +343,7 @@ export default class DetailKey extends React.Component {
                     styleColour={styles.txtColour} />
                 }
                 <TouchableOpacity style={styles.View}>
-                  <ItemDetailIcon txtValue={'Thêm Hóa đơn'}
+                  <ItemDetailIcon txtValue={'Thêm ảnh hóa đơn'}
                     nameIcon={'folder-image'}
                     style={{ color: '#2E64FE' }}
                     colorss={true}

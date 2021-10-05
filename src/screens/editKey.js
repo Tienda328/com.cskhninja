@@ -40,7 +40,7 @@ class EditKey extends React.Component {
         super(props);
         const { customerid, customername, advance, customeremail, customerphone, hid,
             productName, expirationdate, planname, paymentName, messagebill, note, price, discount, type
-        } = this.props.route.params.item
+        } = this.props.route.params.itemKey
         const pricers = price - discount;
         const typeBQClon = type === 1 ? 'Phần mềm' : 'Dịch vụ';
         this.state = {

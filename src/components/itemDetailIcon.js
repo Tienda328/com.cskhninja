@@ -11,7 +11,7 @@ export default function ItemDetailIcon({ nameIcon, txtValue,isIconRight, style,c
         <View style={styles.containerAll}>
              <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: colorss?'#2E64FE':'gray', marginLeft:20 }} />
            <View style={[styles.containerText, containerText]}>
-           <Text style={[styles.txtValue,style]} > {txtValue}</Text>
+           <Text style={[styles.txtValue,style]} numberOfLines={1} > {txtValue}</Text>
           {isIconRight ?  <MaterialCommunityIcons name={iconRight} size={20} style={{ color: colorss?'#2E64FE':'gray', marginRight:20 }} />: null}
            </View>
         </View>

@@ -1,42 +1,71 @@
 import React, { useState } from 'react';
 
-import { View, Text, StyleSheet } from 'react-native';
-import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 
 
-
-export default function App({hideMenu, showMenu, nameTitle, visible, dataMenu}) {
- 
+export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle, dataMenu, style }) {
     return (
         <View >
-            <Menu
-                visible={visible}
-                anchor={<View style={styles.containerFirst}>
-                    <Text onPress={showMenu} style={styles.txtFirst}>{nameTitle}</Text>
-                </View>}
-                onRequestClose={hideMenu}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
             >
-                {dataMenu.map((item, index) => {
-                    return (
-                        <MenuItem key={index.toString()} onPress={() => hideMenu(item)}>{item.title}</MenuItem>
-                    )
-                })}
-            </Menu>
+                <View style={[styles.containerModal, style]}>
+                    {dataMenu.map((item, index) => {
+                        return (
+                            <TouchableOpacity key={index.toString()} style={styles.btnTitle} onPress={()=>ClickHide(item)}>
+                                <Text style={styles.txtTitle}>{item.title}</Text>
+                            </TouchableOpacity>
+                        )
+                    })}
+
+                </View>
+            </Modal>
+            <TouchableOpacity
+                style={styles.openButton}
+                onPress={ClickShow}
+            >
+                <Text style={styles.textStyle}>{nameTitle}</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    txtFirst: {
-        fontSize: 15,
-        fontWeight: '600',
-        paddingVertical: 10,
-        marginLeft: 20,
+    openButton: {
+        backgroundColor:'red',
+        backgroundColor:'#fff',
+        paddingVertical:10,
+        borderRadius:10,
+        marginVertical:10,
     },
-    containerFirst: {
-        marginVertical: 10,
+    textStyle:{
+        marginLeft:20
+    },
+    txtTitle:{
+        fontSize:13,
+        paddingVertical:10,
+        textAlign:'center'
+    },
+    btnTitle:{
+        borderBottomColor: '#D8D8D8',
+        borderBottomWidth: 0.5,
+    },
+    containerModal: {
+        width: 150,
+        marginTop: 45,
         backgroundColor: '#fff',
-        borderRadius: 10
+        shadowColor: '#000',
+        borderRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+        marginLeft: 20
     }
 
 });

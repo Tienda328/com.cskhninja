@@ -180,7 +180,7 @@ export default class DetailCustomer extends React.Component {
                             <ItemDetailIcon txtValue={email ? email : ''}
                                 nameIcon={'email'}
                                 styleColour={styles.txtColour} />
-                            <TouchableOpacity onPress={() => {
+                           {phone? <TouchableOpacity onPress={() => {
                                 if (phone !== ''
                                 ) {
                                     Linking.openURL(
@@ -196,7 +196,7 @@ export default class DetailCustomer extends React.Component {
                                     style={{ color: '#2E64FE' }}
                                     containerText={{ borderBottomColor: '#fff' }}
                                     styleColour={styles.txtColour} />
-                            </TouchableOpacity>
+                            </TouchableOpacity>: null}
                             <View style={styles.containerTitle}>
                                 <Text style={styles.txtTitle}>Danh Sách các key</Text>
                             </View>

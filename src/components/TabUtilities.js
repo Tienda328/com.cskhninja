@@ -6,36 +6,22 @@ import ScrollableTabView, {
 } from 'react-native-scrollable-tab-view';
 import TabBar from 'react-native-underline-tabbar';
 import TabView from './tabView';
-import ListProduct from './list/listProduct';
-import ListPay from './list/listPay';
-import ListRatings from './list/listRatings';
-import ListTeam from './list/listTeam';
+import ListLicenseActivation from '../components/list/listLicenseActivation';
+import ListResetPassWord from '../components/list/listResetPassWord';
 
+const SecondRoute3 = () => (
+    <View style={[styles.container]} >
+        <Text>SecondRoute</Text>
+    </View>
+);
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-4w6c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    type:1
-  },
-  {
-    id: '3ac68afc-c605-rwe-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    type:1
-  },
-  {
-    id: '58694a0f-3da1-rwe-bd96-145571e29d72',
-    title: 'Third Item',
-    type:2
-  },
-  {
-      id: 'bd7acbea-c1b1-4rwe6c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-      type:1
-    },
-];
+const SecondRoute4 = () => (
+    <View style={[styles.container]} >
+        <Text>SecondRoute</Text>
+    </View>
+);
 
-export default class TabSales extends React.Component {
+export default class TabUtilities extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,11 +33,11 @@ export default class TabSales extends React.Component {
         this.indexPage = currentpage.i;
     };
     render() {
-        const { datatBXH, datatBank, dataProduct, dataTeam } = this.props
+        const { nameTitle } = this.props
         return (
-            <View style={{flex:1, height:340, backgroundColor:'#f2f2f2', }}>
-               <View style={styles.containerTitle}>
-                 <Text style={styles.txtTitle}>Doanh số theo</Text>
+            <View style={styles.containerAll}>
+               <View>
+                 <Text style={styles.txtTitle}>Tiện ích</Text>
                </View>
                <ScrollableTabView
                     ref={(ref) => {
@@ -75,7 +61,6 @@ export default class TabSales extends React.Component {
                               key={page}
                               stylesSub={interpolators[page]}
                               tab={tab}
-                              // style={{justifyContent:'space-between'}}
                               page={page}
                               isTabActive={isTabActive}
                               // onPressHandler={()=> console.log(page)}
@@ -87,10 +72,8 @@ export default class TabSales extends React.Component {
                     onScroll={(x) => scrollX.setValue(x)}
                     initialPage={this.indexPage}
                     onChangeTab={this.currentPage}>
-                    <ListProduct  tabLabel={{tabName: 'Theo sản phẩm'}} dataProduct={dataProduct}  />
-                    <ListPay  tabLabel={{tabName: 'Thanh toán'}} datatBank={datatBank} />
-                    <ListRatings  tabLabel={{tabName: 'Bảng xếp hạng'}} datatBXH={datatBXH} />
-                    <ListTeam    tabLabel={{tabName: 'Theo team'}} dataTeam={dataTeam}  />
+                    <ListLicenseActivation  tabLabel={{tabName: 'Kích hoạt lại bản quyền'}}  />
+                    <ListResetPassWord  tabLabel={{tabName: 'Reset mật khẩu'}}  />
                 </ScrollableTabView>
             </View>
         );
@@ -133,14 +116,25 @@ const styles = StyleSheet.create({
         flex: 1,
 
     },
+    containerTitle:{
+      backgroundColor:'#fff', 
+      borderTopRightRadius:10,
+      borderTopLeftRadius:10
+    },
     tabBarStyle: {
-        backgroundColor: '#fff',
+        // backgroundColor: '#0066ff',
         borderTopColor: '#E7EDF4',
         width: '100%',
         borderTopWidth: 0,
         paddingLeft: 10,
         marginTop: 0,
       },
+      containerAll: { flex: 1,
+         height:340, 
+         marginTop:8,
+         marginBottom:10,
+         backgroundColor:'#fff', 
+         borderRadius:10, },
       txtTitle:{
         fontSize:15,
         fontWeight:'500',
@@ -148,8 +142,5 @@ const styles = StyleSheet.create({
         paddingVertical:10,
         borderBottomWidth:0.5,
         borderBottomColor:'#D8D8D8',
-      },
-      containerTitle:{backgroundColor:'#fff', 
-      borderTopRightRadius:10,
-      borderTopLeftRadius:10}
+      }
 });

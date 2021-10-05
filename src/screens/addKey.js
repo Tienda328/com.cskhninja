@@ -3,6 +3,7 @@ import React from 'react';
 import {
     View,
     Text,
+    Alert,
     Dimensions,
     TouchableOpacity,
     ScrollView,
@@ -42,9 +43,9 @@ class AddKey extends React.Component {
         super(props);
         this.state = {
             email: '',
-            type: 1,
+            type: null,
             isNoData: true,
-            txtDiscount: '',
+            txtDiscount: '0',
             disablePhanMem: true,
             disableTypeBQ: true,
             CustomerCode: '0',
@@ -62,7 +63,7 @@ class AddKey extends React.Component {
             productid: null,
             motorCode: '',
             hid: null,
-            disCount: null,
+            disCount: '',
             goiBQ: 'Gói bản quyền',
             price: '0',
             planid: null,
@@ -81,8 +82,7 @@ class AddKey extends React.Component {
             if (CustomerCode !== '0' &&
                 typeBQ !== 'Chọn loại bản quyền' &&
                 phanmem !== 'Chọn phần mềm' &&
-                messagebill !== '' &&
-                note !== ''
+                messagebill !== '' 
             ) {
                 const pass_word = await getLocale(LOCALE_KEY.pass_word);
                 const email = await getLocale(LOCALE_KEY.email);
@@ -101,24 +101,28 @@ class AddKey extends React.Component {
                 ,'discount':'${txtDiscount}','note':'${note}','paymentid':'${productid}'
                 ,'messagebill':'${messagebill}','type':'${type}'}`
                 };
+                console.log('objPost', objPost)
                 try {
-                    await Guest.createkey(objPost);
+                    await Guest.createkey(objPost, 'message');
                     this.setState({
                         isCustomerCode: false
                     })
+                    this.clearnState
+                    this.props.navigation.navigate('CopyrightManagement')
 
                 } catch (e) {
                     console.log(e);
                 }
-                this.clearnState
+                
             }
     }
 
     clearnState = () => {
         this.setState({
             email: '',
-            type: 1,
+            type: null,
             isNoData: true,
+            txtDiscount: '0',
             disablePhanMem: true,
             disableTypeBQ: true,
             CustomerCode: '0',
@@ -136,13 +140,14 @@ class AddKey extends React.Component {
             productid: null,
             motorCode: '',
             hid: null,
-            disCount: '0',
+            disCount: '',
             goiBQ: 'Gói bản quyền',
             price: '0',
             planid: null,
             stateEmail: '',
             stateError: '',
             paymentid: null,
+            isCustomerCode: false
         })
     }
 
@@ -233,7 +238,6 @@ class AddKey extends React.Component {
         try {
             const response = await Guest.loadplan(objPost);
             const data = JSON.parse(response.data)
-            console.log('dsata', response.data)
             if (response.data === '[]') {
                 this.setState({
                     isNoData: false,
@@ -315,7 +319,7 @@ class AddKey extends React.Component {
                 this.setState({ stateEmail: 'Email không đúng định dạng' });
                 return false;
             } else {
-                this.setState({ stateEmail: null });
+                this.setState({ stateEmail: '' });
                 return true;
             }
         } else {
@@ -343,17 +347,28 @@ class AddKey extends React.Component {
                 variable: `{'email':'${this.state.email}'}`
             };
             try {
-                const response = await Guest.seachcustomer(objPost, 'message');
-                itemInfo = response.data
-                const makh = JSON.parse(itemInfo).id
-                const nameKh = JSON.parse(itemInfo).name
-                const phoneKh = JSON.parse(itemInfo).phone
-
-                this.setState({
-                    CustomerCode: makh,
-                    CustomerName: nameKh,
-                    phoneNumber: phoneKh
-                })
+                const response = await Guest.seachcustomer(objPost);
+                if (response.status === true) {
+                    itemInfo = response.data
+                    const makh = JSON.parse(itemInfo).id
+                    const nameKh = JSON.parse(itemInfo).name
+                    const phoneKh = JSON.parse(itemInfo).phone
+    
+                    this.setState({
+                        CustomerCode: makh,
+                        CustomerName: nameKh,
+                        phoneNumber: phoneKh
+                    })
+                  } else if (response.status === false) {
+                    Alert.alert(
+                      "Thông báo",
+                      response.message,
+                      [
+                        { text: "OK", onPress: () => { } }
+                      ]
+                    );
+                  }
+               
             } catch (e) {
                 console.log(e);
             }
@@ -368,7 +383,7 @@ class AddKey extends React.Component {
     };
     render() {
         const { email, CustomerCode, note, messagebill, motorCode, price, disCount,
-            typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,
+            typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,type,
             goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState, isCustomerCode,
             phoneNumber, CustomerName } = this.state;
         return (
@@ -443,13 +458,15 @@ class AddKey extends React.Component {
                                         noData={isNoData}
                                         click={this.clickItemGoiBQ}
                                         namePlaceholder={goiBQ} />
-                                    <TextInputKey
+                                  { type ===1? <TextInputKey
                                         onChangeText={(text) => this.onChangeTextMotorCode(text)}
-                                        placeholder="Mã máy có thể bỏ trống"
+                                        placeholder="Mã máy"
                                         nameIcon={'qrcode'}
+                                        isError={isErrorState}
+                                        statusError={motorCode === '' && isErrorState === true ? 'Mã máy Không được để trống' : ''}
                                         value={motorCode}
                                         editable={true}
-                                    />
+                                    />:null}
                                     <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
                                     <NumberFormat
                                         value={disCount}
@@ -513,11 +530,10 @@ class AddKey extends React.Component {
                             onChangeText={(text) => this.onChangeTextNote(text)}
                             placeholder="Ghi chú"
                             styleInput={{ borderBottomColor: '#fff' }}
-                            isError={isErrorState}
                             nameIcon={'calendar-text'}
                             editable={true}
                             value={note}
-                            statusError={note === '' && isErrorState === true ? 'Ghi chú không được để trống' : ''}
+                           
                         />
                         <View style={styles.bottomKey} />
 
@@ -538,10 +554,8 @@ const styles = StyleSheet.create({
     containerInput: {
         flexDirection: 'row',
         height: windowHeight / 17.8,
-        shadowColor: '#000',
         alignItems: 'center',
-        backgroundColor: "#fff",
-
+        // backgroundColor: "#fff",
     },
     txtError: {
         color: 'red',
@@ -561,6 +575,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 0.5,
+        marginBottom:2,
     },
     containerSearch: {
         flexDirection: 'row',

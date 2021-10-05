@@ -32,8 +32,8 @@ const dataMenu = [
   { id: '1', title: '7 ngày qua' },
   { id: '2', title: 'Hôm nay' },
   { id: '34', title: 'Hôm qua' },
-  { id: '4', title: 'Tuần này' },
-  { id: '5', title: 'Tuần trước' },
+  { id: '4', title: 'Tháng này' },
+  { id: '5', title: 'Tháng trước' },
 ];
 
 
@@ -98,6 +98,7 @@ class CopyrightManagement extends React.Component {
       textBill: 'Chọn loại hóa đơn',
       textApprove: 'Chọn loại duyệt thanh toán',
       modalVisible: false,
+      modalVisibleMenu: false,
       dataKey: [],
       dataTypyBQ: [],
       disableTypeBQ: true,
@@ -216,13 +217,11 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
+      variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'20'}`
 
     }
-    console.log('objPost', objPost)
     try {
       const response = await Guest.viewallkey(objPost);
-      console.log('dssdsd', response)
       const data = JSON.parse(response.data)
       this.setState({
         dataKey: data,
@@ -337,22 +336,21 @@ class CopyrightManagement extends React.Component {
     }, () => this.getKey('', '0', '0', '0', '0', '0', '0'))
   }
 
-  onShowMenu = () => {
+  onCloseModal = (item) => {
     this.setState({
-      visible: true
-    })
+      modalVisibleMenu: false,
+      nameTitleMenu:item.title
+    });
   }
-  hideMenu = (item) => {
-    console.log('tiem', item)
+  onShow = () => {
     this.setState({
-      visible: false,
-      nameTitleMenu: item.title
-    })
+      modalVisibleMenu: true,
+    });
   }
 
   render() {
     const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill, textApprove,
-      dataBQ, disablePhanMem, fromDateStart, visible, nameTitleMenu } = this.state;
+      dataBQ, disablePhanMem, fromDateStart, modalVisibleMenu, nameTitleMenu } = this.state;
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
@@ -441,14 +439,15 @@ class CopyrightManagement extends React.Component {
                 <Search value={search}
                   onPressFilter={this.onFilter}
                   showFilter
-                  style={{ marginBottom: 10 }}
-                  clickSearch={() => this.getKey(search,'0','0','0','0','0','0')}
+                  clickSearch={() => this.getKey(search, '0', '0', '0', '0', '0', '0')}
                   onChangeText={(text) => this.onChangeTextSearch(text)} />
-                <MenuMain visible={visible}
-                  nameTitle={nameTitleMenu}
-                  showMenu={this.onShowMenu}
-                  hideMenu={this.hideMenu}
+                <MenuMain
+                  modalVisible={modalVisibleMenu}
+                  style={{marginTop: 90}}
+                  ClickShow={this.onShow}
+                  ClickHide={this.onCloseModal}
                   dataMenu={dataMenu}
+                  nameTitle={nameTitleMenu}
                 />
                 <View style={styles.containerTitle}>
                   <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 20 }}>

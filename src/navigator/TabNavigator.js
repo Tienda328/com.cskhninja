@@ -79,7 +79,7 @@ class TabNavigator extends React.Component {
       color = focused ? '#F7941D' : '#A4A4A4'
       routeName = 'New Key';
     }
-    return <Text style={{ color: color }}>{routeName}</Text>
+    return <Text style={{ color: color, fontSize:11, fontWeight:'400' }}>{routeName}</Text>
   }
 
 

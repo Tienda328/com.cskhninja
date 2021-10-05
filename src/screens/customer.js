@@ -176,7 +176,6 @@ class Customer extends React.Component {
 
   render() {
     const { search, dataCustomer } = this.state;
-    console.log('fsdf', windowHeight)
 
     return (
       <View style={styles.containerAll}>
