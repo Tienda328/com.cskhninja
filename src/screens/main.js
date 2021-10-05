@@ -50,7 +50,8 @@ class Main extends React.Component {
       list_reportsoftware: [],
       refreshing:false,
       list_reportteam: [],
-      nameTitle: 'Hôm nay'
+      nameTitle: 'Hôm nay',
+      role:null
     };
   }
 
@@ -72,23 +73,19 @@ class Main extends React.Component {
     // }, () => this.getData())
     this.getData()
   }
-  onRefresh = async () => {
-    console('fsfds')
-    // await this.setState({ refreshing: true });
-    // this.getData();
-  };
-  refreshControl() {
-    const { refreshing } = this.state;
-    return (
-      <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />
-    );
+
+  _onRefresh() {
+    this.setState({refreshing: true, nameTitle: 'Hôm nay'}, ()=>this.getData());
   }
+
   getData = async () => {
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const role = await getLocale(LOCALE_KEY.role);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp);
+   
     const objPost = {
       email: email,
       password: md5,
@@ -100,16 +97,16 @@ class Main extends React.Component {
     try {
       const response = await Guest.reportsale(objPost);
       const data = JSON.parse(response.data)
-      const dataWare = data.list_reportsoftware !== [] ? data.list_reportsoftware : []
-      console.log('dssdds', dataWare)
       await this.setState({
+        refreshing: false,
         totalmoney: data.totalmoney,
         totalmoneyapprove: data.totalmoneyapprove,
         totalkey: data.totalkey,
         list_reportbxh: data.list_reportbxh,
         list_reportbank: data.list_reportbank,
         list_reportsoftware: data.list_reportsoftware,
-        list_reportteam: data.list_reportteam
+        list_reportteam: data.list_reportteam,
+        role:role
       })
     } catch (e) {
       console.log(e);
@@ -121,7 +118,8 @@ class Main extends React.Component {
   };
   render() {
     const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,
-      list_reportbank, list_reportsoftware, list_reportteam, refreshing } = this.state
+      list_reportbank, list_reportsoftware, list_reportteam,role } = this.state;
+
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
@@ -129,13 +127,12 @@ class Main extends React.Component {
           nameIcon={'bell'} />
 
         <ScrollView style={styles.containerAll}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={refreshing}
-          //     onRefresh={this.refreshControl}
-          //   />
-          // }
-
+           refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            />
+          }
         >
           <MenuMain
             modalVisible={modalVisible}
@@ -160,6 +157,7 @@ class Main extends React.Component {
           </View>
           <ChartTest />
           <TabSales
+            role={role}
             dataTeam={list_reportteam}
             datatBXH={list_reportbxh}
             datatBank={list_reportbank}

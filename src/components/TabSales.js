@@ -47,7 +47,7 @@ export default class TabSales extends React.Component {
         this.indexPage = currentpage.i;
     };
     render() {
-        const { datatBXH, datatBank, dataProduct, dataTeam } = this.props
+        const { datatBXH, datatBank, dataProduct, dataTeam, role } = this.props
         return (
             <View style={{flex:1, height:340, backgroundColor:'#f2f2f2', }}>
                <View style={styles.containerTitle}>
@@ -90,7 +90,7 @@ export default class TabSales extends React.Component {
                     <ListProduct  tabLabel={{tabName: 'Theo sản phẩm'}} dataProduct={dataProduct}  />
                     <ListPay  tabLabel={{tabName: 'Thanh toán'}} datatBank={datatBank} />
                     <ListRatings  tabLabel={{tabName: 'Bảng xếp hạng'}} datatBXH={datatBXH} />
-                    <ListTeam    tabLabel={{tabName: 'Theo team'}} dataTeam={dataTeam}  />
+                    {role==='admin'?<ListTeam    tabLabel={{tabName: 'Theo team'}} dataTeam={dataTeam}  />:null}
                 </ScrollableTabView>
             </View>
         );

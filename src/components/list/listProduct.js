@@ -14,11 +14,10 @@ const windowHeight = Dimensions.get('window').height;
 export default class ListProduct extends React.Component {
   render() {
     const { dataProduct } = this.props;
-    console.log('dataProduct',dataProduct===[])
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
        
-      {dataProduct!==[] ? dataProduct.map((item, index) => {
+      {dataProduct[0]!==undefined ? dataProduct.map((item, index) => {
           return (
             <View style={styles.containerItem} key={index.toString()}>
               <Text style={styles.txtStt}>{index + 1}</Text>

@@ -11,13 +11,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import common from '../../utils/common';
 const windowHeight = Dimensions.get('window').height;
 
-export default class ListTeam extends React.Component {
+export default class ListRating extends React.Component {
   render() {
-    const { dataTeam } = this.props;
+    const { dataTeam } = this.props
     return (
-      <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
-       
-      {dataTeam!==[] ? dataTeam.map((item, index) => {
+      <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10, }}>
+        {dataTeam[0]!==undefined? dataTeam.map((item, index) => {
           return (
             <View style={styles.containerItem} key={index.toString()}>
               <Text style={styles.txtStt}>{index + 1}</Text>
@@ -35,7 +34,7 @@ export default class ListTeam extends React.Component {
               </View>
             </View>
           )
-        }): (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
+        }):(<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

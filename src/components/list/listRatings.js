@@ -16,7 +16,7 @@ export default class ListRating extends React.Component {
     const { datatBXH } = this.props
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10, }}>
-        {datatBXH.map((item, index) => {
+        {datatBXH[0]!==undefined? datatBXH.map((item, index) => {
           return (
             <View style={styles.containerItem} key={index.toString()}>
               <Text style={styles.txtStt}>{index + 1}</Text>
@@ -34,7 +34,7 @@ export default class ListRating extends React.Component {
               </View>
             </View>
           )
-        })}
+        }):(<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

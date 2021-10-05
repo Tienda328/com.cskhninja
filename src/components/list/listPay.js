@@ -14,12 +14,12 @@ const windowHeight = Dimensions.get('window').height;
 export default class ListProduct extends React.Component {
   render() {
     const { datatBank } = this.props;
-    console.log('datatBank',datatBank===[])
+    console.log('datatBank',datatBank[0])
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
         {/* <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text>
         </View> */}
-      {datatBank!==[] ? datatBank.map((item, index) => {
+      {datatBank[0]!==undefined ? datatBank.map((item, index) => {
           return (
             <View style={styles.containerItem} key={index.toString()}>
               <Text style={styles.txtStt}>{index + 1}</Text>
