@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-import ListProduct from './list/listProduct';
+import ListLicenseActivation from './list/listLicenseActivation';
 import ListPay from './list/listPay';
 import ListRatings from './list/listRatings';
 import ListTeam from './list/listTeam';
@@ -29,7 +29,7 @@ export default class TabViewExample extends React.Component {
     renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
-                // return <ListProduct dataProduct={this.props.dataProduct} />;
+                return <ListLicenseActivation dataRestKey={this.props.dataRestKey} />;
             case 'second':
                 // return <ListPay datatBank={this.props.datatBank} />;
             default:
@@ -39,7 +39,7 @@ export default class TabViewExample extends React.Component {
     renderScene2 = ({ route }) => {
         switch (route.key) {
             case 'first':
-                // return <ListProduct dataProduct={this.props.dataProduct} />;
+                return <ListLicenseActivation dataRestKey={this.props.dataRestKey} />;
             case 'second':
                 // return <ListPay datatBank={this.props.datatBank} />;
             default:

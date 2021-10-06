@@ -41,6 +41,7 @@ class Main extends React.Component {
       totalkey: null,
       totalmoneyapprove: null,
       list_reportbxh: [],
+      dataRestKey: [],
       totalmoney: null,
       list_reportbank: [],
       list_reportsoftware: [],
@@ -70,6 +71,36 @@ class Main extends React.Component {
   componentDidMount() {
     const day = common.lastDay(-1)
     this.getData(day, day)
+    this.getResetKey()
+  }
+
+  getResetKey = async () => {
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp);
+
+
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "resetkey",
+      time: timeStamp,
+      token: token,
+      variable: `{'keyword':'vietseo86@gmail.com','page':'1','pagesize':'10'}`
+    };
+
+    try {
+      const response = await Guest.reportsale(objPost);
+      const data = JSON.parse(response.data)
+      await this.setState({
+        dataRestKey: data,
+      })
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   _onRefresh() {
@@ -177,7 +208,7 @@ class Main extends React.Component {
   };
   render() {
     const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,
-      list_reportbank, list_reportsoftware, leader, list_reportteam, role, list_reportmyteam } = this.state;
+      list_reportbank, list_reportsoftware, dataRestKey, leader, list_reportteam, role, list_reportmyteam } = this.state;
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
@@ -214,19 +245,19 @@ class Main extends React.Component {
             </View>
           </View>
           {/* <ChartTest /> */}
-         
-             <TabSales style={{ height:310 }}
+
+          <TabSales style={{ height: 310 }}
             role={role}
             dataProduct={list_reportsoftware}
             datatBank={list_reportbank}
             dataTeam={list_reportteam}
             datatBXH={list_reportbxh}
           />
-          <TabUtilities 
-          style={{ height:310 }}
-          leader={leader}
-          dataMyTeam ={list_reportmyteam} />
-
+          <TabUtilities
+            style={{ height: 400 }}
+            leader={leader}
+            dataRestKey={dataRestKey}
+            dataMyTeam={list_reportmyteam} />
         </ScrollView>
 
       </View>

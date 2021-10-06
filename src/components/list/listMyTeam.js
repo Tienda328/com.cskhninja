@@ -2,16 +2,11 @@ import React from 'react';
 import {
   View,
   Text,
-  FlatList,
-  StyleSheet,
   Dimensions,
   Image
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../../utils/common';
 import styles from './styles';
-const windowHeight = Dimensions.get('window').height;
-
 export default class ListTeam extends React.Component {
   render() {
     const { dataMyTeam } = this.props;

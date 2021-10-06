@@ -272,7 +272,6 @@ class CopyrightManagement extends React.Component {
       token: token,
       variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
     }
-    console.log('objPost',objPost )
     try {
       const response = await Guest.viewallkey(objPost);
      

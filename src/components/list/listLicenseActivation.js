@@ -1,118 +1,70 @@
 import React from 'react';
 import {
-    View,
-    Text,
-    FlatList,
-    StyleSheet,
-    Dimensions,
-    Image
+  View,
+  Text,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const windowHeight = Dimensions.get('window').height;
+import common from '../../utils/common';
+import Search from '../search';
+export default class ListLicenseActivation extends React.Component {
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-4w6c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-      type:1
-    },
-    {
-      id: '3ac68afc-c605-rwe-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-      type:1
-    },
-    {
-      id: '58694a0f-3da1-rwe-bd96-145571e29d72',
-      title: 'Third Item',
-      type:2
-    },
-    {
-        id: 'bd7acbea-c1b1-4rwe6c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        type:1
-      },
-      {
-        id: '3ac68afc-c605-wr-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        type:1
-      },
-      {
-        id: '58694a0f-3da1-4rwer71f-bd96-145571e29d72',
-        title: 'Third Item',
-        type:1
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aerwerd5-3ad53abb28ba',
-        title: 'First Item',
-        type:1
-      },
-      {
-        id: '3ac68afc-c605-48d3-arwe4f8-fbd91aa97f63',
-        title: 'Second Item',
-        type:1
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-re145571e29d72',
-        title: 'Third Item',
-        type:1
-      },
-      {
-        id: 'bd7acbea-c1b1-4q6c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        type:1
-      },
-      {
-        id: '3ac68afc-c605-48dq3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        type:1
-      },
-      {
-        id: '58694a0f-3da1-4q71f-bd96-145571e29d72',
-        title: 'Third Item',
-        type:1
-      },
-
-      {
-        id: 'bd7acbea-c1b1q-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        type:1
-      },
-      {
-        id: '3ac68afc-weqc605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        type:1
-      },
-      {
-        id: '58694wea0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-  ];
-  export default class ListLicenseActivation extends React.Component {
-
-   render(){
+  render() {
+    const { dataRestKey, onChangeText, clickSearch } = this.props
     return (
-        <View style={{backgroundColor:"#f2f2f2", paddingTop:10,}}>
-            {DATA.map((item, index) => {
-                        return (
-                          <View style={styles.containerItem} key={index.toString()}>
-                          <Text style={styles.txtStt}>{index+1}</Text>
-                          {item.type===1?  <Image
-                                   style={{width:20,height:20,marginRight:5}}
-                                   source={require('../../resource/image/icon-product.png')}
-                                 />:
-                                 <Image
-                                 style={{width:20,height:20,marginRight:5 }}
-                                 source={require('../../resource/image/icon_servic.png')}
-                               />}
-                               <View style={styles.containerName}>
-                               <Text style={styles.txtTitle} numberOfLines={1}>gsddsasassasasaassadssdgsg</Text>
-                               <Text style={{marginRight:20, width:110}} numberOfLines={1}>1,000,000,000,000 d</Text>
-                               </View>
-                      </View>
-                        )
-                    })}
-        </View>
+      <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10, }}>
+        <Search style={{ marginBottom: 15, }}
+          onChangeText={onChangeText}
+          clickSearch={clickSearch}
+        />
+        {dataRestKey[0] !== undefined ? dataRestKey.map((item, index) => {
+          return (
+            <View
+              style={styles.containerAll}
+              key={index.toString()}>
+              <View style={styles.containerText}>
+                <View style={styles.containerLeft}>
+                  <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+
+                    <Text style={{ width: 40, textAlign: 'center', }} numberOfLines={1}> {index + 1}</Text>
+
+                    {item.type === 1 ? <Image
+                      style={{ width: 20, height: 20, marginRight: 5 }}
+                      source={require('../../resource/image/icon-product.png')}
+                    /> :
+                      <Image
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        source={require('../../resource/image/icon_servic.png')}
+                      />}
+                  </View>
+
+                  <View>
+                    <Text style={styles.txtLeft} numberOfLines={1}>{item.customername ? item.customername : ''}</Text>
+                    <Text style={[styles.txtLeftEmail]} numberOfLines={1}>{item.customeremail ? item.customeremail : ''}</Text>
+                    <Text style={styles.txtLeftEmail} numberOfLines={1}>{item.productName ? item.productName : ''}</Text>
+                  </View>
+                </View>
+                <View >
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+
+                    <View>
+                      <Text style={styles.txtRight} numberOfLines={1}>{item.saledate ? common.formatDate2(item.saledate) : ''}</Text>
+                      <Text style={[styles.txtRight, { color: item.approve ? '#2E64FE' : 'red' }]} numberOfLines={1}>{item.price ? common.formatNumber(pricenew) : '0 đ'}</Text>
+                      <Text style={[styles.txtRight]} numberOfLines={1}>{item.conlai ? item.conlai + ' ngày' : '0 ngày'}</Text>
+                    </View>
+                    <TouchableOpacity >
+                      <MaterialCommunityIcons name={'sale'} size={20} style={{ marginRight: 10, color: 'gray' }} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+
+            </View>
+          )
+        }) : (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Không có dữ liệu</Text></View>)}
+      </View>
     );
-   }
+  }
 }

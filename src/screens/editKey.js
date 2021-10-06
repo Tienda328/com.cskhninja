@@ -41,7 +41,6 @@ class EditKey extends React.Component {
         const { customerid, customername, advance, planid, customerphone, hid,productid,
             productName, paymentid, planname, paymentName, messagebill, note, price, discount, type
         } = this.props.route.params.itemKey
-        console.log('dssdsd', this.props.route.params.itemKey)
         const pricers = price - discount;
         const typeBQClon = type === 1 ? 'Phần mềm' : 'Dịch vụ';
         this.state = {
@@ -88,15 +87,11 @@ class EditKey extends React.Component {
             function: "editkey",
             time: timeStamp,
             token: token,
-            variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${motorCode},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}"
-            }`
+            variable:`{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':'${motorCode}','note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}`
         };
-        console.log('objPost', objPost)
+        console.log('objPostkey', objPost)
         try {
-            const response = await Guest.editkey(objPost, 'message');
-            console.log('sdsd', response)
-
-
+             await Guest.editkey(objPost, 'message');
         } catch (e) {
             console.log(e);
         }
