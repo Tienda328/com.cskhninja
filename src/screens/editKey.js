@@ -38,9 +38,10 @@ const DataType = [
 class EditKey extends React.Component {
     constructor(props) {
         super(props);
-        const { customerid, customername, advance, customeremail, customerphone, hid,
-            productName, expirationdate, planname, paymentName, messagebill, note, price, discount, type
+        const { customerid, customername, advance, planid, customerphone, hid,productid,
+            productName, paymentid, planname, paymentName, messagebill, note, price, discount, type
         } = this.props.route.params.itemKey
+        console.log('dssdsd', this.props.route.params.itemKey)
         const pricers = price - discount;
         const typeBQClon = type === 1 ? 'Phần mềm' : 'Dịch vụ';
         this.state = {
@@ -62,21 +63,19 @@ class EditKey extends React.Component {
             advance: advance,
             isErrorState: false,
             messagebill: messagebill,
-            productid: null,
+            productid: productid,
             motorCode: hid,
-            hid: null,
             disCount: `${discount}`,
             goiBQ: planname ? planname : 'Gói bản quyền',
             price: pricers,
-            planid: null,
+            planid: planid,
             stateError: '',
-            paymentid: null,
+            paymentid: paymentid,
         };
     }
 
     btnSave = async () => {
-        const { productid, typeBQ, customerid, planid, phanmem, hid, txtDiscount, note, paymentid, messagebill, type, advance } = this.state;
-
+        const { productid, typeBQ, customerid, planid, phanmem, hid, txtDiscount, note, paymentid, messagebill, type, motorCode,advance } = this.state;
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
         const email = await getLocale(LOCALE_KEY.email);
         const md5 = stringMd5(pass_word);
@@ -89,9 +88,10 @@ class EditKey extends React.Component {
             function: "editkey",
             time: timeStamp,
             token: token,
-            variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${hid},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}"
+            variable: `{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':${motorCode},'note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}"
             }`
         };
+        console.log('objPost', objPost)
         try {
             const response = await Guest.editkey(objPost, 'message');
             console.log('sdsd', response)
