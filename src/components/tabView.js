@@ -36,11 +36,7 @@ const TabView = ({
   };
   let namePage = tabName + (totalItem ? ' (' + totalItem + ')' : '');
   return (
-    <TouchableOpacity
-      style={styleTab}
-      onPress={onPressHandler}
-      onLayout={onTabLayout}
-      key={page}>
+    <TouchableOpacity style={style} onPress={onPressHandler} onLayout={onTabLayout} key={page}>
       <Animated.View style={containerStyle}>
         <Animated.Text style={textStyle}>{namePage}</Animated.Text>
       </Animated.View>

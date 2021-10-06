@@ -12,21 +12,17 @@ import {
   Dimensions
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
-
 import TabSales from '../components/TabSales';
 import TabUtilities from '../components/TabUtilities';
 import ChartTest from '../components/chartTest';
-import colors from '../constants/colors';
-import ItemComponentTitle from '../components/itemComponentTitle';
 import Guest from '../api/guest';
 import { stringMd5 } from 'react-native-quick-md5';
 import MenuMain from '../components/menuMain';
 import common from '../utils/common';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
-const Width = Dimensions.get('screen').width;
+const Widtheighth = Dimensions.get('screen').height;
 
 const dataMenu = [
   { id: '1', title: '7 ngày qua' },
@@ -48,18 +44,22 @@ class Main extends React.Component {
       totalmoney: null,
       list_reportbank: [],
       list_reportsoftware: [],
-      refreshing:false,
+      refreshing: false,
       list_reportteam: [],
       nameTitle: 'Hôm nay',
-      role:null
+      role: null,
+      leader: null,
+      list_reportmyteam: [],
     };
   }
 
-  onCloseModal = (item) => {
-    this.setState({
+  onCloseModal = async (item) => {
+    await this.setState({
       modalVisible: false,
       nameTitle: item.title
     });
+    const day = this.getDay(item.id)
+    this.getData(day.startdate, day.enddate)
   }
   onShow = () => {
     this.setState({
@@ -68,32 +68,88 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    // this.setState({
-    //   isLoading: true
-    // }, () => this.getData())
-    this.getData()
+    const day = common.lastDay(-1)
+    this.getData(day, day)
   }
 
   _onRefresh() {
-    this.setState({refreshing: true, nameTitle: 'Hôm nay'}, ()=>this.getData());
+    const day = common.lastDay(-1)
+    this.setState({ refreshing: true, nameTitle: 'Hôm nay' }, () => this.getData(day, day));
   }
 
-  getData = async () => {
+  getDay = (id) => {
+    const date = new Date();
+    const today = common.formatDate(date);
+    if (id === '1') {
+      //7 ngày qua
+      const day = common.lastDay(5)
+      const itemDay = {
+        startdate: day,
+        enddate: today
+      }
+
+      return itemDay
+    }
+    else if (id === '2') {
+      //hôm nay
+      const day = common.lastDay(-1)
+      const itemDay = {
+        startdate: day,
+        enddate: day
+      }
+
+      return itemDay
+    }
+    else if (id === '3') {
+      //hom qua
+      const day = common.lastDay(0)
+      const itemDay = {
+        startdate: day,
+        enddate: day
+      }
+
+      return itemDay
+    }
+    else if (id === '4') {
+      //tháng này
+      const day = common.firstMonth()
+      const itemDay = {
+        startdate: day,
+        enddate: today
+      }
+      return itemDay
+    } else {
+      // tháng trước
+      const dayEnd = common.lastMonth()
+      const day = common.firstLastMonth()
+      const itemDay = {
+        startdate: day,
+        enddate: dayEnd
+      }
+      return itemDay
+    }
+  };
+
+
+  getData = async (startdate, enddate) => {
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const role = await getLocale(LOCALE_KEY.role);
+    const leader = await getLocale(LOCALE_KEY.leader);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp);
-   
+
+
     const objPost = {
       email: email,
       password: md5,
       function: "reportsale",
       time: timeStamp,
       token: token,
-      variable: `{'startdate':'09/01/2021','enddate':'09/30/2021'}`
+      variable: `{'startdate':'${startdate}','enddate':'${enddate}'}`
     };
+
     try {
       const response = await Guest.reportsale(objPost);
       const data = JSON.parse(response.data)
@@ -106,7 +162,10 @@ class Main extends React.Component {
         list_reportbank: data.list_reportbank,
         list_reportsoftware: data.list_reportsoftware,
         list_reportteam: data.list_reportteam,
-        role:role
+        list_reportmyteam: data.list_reportmyteam,
+        role: role,
+        leader: leader
+
       })
     } catch (e) {
       console.log(e);
@@ -118,8 +177,7 @@ class Main extends React.Component {
   };
   render() {
     const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,
-      list_reportbank, list_reportsoftware, list_reportteam,role } = this.state;
-
+      list_reportbank, list_reportsoftware, leader, list_reportteam, role, list_reportmyteam } = this.state;
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
@@ -127,7 +185,7 @@ class Main extends React.Component {
           nameIcon={'bell'} />
 
         <ScrollView style={styles.containerAll}
-           refreshControl={
+          refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh.bind(this)}
@@ -144,25 +202,30 @@ class Main extends React.Component {
           <View style={styles.containetText}>
             <View style={[styles.containerKeyAll, { marginLeft: 10, backgroundColor: '#FE2E2E' }]}>
               <Text style={styles.txtTitle}>Tổng key</Text>
-              <Text style={styles.txtValue}>{totalkey}</Text>
+              <Text style={styles.txtValue}>{totalkey ? totalkey : '0'}</Text>
             </View>
             <View style={[styles.containerKeyAll, { marginHorizontal: 10 }]} >
               <Text style={styles.txtTitle}>Doanh số</Text>
-              <Text style={styles.txtValue}>{common.formatNumber(totalmoney)}</Text>
+              <Text style={styles.txtValue}>{totalmoney ? common.formatNumber(totalmoney) : '0 đ'}</Text>
             </View>
             <View style={[styles.containerKeyAll, { marginRight: 10, backgroundColor: '#F7941D' }]} >
               <Text style={styles.txtTitle}>Doanh số đã duyệt</Text>
-              <Text style={styles.txtValue}>{common.formatNumber(totalmoneyapprove)}</Text>
+              <Text style={styles.txtValue}>{totalmoneyapprove ? common.formatNumber(totalmoneyapprove) : '0 đ'}</Text>
             </View>
           </View>
-          <ChartTest />
-          <TabSales
+          {/* <ChartTest /> */}
+         
+             <TabSales style={{ height:310 }}
             role={role}
+            dataProduct={list_reportsoftware}
+            datatBank={list_reportbank}
             dataTeam={list_reportteam}
             datatBXH={list_reportbxh}
-            datatBank={list_reportbank}
-            dataProduct={list_reportsoftware} />
-          <TabUtilities />
+          />
+          <TabUtilities 
+          style={{ height:310 }}
+          leader={leader}
+          dataMyTeam ={list_reportmyteam} />
 
         </ScrollView>
 

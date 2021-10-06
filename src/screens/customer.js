@@ -12,7 +12,6 @@ import {
 import NaviHerderFull from '../components/naviHerderFull';
 import ItemCustomer from '../components/itemCustomer';
 import Search from '../components/search';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';

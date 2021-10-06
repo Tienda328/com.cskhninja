@@ -7,14 +7,13 @@ import {
   Dimensions,
   Image
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../../utils/common';
+import styles from './styles';
 const windowHeight = Dimensions.get('window').height;
 
 export default class ListProduct extends React.Component {
   render() {
     const { datatBank } = this.props;
-    console.log('datatBank',datatBank[0])
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
         {/* <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text>
@@ -26,7 +25,7 @@ export default class ListProduct extends React.Component {
 
               <Image
                 style={{ width: 20, height: 20, marginRight: 5 }}
-                source={require('../../resource/image/icon_servic.png')}
+                source={require('../../resource/image/icon_money.png')}
               />
               <View style={styles.containerName}>
                 <Text style={styles.txtTitle} numberOfLines={1}>{item.name ? item.name : ''}</Text>
@@ -42,39 +41,3 @@ export default class ListProduct extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  containerInput: {
-    flexDirection: 'row',
-    height: windowHeight / 17.8,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    marginBottom: 1
-  },
-  txtTitle: {
-    width: 160,
-    fontSize: 13,
-    fontWeight: '400'
-  },
-  containerName: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  txtStt: {
-    marginHorizontal: 10,
-    textAlign: 'center'
-  },
-  containerItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    marginBottom: 11,
-    borderRadius: 10,
-    marginHorizontal: 10,
-
-  }
-
-})

@@ -7,6 +7,7 @@ import {
     Dimensions,
     Image
 } from 'react-native';
+import styles from './styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowHeight = Dimensions.get('window').height;
 
@@ -115,39 +116,3 @@ const DATA = [
     );
    }
 }
-
-const styles = StyleSheet.create({
-    containerInput: {
-        flexDirection: 'row',
-        height: windowHeight / 17.8,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        marginBottom:1
-    },
-    txtTitle:{
-      width:150,
-      fontSize:13,
-      fontWeight:'400'
-    },
-    containerName:{
-      flex:1,
-      alignItems:'center',
-      flexDirection:'row',
-      justifyContent:'space-between'
-    },
-    txtStt:{
-        marginHorizontal:10, 
-        textAlign:'center'
-    },
-    containerItem:{
-        flexDirection:'row',
-        paddingVertical:10,
-        backgroundColor:'#fff',
-        alignItems:'center',
-        marginBottom:11,
-        borderRadius:10,
-        marginHorizontal:10,
-        
-    }
-
-})

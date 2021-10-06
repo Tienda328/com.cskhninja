@@ -1,155 +1,131 @@
-
 import * as React from 'react';
-import { Animated, View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import ScrollableTabView, {
-    DefaultTabBar,
-} from 'react-native-scrollable-tab-view';
-import TabBar from 'react-native-underline-tabbar';
-import TabView from './tabView';
+import { View, Text, StyleSheet, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import ListProduct from './list/listProduct';
 import ListPay from './list/listPay';
 import ListRatings from './list/listRatings';
 import ListTeam from './list/listTeam';
-
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-4w6c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    type:1
-  },
-  {
-    id: '3ac68afc-c605-rwe-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    type:1
-  },
-  {
-    id: '58694a0f-3da1-rwe-bd96-145571e29d72',
-    title: 'Third Item',
-    type:2
-  },
-  {
-      id: 'bd7acbea-c1b1-4rwe6c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-      type:1
-    },
+const LazyPlaceholder = ({ route }) => (
+    <View style={styles.scene}>
+        <Text> {route.title}</Text>
+    </View>
+);
+const routes1= [
+    { key: 'first', title: 'Sản phẩm' },
+    { key: 'second', title: 'Thanh toán' },
+    { key: 'three', title: 'Xếp Hạng' },
 ];
-
-export default class TabSales extends React.Component {
+const routes2= [
+    { key: 'first', title: 'Sản phẩm' },
+    { key: 'second', title: 'Thanh toán' },
+    { key: 'three', title: 'Xếp Hạng' },
+    { key: 'four', title: 'Theo team' },
+];
+export default class TabViewExample extends React.Component {
     constructor(props) {
         super(props);
+        const data = this.props.role=== 'Admin' ? routes2:routes1
+        console.log(this.props.role)
         this.state = {
+            index: 0,
+            routes:data
         };
-        this.indexPage = 0;
-    }
-
-    currentPage = (currentpage) => {
-        this.indexPage = currentpage.i;
+      }
+    renderScene = ({ route }) => {
+        switch (route.key) {
+            case 'first':
+                return <ListProduct dataProduct={this.props.dataProduct} />;
+            case 'second':
+                return <ListPay datatBank={this.props.datatBank} />;
+            case 'three':
+                return <ListRatings datatBXH={this.props.datatBXH} />;
+            default:
+                return null;
+        }
     };
+    renderScene2 = ({ route }) => {
+        switch (route.key) {
+            case 'first':
+                return <ListProduct dataProduct={this.props.dataProduct} />;
+            case 'second':
+                return <ListPay datatBank={this.props.datatBank} />;
+            case 'three':
+                return <ListRatings datatBXH={this.props.datatBXH} />;
+            case 'four':
+                return <ListTeam dataTeam={this.props.dataTeam} />;
+            default:
+                return null;
+        }
+    };
+
+    _handleIndexChange = index => this.setState({ index });
+
+    _renderLazyPlaceholder = ({ route }) => <LazyPlaceholder route={route} />;
+    renderTabBar = props => (
+        < TabBar
+            {...props}
+            activeColor={'#2E64FE'}
+            indicatorStyle={{ backgroundColor: '#2E64FE', fontSize: 10 }}
+            style={{ backgroundColor: '#fff', }}
+            inactiveColor={'gray'}
+            labelStyle={{ fontSize: 12 }}
+        />
+    );
+
     render() {
-        const { datatBXH, datatBank, dataProduct, dataTeam, role } = this.props
+        const {Role,index, routes}=this.state
+        const { style } = this.props
         return (
-            <View style={{flex:1, height:340, backgroundColor:'#f2f2f2', }}>
-               <View style={styles.containerTitle}>
-                 <Text style={styles.txtTitle}>Doanh số theo</Text>
-               </View>
-               <ScrollableTabView
-                    ref={(ref) => {
-                        this.scrollableTabView = ref;
-                    }}
-                    keyboardDismissMode="on-drag"
-                    keyboardShouldPersistTaps={false}
-                    renderTabBar={() => (
-                        <TabBar
-                          underlineColor={'transparent'}
-                          tabBarStyle={styles.tabBarStyle}
-                          prerenderingSiblingsNumber={Infinity}
-                          renderTab={(
-                            tab,
-                            page,
-                            isTabActive,
-                            onPressHandler,
-                            onTabLayout,
-                          ) => (
-                            <TabView
-                              key={page}
-                              stylesSub={interpolators[page]}
-                              tab={tab}
-                              // style={{justifyContent:'space-between'}}
-                              page={page}
-                              isTabActive={isTabActive}
-                              // onPressHandler={()=> console.log(page)}
-                              onTabLayout={onTabLayout}
-                            />
-                          )}
-                        />
-                      )}
-                    onScroll={(x) => scrollX.setValue(x)}
-                    initialPage={this.indexPage}
-                    onChangeTab={this.currentPage}>
-                    <ListProduct  tabLabel={{tabName: 'Theo sản phẩm'}} dataProduct={dataProduct}  />
-                    <ListPay  tabLabel={{tabName: 'Thanh toán'}} datatBank={datatBank} />
-                    <ListRatings  tabLabel={{tabName: 'Bảng xếp hạng'}} datatBXH={datatBXH} />
-                    {role==='admin'?<ListTeam    tabLabel={{tabName: 'Theo team'}} dataTeam={dataTeam}  />:null}
-                </ScrollableTabView>
+            <View style={[{ flex: 1, backgroundColor: '#f2f2f2', }, style]}>
+                <View style={styles.containerTitle}>
+                    <Text style={styles.txtTitle}>Doanh số theo</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.txtAll}>{'Xem Tất cả'}</Text>
+                    </TouchableOpacity>
+
+                </View>
+                <TabView
+                    lazy
+                    navigationState={{index, routes}}
+                    renderScene={Role?this.renderScene:this.renderScene2}
+                    renderTabBar={this.renderTabBar}
+                    renderLazyPlaceholder={this._renderLazyPlaceholder}
+                    onIndexChange={this._handleIndexChange}
+                    initialLayout={{ width: Dimensions.get('window').width }}
+                />
             </View>
+
         );
     }
 }
-export const scrollX = new Animated.Value(0);
-export const interpolators = Array.from({length: 7}, (_, i) => i).map(
-    (idx) => ({
-      scale: scrollX.interpolate({
-        inputRange: [idx - 1, idx, idx + 1],
-        outputRange: [1, 1.2, 1],
-        extrapolate: 'clamp',
-      }),
-      opacity: scrollX.interpolate({
-        inputRange: [idx - 1, idx, idx + 1],
-        outputRange: [0.9, 1, 0.9],
-        extrapolate: 'clamp',
-      }),
-      textColor: scrollX.interpolate({
-        inputRange: [idx - 1, idx, idx + 1],
-        outputRange: ['black', 'white', 'black'],
-      }),
-      fontSize: scrollX.interpolate({
-        inputRange: [idx - 1, idx, idx + 1],
-        outputRange: [
-         12,
-          12,
-         12,
-        ],
-      }),
-      backgroundColor: scrollX.interpolate({
-        inputRange: [idx - 1, idx, idx + 1],
-        outputRange: ['transparent', '#0066ff', 'transparent'],
-        extrapolate: 'clamp',
-      }),
-    }),
-  );
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    txtTitle: {
+        fontSize: 15,
+        fontWeight: '500',
+        marginLeft: 20,
+        paddingVertical: 10,
 
     },
-    tabBarStyle: {
+    txtAll: {
+        fontSize: 15,
+        color: '#2E64FE',
+        fontWeight: '500',
+        marginRight: 20,
+        paddingVertical: 10,
+    },
+    scene: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    containerTitle: {
         backgroundColor: '#fff',
-        borderTopColor: '#E7EDF4',
-        width: '100%',
-        borderTopWidth: 0,
-        paddingLeft: 10,
-        marginTop: 0,
-      },
-      txtTitle:{
-        fontSize:15,
-        fontWeight:'500',
-        marginLeft:20,
-        paddingVertical:10,
-        borderBottomWidth:0.5,
-        borderBottomColor:'#D8D8D8',
-      },
-      containerTitle:{backgroundColor:'#fff', 
-      borderTopRightRadius:10,
-      borderTopLeftRadius:10}
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#D8D8D8',
+    }
 });

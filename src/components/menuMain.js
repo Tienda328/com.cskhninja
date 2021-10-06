@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle, dataMenu, style }) {
@@ -14,7 +15,7 @@ export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle
                 <View style={[styles.containerModal, style]}>
                     {dataMenu.map((item, index) => {
                         return (
-                            <TouchableOpacity key={index.toString()} style={styles.btnTitle} onPress={()=>ClickHide(item)}>
+                            <TouchableOpacity key={index.toString()} style={styles.btnTitle} onPress={() => ClickHide(item)}>
                                 <Text style={styles.txtTitle}>{item.title}</Text>
                             </TouchableOpacity>
                         )
@@ -26,6 +27,7 @@ export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle
                 style={styles.openButton}
                 onPress={ClickShow}
             >
+                <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE', marginLeft: 20, }} />
                 <Text style={styles.textStyle}>{nameTitle}</Text>
             </TouchableOpacity>
         </View>
@@ -34,21 +36,23 @@ export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle
 
 const styles = StyleSheet.create({
     openButton: {
-        backgroundColor:'red',
-        backgroundColor:'#fff',
-        paddingVertical:10,
-        borderRadius:10,
-        marginVertical:10,
+        backgroundColor: 'red',
+        backgroundColor: '#fff',
+        paddingVertical: 10,
+        alignItems:'center',
+        flexDirection:'row',
+        borderRadius: 10,
+        marginVertical: 10,
     },
-    textStyle:{
-        marginLeft:20
+    textStyle: {
+        marginLeft: 10
     },
-    txtTitle:{
-        fontSize:13,
-        paddingVertical:10,
-        textAlign:'center'
+    txtTitle: {
+        fontSize: 13,
+        paddingVertical: 10,
+        textAlign: 'center'
     },
-    btnTitle:{
+    btnTitle: {
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 0.5,
     },

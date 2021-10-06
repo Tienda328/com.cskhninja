@@ -108,6 +108,7 @@ class LoginScreen extends Component {
       try {
         const response = await Guest.login(objPost);
         const userinfo = JSON.parse(response.data);
+        const leader =`${userinfo.leader}`
         if (response.status === true) {
           if (this.state.storageInfor === true) {
             setLocale(LOCALE_KEY.email, email);
@@ -115,6 +116,7 @@ class LoginScreen extends Component {
             setLocale(LOCALE_KEY.phone_number, userinfo.phone);
             setLocale(LOCALE_KEY.user_name, userinfo.name);
             setLocale(LOCALE_KEY.role, userinfo.role);
+            setLocale(LOCALE_KEY.leader, leader);
           } else {
             clearLocale(LOCALE_KEY.email);
             clearLocale(LOCALE_KEY.pass_word);
@@ -158,7 +160,7 @@ class LoginScreen extends Component {
                 />
               </View>
               <View style={loginStyle.viewInput}>
-                <MaterialCommunityIcons name={'account'} size={25} style={{ color: '#fff' }} />
+                <MaterialCommunityIcons name={'account'} size={20} style={{ color: '#fff' }} />
                 <TextInput
                   placeholder={"Tên đăng nhập"}
                   value={this.state.email}

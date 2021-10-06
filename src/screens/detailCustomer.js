@@ -10,21 +10,15 @@ import {
     ActivityIndicator,
     StyleSheet
 } from 'react-native';
-import ItemFlexRow from '../components/itemFlexRow';
 import ItemDetailIcon from '../components/itemDetailIcon';
-import TextInputModal from '../components/textInputModal';
 import NaviHerderFull from '../components/naviHerderFull';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import colors from '../constants/colors';
 import common from '../utils/common';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import LOCALE_KEY, {
     getLocale,
 } from '../repositories/local/appLocale';
 import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
 import ItemManage from '../components/itemManage';
-import ItemComponentTitle from '../components/itemComponentTitle';
 
 
 export default class DetailCustomer extends React.Component {
@@ -35,6 +29,8 @@ export default class DetailCustomer extends React.Component {
             dataKey: [],
             customerid: id,
             page: 1,
+            count:null,
+            total:null,
             isLoading: false,
         };
     }
@@ -71,7 +67,7 @@ export default class DetailCustomer extends React.Component {
             const response = await Guest.viewkeycustomer(objPost);
             const data = JSON.parse(response.data)
             if (data !== '[]') {
-                const dataFull = this.state.dataKey.concat(data)
+                const dataFull = this.state.dataKey.concat(data.list_sale)
                 this.setState({
                     dataKey: dataFull,
                 })
@@ -110,8 +106,11 @@ export default class DetailCustomer extends React.Component {
         try {
             const response = await Guest.viewallkey(objPost);
             const data = JSON.parse(response.data)
-            this.setState({
-                dataKey: data,
+            await this.setState({
+                dataKey: data.list_sale,
+                count:data.count,
+                total:data.total,
+                isLoading: false,
             })
 
         } catch (e) {
@@ -153,9 +152,9 @@ export default class DetailCustomer extends React.Component {
     }
 
     render() {
-        const { email, id, name, phone, statusErrorLyDo
+        const { email, id, name, phone,
         } = this.props.route.params.item
-        const { dataKey } = this.state
+        const { dataKey ,count, total } = this.state
         return (
             <View
                 style={styles.containerAll}>
@@ -205,12 +204,12 @@ export default class DetailCustomer extends React.Component {
                                 borderBottomColor: '#D8D8D8',
                             }}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{ marginLeft: 20 }}>Tổng KH:</Text>
-                                    <Text> 32323</Text>
+                                    <Text style={{ marginLeft: 20 }}>Hóa đơn:</Text>
+                                    <Text> {count? count:'0'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text>Tổng DT:</Text>
-                                    <Text style={{ marginRight: 20, color:'#2E64FE' }}> 32323</Text>
+                                    <Text>Tổng :</Text>
+                                    <Text style={{ marginRight: 20, color:'#2E64FE' }}> {total?common.formatNumber(total):'0 đ'}</Text>
                                 </View>
                             </View>
 

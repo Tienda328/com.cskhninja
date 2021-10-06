@@ -109,7 +109,7 @@ class LoginScreen extends Component {
                 />
               </View>
               <View style={loginStyle.viewInput}>
-                <MaterialCommunityIcons name={'account'} size={25} style={{ color: '#fff' }} />
+                <MaterialCommunityIcons name={'account'} size={20} style={{ color: '#fff' }} />
                 <TextInput
                   placeholder={"Tên đăng nhập"}
                   value={this.state.email}
