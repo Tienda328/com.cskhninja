@@ -13,7 +13,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { connect } from 'react-redux';
 import LOCALE_KEY, {
   getLocale,
-  setLocale,
   clearLocale,
 } from '../repositories/local/appLocale';
 class Profile extends React.Component {
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   txtLogOut: {
-    color: 'red',
+    color: '#FF0000',
     paddingVertical: 10,
     textAlign: 'center',
     flex: 1,

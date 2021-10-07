@@ -5,29 +5,16 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  Alert,
   Image,
   ScrollView,
   Platform,
   Dimensions
 } from 'react-native';
 import DismissKeyboardView from '../components/DismissKeyboard';
-import NaviHeaderComponent from '../components/NaviHeaderComponent'
 import { AuthContext } from '../context/AuthContext';
 import common from '../utils/common';
-import LOCALE_KEY, {
-  getLocale,
-  setLocale,
-  clearLocale,
-} from '../repositories/local/appLocale';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {
-  getUserInFor,
-} from '../redux/actions';
-import { stringMd5 } from 'react-native-quick-md5';
 import NaviHerderFull from '../components/naviHerderFull';
 import Guest from '../api/guest';
-import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const windowHeight = Dimensions.get('window').height;
 class LoginScreen extends Component {
@@ -148,7 +135,7 @@ const loginStyle = StyleSheet.create({
   txtError: {
     marginLeft: 35,
     marginTop: 10,
-    color: 'red'
+    color: '#FF0000'
   },
   header: {
     marginTop: 30,
@@ -170,18 +157,6 @@ const loginStyle = StyleSheet.create({
     paddingLeft: 10,
     color: '#fff',
   },
-  buttonSignIN: {
-    right: 0,
-    alignSelf: 'center',
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: windowHeight / 17.8,
-    // width: 250,
-    backgroundColor: '#66AF5C',
-    borderRadius: 20,
-  },
   viewInput: {
     flexDirection: 'row',
     marginTop: 10,
@@ -198,32 +173,9 @@ const loginStyle = StyleSheet.create({
     marginHorizontal: 30,
     elevation: 8,
   },
-  iconInput: {
-    width: 24,
-    height: 24,
-  },
-  storageInfor: {
-    height: 30,
-    flexDirection: 'row',
-    marginTop: 30,
-    marginLeft: 40,
-  },
   scroll: { flex: 1 },
   height: { height: 20 },
   material: { marginRight: 10 },
-  txtNhoPassWork: {
-    color: '#fff',
-    fontSize: 15,
-  },
-  BntQuenMatKhau: {
-    marginTop: 10,
-    height: 35,
-    alignItems: 'center',
-    marginRight: 35,
-  },
-  containerFoget: {
-    flexDirection: 'row',
-  },
   btnLogin: {
     backgroundColor: '#FE9A2E',
     height: windowHeight / 11.9,
@@ -237,9 +189,5 @@ const loginStyle = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
-  },
-  txtQuenMatKhau: {
-    color: '#fff',
-    textDecorationLine: 'underline',
   },
 });

@@ -1,4 +1,3 @@
-import { jsxAttribute } from '@babel/types';
 import React from 'react';
 import {
     View,
@@ -6,7 +5,6 @@ import {
     TouchableOpacity,
     FlatList,
     Linking,
-    Modal,
     ActivityIndicator,
     StyleSheet
 } from 'react-native';
@@ -19,18 +17,16 @@ import LOCALE_KEY, {
 import { stringMd5 } from 'react-native-quick-md5';
 import Guest from '../api/guest';
 import ItemManage from '../components/itemManage';
-
-
 export default class DetailCustomer extends React.Component {
     constructor(props) {
         super(props);
-        const { id } = this.props.route.params.item
+        const { customerid } = this.props.route.params.item
         this.state = {
             dataKey: [],
-            customerid: id,
+            customerid: customerid,
             page: 1,
-            count:null,
-            total:null,
+            count: null,
+            total: null,
             isLoading: false,
         };
     }
@@ -101,15 +97,14 @@ export default class DetailCustomer extends React.Component {
             time: timeStamp,
             token: token,
             variable: `{'customerid':'${customerid}','page':'1','pagesize':'50'}`
-
         }
         try {
             const response = await Guest.viewallkey(objPost);
             const data = JSON.parse(response.data)
             await this.setState({
                 dataKey: data.list_sale,
-                count:data.count,
-                total:data.total,
+                count: data.count,
+                total: data.total,
                 isLoading: false,
             })
 
@@ -117,8 +112,8 @@ export default class DetailCustomer extends React.Component {
             console.log(e);
         }
     }
-    clickEdit = (email, id, name, phone) => {
-        const item = { email, id, name, phone }
+    clickEdit = (email, customerid, name, phone) => {
+        const item = { email, customerid, name, phone }
         this.props.navigation.navigate('EditCustomerScreen', { item })
     };
     clickReset = async (emailReset) => {
@@ -152,9 +147,9 @@ export default class DetailCustomer extends React.Component {
     }
 
     render() {
-        const { email, id, name, phone,
+        const { email, customerid, name, phone,id
         } = this.props.route.params.item
-        const { dataKey ,count, total } = this.state
+        const { dataKey, count, total } = this.state
         return (
             <View
                 style={styles.containerAll}>
@@ -163,14 +158,14 @@ export default class DetailCustomer extends React.Component {
                     buttonLeft={true} buttonRight={true}
                     nameIcon={'account-edit'}
                     textRight={'Sửa'}
-                    onPressRight={() => this.clickEdit(email, id, name, phone)}
+                    onPressRight={() => this.clickEdit(email, customerid, name, phone)}
 
                     buttonRightIcon={true} />
                 <View style={styles.container}>
 
                     <View style={{ backgroundColor: "#f2f2f2", flex: 1 }} >
                         <View style={{ backgroundColor: "#fff" }}>
-                            <ItemDetailIcon txtValue={id ? id : ''}
+                            <ItemDetailIcon txtValue={customerid ? customerid : ''}
                                 nameIcon={'code-equal'}
                                 styleColour={styles.txtColour} />
                             <ItemDetailIcon txtValue={name ? name : ''}
@@ -179,7 +174,7 @@ export default class DetailCustomer extends React.Component {
                             <ItemDetailIcon txtValue={email ? email : ''}
                                 nameIcon={'email'}
                                 styleColour={styles.txtColour} />
-                           {phone? <TouchableOpacity onPress={() => {
+                            {phone ? <TouchableOpacity onPress={() => {
                                 if (phone !== ''
                                 ) {
                                     Linking.openURL(
@@ -192,10 +187,10 @@ export default class DetailCustomer extends React.Component {
                                     colorss={true}
                                     isIconRight
                                     iconRight={'phone'}
-                                    style={{ color: '#2E64FE' }}
+                                    style={{ color: '#0000FF' }}
                                     containerText={{ borderBottomColor: '#fff' }}
                                     styleColour={styles.txtColour} />
-                            </TouchableOpacity>: null}
+                            </TouchableOpacity> : null}
                             <View style={styles.containerTitle}>
                                 <Text style={styles.txtTitle}>Danh Sách các key</Text>
                             </View>
@@ -205,11 +200,11 @@ export default class DetailCustomer extends React.Component {
                             }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ marginLeft: 20 }}>Hóa đơn:</Text>
-                                    <Text> {count? count:'0'}</Text>
+                                    <Text> {count ? count : '0'}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text>Tổng :</Text>
-                                    <Text style={{ marginRight: 20, color:'#2E64FE' }}> {total?common.formatNumber(total):'0 đ'}</Text>
+                                    <Text style={{ marginRight: 20, color: '#0000FF' }}> {total ? common.formatNumber(total) : '0 đ'}</Text>
                                 </View>
                             </View>
 
@@ -276,7 +271,7 @@ const styles = StyleSheet.create({
         color: '#000'
     },
     txtGoi: {
-        color: '#2E64FE',
+        color: '#0000FF',
         paddingVertical: 15,
         fontWeight: '600',
         marginLeft: 5,

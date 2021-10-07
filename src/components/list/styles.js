@@ -34,7 +34,7 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     marginBottom: 10,
-    height:80,
+    height:90,
     borderRadius: 10,
     marginHorizontal: 10,
   },
@@ -47,14 +47,14 @@ export default StyleSheet.create({
     fontWeight: '500',
     marginLeft: 5,
     paddingVertical: 5,
-    width: 180
+    width: 120
   },
   txtLeftEmail: {
     fontSize: 12,
     color: '#2E2E2E',
     marginLeft: 5,
     paddingVertical: 5,
-    width: 180
+    width: 150
   },
   txtRight: {
     fontSize: 14,

@@ -127,13 +127,14 @@ export default class AddCustomer extends React.Component {
             const md5 = stringMd5(pass_word);
             const passCustomer = stringMd5(passWord);
             const timeStamp = common.timeStamp();
+            const token = common.createToken(timeStamp)
             const objPost = {
                 email: emailInFo,
                 password: md5,
                 function: "addcustomer",
-                time: `1`,
-                token: 'd1ff52a77a2965156cb8e7e67d4ac931',
-                variable: `{'email':${email},'name':${surName},'phone':${phoneNumber},'password':${passCustomer}}`
+                time: timeStamp,
+                token: token,
+                variable: `{'email':'${email}','name':'${surName}','phone':'${phoneNumber}','password':'${passCustomer}'}`
             };
             try {
                 const response = await Guest.addcustomer(objPost);
@@ -274,20 +275,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    bottomKey: {
-        height: 20
-    },
     btnHuy: {
         flex: 1,
         backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-    },
-    btnContinue: {
-        flex: 1,
-        marginLeft: 10,
-        backgroundColor: '#F7941D',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
@@ -297,7 +287,7 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     txtClick: {
-        color: 'red',
+        color: '#FF0000',
         fontSize: 18,
         fontWeight: '600',
         paddingVertical: 10

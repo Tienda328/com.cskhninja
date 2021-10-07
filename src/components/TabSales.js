@@ -4,6 +4,9 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import ListProduct from './list/listProduct';
 import ListPay from './list/listPay';
 import ListRatings from './list/listRatings';
+import LOCALE_KEY, {
+    getLocale,
+  } from '../repositories/local/appLocale';
 import ListTeam from './list/listTeam';
 const LazyPlaceholder = ({ route }) => (
     <View style={styles.scene}>
@@ -11,25 +14,34 @@ const LazyPlaceholder = ({ route }) => (
     </View>
 );
 const routes1= [
+    { key: 'three', title: 'Xếp Hạng' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-    { key: 'three', title: 'Xếp Hạng' },
+   
 ];
 const routes2= [
+    { key: 'three', title: 'Xếp Hạng' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-    { key: 'three', title: 'Xếp Hạng' },
     { key: 'four', title: 'Theo team' },
 ];
 export default class TabViewExample extends React.Component {
     constructor(props) {
         super(props);
-        const data = this.props.role=== 'Admin' ? routes2:routes1
-        console.log(this.props.role)
+       
         this.state = {
             index: 0,
-            routes:data
+            routes:routes2,
+            leader:''
         };
+      }
+      async  componentDidMount() {
+        const role = await getLocale(LOCALE_KEY.role);
+        const data = role!== 'Admin' ? routes2:routes1
+        this.setState({
+            routes: data
+        })
+       
       }
     renderScene = ({ route }) => {
         switch (route.key) {
@@ -64,8 +76,8 @@ export default class TabViewExample extends React.Component {
     renderTabBar = props => (
         < TabBar
             {...props}
-            activeColor={'#2E64FE'}
-            indicatorStyle={{ backgroundColor: '#2E64FE', fontSize: 10 }}
+            activeColor={'#0000FF'}
+            indicatorStyle={{ backgroundColor: '#0000FF', fontSize: 10 }}
             style={{ backgroundColor: '#fff', }}
             inactiveColor={'gray'}
             labelStyle={{ fontSize: 12 }}
@@ -73,13 +85,13 @@ export default class TabViewExample extends React.Component {
     );
 
     render() {
-        const {Role,index, routes}=this.state
-        const { style } = this.props
+        const {Role,index, routes, }=this.state
+        const { style ,clickAll} = this.props
         return (
             <View style={[{ flex: 1, backgroundColor: '#f2f2f2', }, style]}>
                 <View style={styles.containerTitle}>
                     <Text style={styles.txtTitle}>Doanh số theo</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={clickAll}>
                         <Text style={styles.txtAll}>{'Xem Tất cả'}</Text>
                     </TouchableOpacity>
 
@@ -109,7 +121,7 @@ const styles = StyleSheet.create({
     },
     txtAll: {
         fontSize: 15,
-        color: '#2E64FE',
+        color: '#0000FF',
         fontWeight: '500',
         marginRight: 20,
         paddingVertical: 10,

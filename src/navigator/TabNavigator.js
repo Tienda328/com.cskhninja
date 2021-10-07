@@ -10,7 +10,7 @@ import AddKeyScreen from '../screens/addKey';
 
 const styles = StyleSheet.create({
   tabbarItemCenter: {
-    backgroundColor: '#F7941D',
+    backgroundColor: '#FF8000',
     position: 'absolute',
     bottom: -12,
     padding: 7,
@@ -95,7 +95,7 @@ class TabNavigator extends React.Component {
           tabBarLabel: ({ focused, color, size }) => {
             return this.tabBarLabel(route, focused, color, size);
           },
-          tabBarActiveTintColor: '#F7941D',
+          tabBarActiveTintColor: '#FF8000',
           tabBarInactiveTintColor: '#A4A4A4',
           headerShown: false,
 

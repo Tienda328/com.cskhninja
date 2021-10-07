@@ -194,8 +194,8 @@ class Customer extends React.Component {
                   clickSearch={this.clickSearch}
                   onPressFilter={this.onFilter}
                   onChangeText={(text) => this.onChangeTextSearch(text)} />
-                {dataCustomer === null || dataCustomer===[] ? <View style={{ alignItems: 'center', height: windowHeight/1.5, justifyContent:'center' }}>
-                <Image
+                {dataCustomer === null || dataCustomer === [] ? <View style={{ alignItems: 'center', height: windowHeight / 1.5, justifyContent: 'center' }}>
+                  <Image
                     style={{ width: 120, height: 120, resizeMode: 'contain' }}
                     source={require('../resource/image/iconNullClient.png')}
                   />
@@ -228,65 +228,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#FAFAFA',
-    // marginHorizontal: 20,
-    // marginTop: 20,
-    // borderRadius: 10,
-    // borderColor: '#fff',
-    // shadowColor: '#000',
-    // shadowRadius: 6,
-    // shadowOpacity: 0.16,
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 5,
-    // },
-    // elevation: 3,
-  },
-  btnClose: {
-    marginRight: 10,
   },
   height: {
     height: 30
   },
-  txtTitle: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: '600',
-    marginLeft: 30,
-  },
-  modalHerder: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: windowHeight / 11.8,
-    backgroundColor: '#2E64FE',
-  },
-  containerModal: {
-    width: windowWidth / 11.8,
-    height: windowHeight / 3.58,
-    borderRadius: 10,
-    borderColor: '#fff',
-    shadowColor: '#000',
-    shadowRadius: 6,
-    shadowOpacity: 0.16,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    elevation: 3,
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-  },
   flatList: {
     marginTop: 20
   },
-
-  containerView: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
 });
 
 

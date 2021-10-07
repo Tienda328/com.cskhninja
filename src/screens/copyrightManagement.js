@@ -115,7 +115,7 @@ class CopyrightManagement extends React.Component {
       isFetching: false,
       productid: '0',
       visible: false,
-      nameTitleMenu: 'Hôm nay'
+      nameTitleMenu: 'Tháng này'
     };
   }
 
@@ -175,10 +175,12 @@ class CopyrightManagement extends React.Component {
 
   componentDidMount() {
     const { typeBill, typeApprove } = this.state;
-    const day = common.lastDay(-1)
+    const date = new Date();
+    const today = common.formatDate(date);
+    const day = common.firstMonth()
     this.setState({
       isLoading: true
-    }, () => this.getKey('', day, day, '0', '0', typeBill, typeApprove))
+    }, () => this.getKey('', day, today, '0', '0', typeBill, typeApprove))
   }
   clickItemType = async item => {
     if (item.name === 'Phần mềm') {
@@ -518,7 +520,7 @@ class CopyrightManagement extends React.Component {
                   </TouchableOpacity>
                   <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 15 }}>
                     <Text>Tổng :</Text>
-                    <Text style={{ marginLeft: 5, color: '#2E64FE', marginRight: 20 }}>{total?common.formatNumber(total):'0 đ'}</Text>
+                    <Text style={{ marginLeft: 5, color: '#0000FF', marginRight: 20 }}>{total?common.formatNumber(total):'0 đ'}</Text>
                   </TouchableOpacity>
                 </View>
                 {dataKey === null ? <View style={{ alignItems: 'center', height: windowHeight / 1.5, justifyContent: 'center' }}>

@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff'
   },
   txtError: {
-    color: 'red',
+    color: '#FF0000',
     fontSize: 12,
     marginVertical: 5,
     marginLeft: 25,

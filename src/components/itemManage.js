@@ -52,7 +52,7 @@ export default function ItemManage({ navigation, item, index ,isclick}) {
                   </View>
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />
-                      <Text style={[styles.txtRight,{color:item.approve? '#2E64FE':'red'}]} numberOfLines={1}>{item.price?common.formatNumber(pricenew):'0 đ'}</Text>            
+                      <Text style={[styles.txtRight,{color:item.approve? '#0000FF':'#FF0000'}]} numberOfLines={1}>{item.price?common.formatNumber(pricenew):'0 đ'}</Text>            
                   </View>
                   <View style={{flexDirection:'row'}}>
                       <Text style={{flex:1}} />

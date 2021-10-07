@@ -1,4 +1,3 @@
-import { jsxAttribute } from '@babel/types';
 import React from 'react';
 import {
   View,
@@ -73,10 +72,10 @@ export default class DetailKey extends React.Component {
       discount: null,
       type: null,
       userSeller: null,
-      advance:null,
-      hid:null,
-      id:null,
-      itemKey:null,
+      advance: null,
+      hid: null,
+      id: null,
+      itemKey: null,
     };
   }
 
@@ -90,8 +89,8 @@ export default class DetailKey extends React.Component {
     })
   };
   clickEdit = () => {
-    const {itemKey}=this.state
-    this.props.navigation.navigate('EditKeyScreen', {itemKey})
+    const { itemKey } = this.state
+    this.props.navigation.navigate('EditKeyScreen', { itemKey })
   };
   onDelite = () => {
     this.setState({
@@ -144,10 +143,10 @@ export default class DetailKey extends React.Component {
         discount: data.discount,
         type: data.type,
         userSeller: data.username,
-        advance: data.advance ,
+        advance: data.advance,
         hid: data.hid,
-        id:data.id,
-        itemKey:data,
+        id: data.id,
+        itemKey: data,
 
       })
     } catch (e) {
@@ -175,12 +174,14 @@ export default class DetailKey extends React.Component {
         variable: `{'id':'${id}','type':'${type}','advance':'${this.state.typeNote}'}`
       };
       try {
-       const response= await Guest.removekey(objPost, 'message');
+        const response = await Guest.removekey(objPost, 'message');
+        console.log('objPost',objPost)
+        console.log('response',response)
         this.setState({
           statusErrorLyDo: '',
           modalVisible: false,
         })
-      
+
         this.props.navigation.goBack()
       } catch (e) {
         console.log(e);
@@ -190,8 +191,13 @@ export default class DetailKey extends React.Component {
   render() {
     const { customerid, customername, datecreate, customeremail, customerphone, planname,
       productName, expirationdate, conlai, paymentName, messagebill, note, userSeller,
-      price, discount, type, modalVisible, typeDelete, statusErrorLyDo,advance,hid,id
+      id,
+      price, discount, type, modalVisible, typeDelete, statusErrorLyDo, advance, hid
     } = this.state
+    const email = customeremail;
+    const name = customername;
+    const phone = customerphone;
+    const item = { customerid, email, name, phone ,id};
     const pricenew = price - discount;
     return (
       <View
@@ -253,10 +259,18 @@ export default class DetailKey extends React.Component {
             nameTitle={'Thông tin khách hàng'}
             drawIconLeft={
               <View>
-                <ItemDetailIcon txtValue={customerid ? customerid : ''}
-                  nameIcon={'code-equal'}
-                  styleColour={styles.txtColour} />
-                <ItemDetailIcon txtValue={datecreate ? common.formatDate(datecreate) : ''}
+                {customerid ? <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('DetailCustomerScreen', { item })}
+                >
+                  <ItemDetailIcon txtValue={customerid ? customerid : ''}
+                    nameIcon={'code-equal'}
+                    iconRight={'link'}
+                    style={{ color: '#0000FF' }}
+                    colorss={true}
+                    isIconRight
+                    styleColour={styles.txtColour} />
+                </TouchableOpacity> : null}
+                <ItemDetailIcon txtValue={datecreate ? common.formatDate2(datecreate) : ''}
                   nameIcon={'calendar-range'}
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={customername ? customername : ''}
@@ -264,9 +278,9 @@ export default class DetailKey extends React.Component {
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={customeremail ? customeremail : ''}
                   nameIcon={'email'}
-                  containerText={{ borderBottomColor:customerphone?'#D8D8D8': '#fff' }}
+                  containerText={{ borderBottomColor: customerphone ? '#D8D8D8' : '#fff' }}
                   styleColour={styles.txtColour} />
-                {customerphone?<TouchableOpacity onPress={() => {
+                {customerphone ? <TouchableOpacity onPress={() => {
                   if (customerphone !== ''
                   ) {
                     Linking.openURL(
@@ -279,10 +293,10 @@ export default class DetailKey extends React.Component {
                     colorss={true}
                     isIconRight
                     iconRight={'phone'}
-                    style={{ color: '#2E64FE' }}
+                    style={{ color: '#0000FF' }}
                     containerText={{ borderBottomColor: '#fff' }}
                     styleColour={styles.txtColour} />
-                </TouchableOpacity>:null}
+                </TouchableOpacity> : null}
               </View>
             } />
           <ItemComponentTitle
@@ -295,10 +309,10 @@ export default class DetailKey extends React.Component {
                 <ItemDetailIcon txtValue={planname ? planname : ''}
                   nameIcon={'gift'}
                   styleColour={styles.txtColour} />
-                 { type==='2'? <ItemDetailIcon txtValue={hid ? hid : ''}
+                {type === 1 ? <ItemDetailIcon txtValue={hid ? hid : ''}
                   nameIcon={'qrcode'}
-                  styleColour={styles.txtColour} /> :null}
-                <ItemDetailIcon txtValue={expirationdate ? common.formatDate(expirationdate) : ''}
+                  styleColour={styles.txtColour} /> : null}
+                <ItemDetailIcon txtValue={expirationdate ? common.formatDate2(expirationdate) : ''}
                   nameIcon={'calendar-range'}
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={conlai ? conlai : ''}
@@ -307,23 +321,23 @@ export default class DetailKey extends React.Component {
                 <ItemDetailIcon txtValue={price ? common.formatNumber(pricenew) : ''}
                   nameIcon={'currency-usd'}
                   styleColour={styles.txtColour} />
-                  <ItemDetailIcon txtValue={price ? common.formatNumber(discount) : ''}
+                <ItemDetailIcon txtValue={price ? common.formatNumber(discount) : ''}
                   nameIcon={'sale'}
                   styleColour={styles.txtColour} />
                 <ItemDetailIcon txtValue={paymentName ? paymentName : ''}
                   nameIcon={'bank'}
                   styleColour={styles.txtColour} />
-                  {messagebill === '' || messagebill === null ?
+                {messagebill === '' || messagebill === null ?
                   <ItemDetailIcon txtValue={'Nội dung hóa đơn'}
                     nameIcon={'receipt'}
                     style={{ color: '#BDBDBD', fontStyle: 'italic' }}
                     styleColour={styles.txtColour} /> :
-                    <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
+                  <ItemDetailIcon txtValue={messagebill ? messagebill : ''}
                     nameIcon={'receipt'}
                     containerText={{ borderBottomColor: '#fff' }}
                     styleColour={styles.txtColour} />
                 }
-               
+
               </View>
             } />
           <ItemComponentTitle
@@ -345,7 +359,7 @@ export default class DetailKey extends React.Component {
                 <TouchableOpacity style={styles.View}>
                   <ItemDetailIcon txtValue={'Thêm ảnh hóa đơn'}
                     nameIcon={'folder-image'}
-                    style={{ color: '#2E64FE' }}
+                    style={{ color: '#0000FF' }}
                     colorss={true}
                     styleColour={styles.txtColour} />
                 </TouchableOpacity>
@@ -402,7 +416,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginLeft: 10,
     marginRight: 20,
-    backgroundColor: 'red'
+    backgroundColor: '#FF0000'
   },
   container: {
     flex: 1,
@@ -453,14 +467,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
   },
-  txtTitleKey: {
-    fontSize: 15,
-    fontWeight: '500',
-    marginLeft: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#D8D8D8',
-  },
   txtDelete: {
     paddingVertical: 11,
     fontWeight: '600',
@@ -469,29 +475,6 @@ const styles = StyleSheet.create({
   txtButton: {
     color: '#fff',
     paddingVertical: 5
-  },
-  txtGoi: {
-    color: '#fff',
-    paddingVertical: 15,
-    marginRight: 15,
-    fontWeight: '600'
-  },
-  btnCall: {
-    flex: 1,
-    height: 50,
-    borderRadius: 20,
-    backgroundColor: '#0080FF',
-    marginLeft: 20,
-    marginRight: 10,
-  },
-  iconCall: {
-    color: '#fff',
-    marginLeft: 10
-  },
-  containerCall: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
   },
   containerDelete: {
     alignItems: 'flex-end',
@@ -502,22 +485,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff'
   },
-  viewDelete: {
-    flex: 1,
-  },
-  btnDuyet: {
-    flex: 1,
-    height: 50,
-    borderRadius: 20,
-    backgroundColor: '#6E6E6E',
-    marginLeft: 20,
-    marginRight: 10,
-  },
-  containerButton: {
-    flex: 1,
-    flexDirection: 'row',
-    marginTop: 20,
-
-  }
 
 })

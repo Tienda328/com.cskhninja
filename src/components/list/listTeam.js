@@ -2,18 +2,16 @@ import React from 'react';
 import {
   View,
   Text,
-  FlatList,
   StyleSheet,
   Dimensions,
   Image
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../../utils/common';
 const windowHeight = Dimensions.get('window').height;
 
 export default class ListRating extends React.Component {
   render() {
-    const { dataTeam } = this.props
+    const { dataTeam,heightS } = this.props
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
         {dataTeam[0]!==undefined? dataTeam.map((item, index) => {
@@ -34,7 +32,7 @@ export default class ListRating extends React.Component {
               </View>
             </View>
           )
-        }):(<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
+        }):(<View style={{flex:1, justifyContent:'center',height:heightS, alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

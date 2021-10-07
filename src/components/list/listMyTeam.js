@@ -2,14 +2,13 @@ import React from 'react';
 import {
   View,
   Text,
-  Dimensions,
   Image
 } from 'react-native';
 import common from '../../utils/common';
 import styles from './styles';
 export default class ListTeam extends React.Component {
   render() {
-    const { dataMyTeam } = this.props;
+    const { dataMyTeam, heightS } = this.props;
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
        
@@ -30,7 +29,7 @@ export default class ListTeam extends React.Component {
               </View>
             </View>
           )
-        }): (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
+        }): (<View style={{flex:1, justifyContent:'center',height:heightS, alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

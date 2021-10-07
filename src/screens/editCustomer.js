@@ -1,21 +1,17 @@
-import { jsxAttribute } from '@babel/types';
 import React from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
-    ScrollView,
     StyleSheet,
-    Image
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import TextInputKey from '../components/TextIputKey';
-import TextInputModal from '../components/textInputModal';
 import ItemComponentTitle from '../components/itemComponentTitle';
 export default class DetailKey extends React.Component {
     constructor(props) {
         super(props);
-        const { email, id, name, phone
+        const { email, name, phone
         } = this.props.route.params.item
         this.state = {
             surname: name,
@@ -53,8 +49,6 @@ export default class DetailKey extends React.Component {
     };
     render() {
         const { surname, email, phoneNumber, passwork } = this.state;
-        const item = this.props.route.params;
-
         return (
             <View
                 style={styles.containerAll}>
@@ -126,12 +120,8 @@ const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
     },
-    bottomKey: {
-        height: 25,
-    },
     container: {
         flex: 1,
-
     },
     btnContinue: {
         backgroundColor: '#fff',
@@ -150,7 +140,7 @@ const styles = StyleSheet.create({
     txtClick: {
         fontSize: 15,
         fontWeight: '600',
-        color: "#2E64FE",
+        color: "#0000FF",
         paddingVertical: 10
     },
     txtHuy: {
@@ -158,10 +148,5 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: "red",
         paddingVertical: 10
-    },
-    containerButton: {
-        flexDirection: 'row',
-        marginBottom: 10,
-        borderRadius: 10,
     },
 })

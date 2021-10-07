@@ -56,7 +56,7 @@ const FilterDateComponent = ({
           onPress={() => {
             setDatePickerVisibility(true);
           }}>
-          <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE', marginRight: 20, }} />
+          <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#0000FF', marginRight: 20, }} />
         </TouchableOpacity>
       )}
       <DateTimePickerModal

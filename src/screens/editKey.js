@@ -3,7 +3,7 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
+    Alert,
     TextInput,
     ScrollView,
     Dimensions,
@@ -38,13 +38,14 @@ const DataType = [
 class EditKey extends React.Component {
     constructor(props) {
         super(props);
-        const { customerid, customername, advance, planid, customerphone, hid,productid,
-            productName, paymentid, planname, paymentName, messagebill, note, price, discount, type
+        const { customerid, customername, advance, planid, customerphone, hid, productid,
+            productName, paymentid, planname, id, paymentName, messagebill, note, price, discount, type
         } = this.props.route.params.itemKey
         const pricers = price - discount;
         const typeBQClon = type === 1 ? 'Phần mềm' : 'Dịch vụ';
         this.state = {
             type: type,
+            id: id,
             isNoData: true,
             disablePhanMem: true,
             disableTypeBQ: true,
@@ -74,7 +75,7 @@ class EditKey extends React.Component {
     }
 
     btnSave = async () => {
-        const { productid, typeBQ, customerid, planid, phanmem, hid, txtDiscount, note, paymentid, messagebill, type, motorCode,advance } = this.state;
+        const { productid, typeBQ, customerid, planid, id, hid, txtDiscount, note, paymentid, messagebill, type, motorCode, advance } = this.state;
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
         const email = await getLocale(LOCALE_KEY.email);
         const md5 = stringMd5(pass_word);
@@ -87,11 +88,21 @@ class EditKey extends React.Component {
             function: "editkey",
             time: timeStamp,
             token: token,
-            variable:`{'id':'${customerid}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':'${motorCode}','note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}`
+            variable: `{'id':'${id}','type':'${type}','productid':'${productid}','discount':'${txtDiscount}','planid':'${planid}','hid':'${motorCode}','note':'${note}','paymentid':'${paymentid}','messagebill':'${messagebill}','advance':'${advance}'}`
         };
-        console.log('objPostkey', objPost)
         try {
-             await Guest.editkey(objPost, 'message');
+            const response = await Guest.editkey(objPost);
+            if (response.status === true) {
+                this.props.navigation.goBack();
+            } else {
+                Alert.alert(
+                    "Thông báo",
+                    response.message,
+                    [
+                        { text: "OK", onPress: () => { } }
+                    ]
+                );
+            }
         } catch (e) {
             console.log(e);
         }
@@ -411,11 +422,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    containerView: {
-        marginTop: 10,
-        borderRadius: 10,
-        backgroundColor: '#fff'
-    },
     txtInput: {
         width: '100%',
         marginLeft: 20,
@@ -423,14 +429,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
     },
     txtError: {
-        color: 'red',
+        color: '#FF0000',
         fontSize: 13,
         marginVertical: 8,
         marginLeft: 25
-    },
-    containerSearch: {
-        flexDirection: 'row',
-        alignItems: 'center'
     },
     containerInput: {
         flexDirection: 'row',
@@ -438,34 +440,10 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         alignItems: 'center',
         backgroundColor: "#fff",
-
-    },
-    bntSearch: {
-        width: 40,
-        height: 40,
-        marginRight: 20,
-        borderRadius: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2E2EFE'
-    },
-    txtDangNhap: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: '600',
-        paddingVertical: 10
     },
     btnContinue: {
         marginVertical: 10,
         backgroundColor: '#D8D8D8'
-    },
-
-    viewBottom: {
-        height: 30
-    },
-
-    bottomKey: {
-        height: 20
     },
 });
 

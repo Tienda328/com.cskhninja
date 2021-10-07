@@ -85,7 +85,7 @@ class LoginScreen extends Component {
   };
 
   onLoginClick = async (toggleLoggedIn) => {
-    const { password, email } = this.state;  
+    const { password, email } = this.state;
     if (password === '' || email === '') {
       Alert.alert(
         "Thông báo",
@@ -108,7 +108,7 @@ class LoginScreen extends Component {
       try {
         const response = await Guest.login(objPost);
         const userinfo = JSON.parse(response.data);
-        const leader =`${userinfo.leader}`
+        const leader = `${userinfo.leader}`
         if (response.status === true) {
           if (this.state.storageInfor === true) {
             setLocale(LOCALE_KEY.email, email);
@@ -116,7 +116,7 @@ class LoginScreen extends Component {
             setLocale(LOCALE_KEY.phone_number, userinfo.phone);
             setLocale(LOCALE_KEY.user_name, userinfo.name);
             setLocale(LOCALE_KEY.role, userinfo.role);
-            setLocale(LOCALE_KEY.leader, leader);
+            await  setLocale(LOCALE_KEY.leader, leader);
           } else {
             clearLocale(LOCALE_KEY.email);
             clearLocale(LOCALE_KEY.pass_word);
@@ -263,26 +263,14 @@ const loginStyle = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 16,
     alignItems: 'center',
-    height: windowHeight/10.2,
+    height: windowHeight / 10.2,
     paddingLeft: 10,
     color: '#fff',
-  },
-  buttonSignIN: {
-    right: 0,
-    alignSelf: 'center',
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: windowHeight/17.8,
-    // width: 250,
-    backgroundColor: '#66AF5C',
-    borderRadius: 20,
   },
   viewInput: {
     flexDirection: 'row',
     marginTop: 10,
-    height: windowHeight/11.9,
+    height: windowHeight / 11.9,
     borderWidth: 1,
     borderColor: '#fff',
     backgroundColor: '#0040FF',
@@ -294,10 +282,6 @@ const loginStyle = StyleSheet.create({
     padding: 20,
     marginHorizontal: 30,
     elevation: 8,
-  },
-  iconInput: {
-    width: 24,
-    height: 24,
   },
   storageInfor: {
     height: 30,
@@ -323,11 +307,11 @@ const loginStyle = StyleSheet.create({
   },
   btnLogin: {
     backgroundColor: '#FE9A2E',
-    height: windowHeight/11.9,
+    height: windowHeight / 11.9,
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 30,
-    marginTop:30,
+    marginTop: 30,
     borderRadius: 30,
   },
   txtDangNhap: {

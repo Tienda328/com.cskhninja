@@ -4,12 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Image,
-  Animated,
   RefreshControl,
-  Dimensions
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import TabSales from '../components/TabSales';
@@ -22,7 +18,6 @@ import common from '../utils/common';
 import LOCALE_KEY, {
   getLocale,
 } from '../repositories/local/appLocale';
-const Widtheighth = Dimensions.get('screen').height;
 
 const dataMenu = [
   { id: '1', title: '7 ngày qua' },
@@ -47,10 +42,11 @@ class Main extends React.Component {
       list_reportsoftware: [],
       refreshing: false,
       list_reportteam: [],
-      nameTitle: 'Hôm nay',
+      nameTitle: 'Tháng này',
       role: null,
       leader: null,
       list_reportmyteam: [],
+      emailSearch:''
     };
   }
 
@@ -59,7 +55,7 @@ class Main extends React.Component {
       modalVisible: false,
       nameTitle: item.title
     });
-    const day = this.getDay(item.id)
+    const day = this.getDay(item.title)
     this.getData(day.startdate, day.enddate)
   }
   onShow = () => {
@@ -69,30 +65,32 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    const day = common.lastDay(-1)
-    this.getData(day, day)
-    this.getResetKey()
+    const date = new Date();
+    const today = common.formatDate(date);
+    const day = common.firstMonth()
+    this.getData(day, today)
+  }
+  clickReset=(item)=>{
+    this.props.navigation.navigate('UpdateMachineCodeScreen',{item})
   }
 
   getResetKey = async () => {
+    const {emailSearch}=this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp);
-
-
     const objPost = {
       email: email,
       password: md5,
       function: "resetkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'vietseo86@gmail.com','page':'1','pagesize':'10'}`
+      variable: `{'keyword':'${emailSearch}','page':'1','pagesize':'3'}`
     };
-
     try {
-      const response = await Guest.reportsale(objPost);
+      const response = await Guest.resetkey(objPost);
       const data = JSON.parse(response.data)
       await this.setState({
         dataRestKey: data,
@@ -103,46 +101,55 @@ class Main extends React.Component {
     }
   }
 
-  _onRefresh() {
-    const day = common.lastDay(-1)
-    this.setState({ refreshing: true, nameTitle: 'Hôm nay' }, () => this.getData(day, day));
+  clickAllSale = async () => {
+    this.props.navigation.navigate('ListSaleALlScreen')
+  }
+  clickAllUtilites = async () => {
+    const {list_reportmyteam, leader}=this.state
+    const item ={
+      list_reportmyteam,
+      leader
+    }
+
+    this.props.navigation.navigate('UtilitiesScreen',{item})
   }
 
-  getDay = (id) => {
+  _onRefresh() {
+    const day = common.lastDay(-1)
+    this.setState({ refreshing: true, nameTitle: 'Hôm nay', emailSearch:'' }, () => this.getData(day, day));
+  }
+
+  getDay = (title) => {
     const date = new Date();
     const today = common.formatDate(date);
-    if (id === '1') {
+    if (title === '7 ngày qua') {
       //7 ngày qua
       const day = common.lastDay(5)
       const itemDay = {
         startdate: day,
         enddate: today
       }
-
       return itemDay
     }
-    else if (id === '2') {
+    else if (title === 'Hôm nay') {
       //hôm nay
       const day = common.lastDay(-1)
       const itemDay = {
         startdate: day,
         enddate: day
       }
-
       return itemDay
     }
-    else if (id === '3') {
+    else if (title === 'Hôm qua') {
       //hom qua
       const day = common.lastDay(0)
       const itemDay = {
         startdate: day,
         enddate: day
       }
-
       return itemDay
     }
-    else if (id === '4') {
-      //tháng này
+    else if (title === 'Tháng này') {
       const day = common.firstMonth()
       const itemDay = {
         startdate: day,
@@ -161,7 +168,6 @@ class Main extends React.Component {
     }
   };
 
-
   getData = async (startdate, enddate) => {
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const role = await getLocale(LOCALE_KEY.role);
@@ -170,8 +176,6 @@ class Main extends React.Component {
     const md5 = stringMd5(pass_word);
     const timeStamp = common.timeStamp();
     const token = common.createToken(timeStamp);
-
-
     const objPost = {
       email: email,
       password: md5,
@@ -180,7 +184,6 @@ class Main extends React.Component {
       token: token,
       variable: `{'startdate':'${startdate}','enddate':'${enddate}'}`
     };
-
     try {
       const response = await Guest.reportsale(objPost);
       const data = JSON.parse(response.data)
@@ -196,18 +199,22 @@ class Main extends React.Component {
         list_reportmyteam: data.list_reportmyteam,
         role: role,
         leader: leader
-
       })
     } catch (e) {
       console.log(e);
     }
   }
+  onChangeTextEmail = (text) => {
+    this.setState({
+      emailSearch: text,
+    });
+};
 
   currentPage = (currentpage) => {
     this.indexPage = currentpage.i;
   };
   render() {
-    const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,
+    const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,emailSearch,
       list_reportbank, list_reportsoftware, dataRestKey, leader, list_reportteam, role, list_reportmyteam } = this.state;
     return (
       <View style={[styles.containerAll]}>
@@ -251,11 +258,17 @@ class Main extends React.Component {
             dataProduct={list_reportsoftware}
             datatBank={list_reportbank}
             dataTeam={list_reportteam}
+            clickAll={this.clickAllSale}
             datatBXH={list_reportbxh}
           />
           <TabUtilities
-            style={{ height: 400 }}
+            style={{ height: 445 }}
             leader={leader}
+            clickUtilites={this.clickAllUtilites}
+            onChangeText={(text) => this.onChangeTextEmail(text)}
+            clickSearch={this.getResetKey}
+            value={emailSearch}
+            clickReset={this.clickReset}
             dataRestKey={dataRestKey}
             dataMyTeam={list_reportmyteam} />
         </ScrollView>
@@ -291,27 +304,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  txtFirst: {
-    fontSize: 15,
-    fontWeight: '600',
-    paddingVertical: 10,
-    marginLeft: 20,
-  },
-  containerKeyAll2: {
-    flex: 1,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red'
-  },
   containetText: {
     flexDirection: 'row',
     marginBottom: 10
   },
-  containerFirst: {
-    marginVertical: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10
-  }
 
 });

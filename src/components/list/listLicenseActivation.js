@@ -12,17 +12,19 @@ import Search from '../search';
 export default class ListLicenseActivation extends React.Component {
 
   render() {
-    const { dataRestKey, onChangeText, clickSearch } = this.props
+    const { dataRestKey, onChangeText, clickSearch,value,heightS, clickReset } = this.props
     return (
-      <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10, }}>
-        <Search style={{ marginBottom: 15, }}
+      <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
+        <Search style={{ marginBottom: 15, marginTop:0}}
           onChangeText={onChangeText}
           clickSearch={clickSearch}
+          value={value}
         />
         {dataRestKey[0] !== undefined ? dataRestKey.map((item, index) => {
           return (
-            <View
+            <TouchableOpacity
               style={styles.containerAll}
+              onPress={()=>clickReset(item)}
               key={index.toString()}>
               <View style={styles.containerText}>
                 <View style={styles.containerLeft}>
@@ -51,19 +53,19 @@ export default class ListLicenseActivation extends React.Component {
 
                     <View>
                       <Text style={styles.txtRight} numberOfLines={1}>{item.saledate ? common.formatDate2(item.saledate) : ''}</Text>
-                      <Text style={[styles.txtRight, { color: item.approve ? '#2E64FE' : 'red' }]} numberOfLines={1}>{item.price ? common.formatNumber(pricenew) : '0 đ'}</Text>
+                      <Text style={[styles.txtRight, { color: item.approve ? '#0000FF' : '#FF0000' }]} numberOfLines={1}>{item.price ? common.formatNumber(pricenew) : '0 đ'}</Text>
                       <Text style={[styles.txtRight]} numberOfLines={1}>{item.conlai ? item.conlai + ' ngày' : '0 ngày'}</Text>
                     </View>
-                    <TouchableOpacity >
-                      <MaterialCommunityIcons name={'sale'} size={20} style={{ marginRight: 10, color: 'gray' }} />
-                    </TouchableOpacity>
+                    <View >
+                      <MaterialCommunityIcons name={'lock-reset'} size={20} style={{ marginRight: 10, color: '#FF8000' }} />
+                    </View>
                   </View>
                 </View>
               </View>
 
-            </View>
+            </TouchableOpacity>
           )
-        }) : (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Không có dữ liệu</Text></View>)}
+        }) : (<View style={{ flex: 1, justifyContent: 'center',height:heightS, alignItems: 'center' }}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

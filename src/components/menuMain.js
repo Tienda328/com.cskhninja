@@ -27,7 +27,7 @@ export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle
                 style={styles.openButton}
                 onPress={ClickShow}
             >
-                <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#2E64FE', marginLeft: 20, }} />
+                <MaterialCommunityIcons name={'calendar-outline'} size={23} style={{ color: '#0000FF', marginLeft: 20, }} />
                 <Text style={styles.textStyle}>{nameTitle}</Text>
             </TouchableOpacity>
         </View>
@@ -36,7 +36,7 @@ export default function MeneMain({ modalVisible, ClickShow, ClickHide, nameTitle
 
 const styles = StyleSheet.create({
     openButton: {
-        backgroundColor: 'red',
+        backgroundColor: '#FF0000',
         backgroundColor: '#fff',
         paddingVertical: 10,
         alignItems:'center',

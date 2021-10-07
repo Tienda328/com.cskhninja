@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export default class ListProduct extends React.Component {
   render() {
-    const { datatBank } = this.props;
+    const { datatBank,heightS } = this.props;
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
         {/* <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text>
@@ -36,7 +36,7 @@ export default class ListProduct extends React.Component {
               </View>
             </View>
           )
-        }): (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
+        }): (<View style={{flex:1, justifyContent:'center', height:heightS, alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

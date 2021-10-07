@@ -2,23 +2,17 @@ import React from 'react';
 import {
   View,
   Text,
-  FlatList,
-  StyleSheet,
-  Dimensions,
   Image
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../../utils/common';
 import styles from './styles';
-const windowHeight = Dimensions.get('window').height;
-
 export default class ListProduct extends React.Component {
   render() {
-    const { dataProduct } = this.props;
+    const { dataProduct, heightS } = this.props;
     return (
       <View style={{ backgroundColor: "#f2f2f2", paddingTop: 10,flex:1 }}>
        
-      {dataProduct[0]!==undefined ? dataProduct.map((item, index) => {
+        {dataProduct[0]!==undefined ? dataProduct.map((item, index) => {
           return (
             <View style={styles.containerItem} key={index.toString()}>
               <Text style={styles.txtStt}>{index + 1}</Text>
@@ -39,7 +33,7 @@ export default class ListProduct extends React.Component {
               </View>
             </View>
           )
-        }): (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
+        }): (<View style={{flex:1,height:heightS, justifyContent:'center', alignItems:'center'}}><Text>Không có dữ liệu</Text></View>)}
       </View>
     );
   }

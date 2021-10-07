@@ -79,42 +79,41 @@ class AddKey extends React.Component {
         this.setState({
             isErrorState: true,
         })
-            if (CustomerCode !== '0' &&
-                typeBQ !== 'Chọn loại bản quyền' &&
-                phanmem !== 'Chọn phần mềm' &&
-                messagebill !== '' 
-            ) {
-                const pass_word = await getLocale(LOCALE_KEY.pass_word);
-                const email = await getLocale(LOCALE_KEY.email);
-                const md5 = stringMd5(pass_word);
-                const timeStamp = common.timeStamp();
-                const token = common.createToken(timeStamp)
+        if (CustomerCode !== '0' &&
+            typeBQ !== 'Chọn loại bản quyền' &&
+            phanmem !== 'Chọn phần mềm' &&
+            messagebill !== ''
+        ) {
+            const pass_word = await getLocale(LOCALE_KEY.pass_word);
+            const email = await getLocale(LOCALE_KEY.email);
+            const md5 = stringMd5(pass_word);
+            const timeStamp = common.timeStamp();
+            const token = common.createToken(timeStamp)
 
-                const objPost = {
-                    email: email,
-                    password: md5,
-                    function: "createkey",
-                    time: timeStamp,
-                    token: token,
-                    variable: `{'productid':'${productid}','planid':'${planid}'
+            const objPost = {
+                email: email,
+                password: md5,
+                function: "createkey",
+                time: timeStamp,
+                token: token,
+                variable: `{'productid':'${productid}','planid':'${planid}'
                 ,'customerid':'${CustomerCode}','hid':'${motorCode}'
                 ,'discount':'${txtDiscount}','note':'${note}','paymentid':'${productid}'
                 ,'messagebill':'${messagebill}','type':'${type}'}`
-                };
-                console.log('objPost', objPost)
-                try {
-                    await Guest.createkey(objPost, 'message');
-                    this.setState({
-                        isCustomerCode: false
-                    })
-                    this.clearnState
-                    this.props.navigation.navigate('CopyrightManagement')
+            };
+            try {
+                await Guest.createkey(objPost, 'message');
+                this.setState({
+                    isCustomerCode: false
+                })
+                this.clearnState
+                this.props.navigation.navigate('CopyrightManagement')
 
-                } catch (e) {
-                    console.log(e);
-                }
-                
+            } catch (e) {
+                console.log(e);
             }
+
+        }
     }
 
     clearnState = () => {
@@ -353,22 +352,22 @@ class AddKey extends React.Component {
                     const makh = JSON.parse(itemInfo).id
                     const nameKh = JSON.parse(itemInfo).name
                     const phoneKh = JSON.parse(itemInfo).phone
-    
+
                     this.setState({
                         CustomerCode: makh,
                         CustomerName: nameKh,
                         phoneNumber: phoneKh
                     })
-                  } else if (response.status === false) {
+                } else if (response.status === false) {
                     Alert.alert(
-                      "Thông báo",
-                      response.message,
-                      [
-                        { text: "OK", onPress: () => { } }
-                      ]
+                        "Thông báo",
+                        response.message,
+                        [
+                            { text: "OK", onPress: () => { } }
+                        ]
                     );
-                  }
-               
+                }
+
             } catch (e) {
                 console.log(e);
             }
@@ -383,7 +382,7 @@ class AddKey extends React.Component {
     };
     render() {
         const { email, CustomerCode, note, messagebill, motorCode, price, disCount,
-            typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ,type,
+            typeBQ, phanmem, dataBQ, disablePhanMem, disableTypeBQ, dataTypyBQ, type,
             goiBQ, isNoData, dataPay, valuePay, stateEmail, isErrorState, isCustomerCode,
             phoneNumber, CustomerName } = this.state;
         return (
@@ -458,7 +457,7 @@ class AddKey extends React.Component {
                                         noData={isNoData}
                                         click={this.clickItemGoiBQ}
                                         namePlaceholder={goiBQ} />
-                                  { type ===1? <TextInputKey
+                                    {type === 1 ? <TextInputKey
                                         onChangeText={(text) => this.onChangeTextMotorCode(text)}
                                         placeholder="Mã máy"
                                         nameIcon={'qrcode'}
@@ -466,7 +465,7 @@ class AddKey extends React.Component {
                                         statusError={motorCode === '' && isErrorState === true ? 'Mã máy Không được để trống' : ''}
                                         value={motorCode}
                                         editable={true}
-                                    />:null}
+                                    /> : null}
                                     <ItemDisable nameIcon={'currency-usd'} value={common.formatNumber(price)} />
                                     <NumberFormat
                                         value={disCount}
@@ -533,7 +532,7 @@ class AddKey extends React.Component {
                             nameIcon={'calendar-text'}
                             editable={true}
                             value={note}
-                           
+
                         />
                         <View style={styles.bottomKey} />
 
@@ -557,12 +556,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // backgroundColor: "#fff",
     },
-    txtError: {
-        color: 'red',
-        fontSize: 13,
-        marginVertical: 8,
-        marginLeft: 25
-    },
     container: {
     },
     containerView: {
@@ -575,7 +568,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         borderBottomColor: '#D8D8D8',
         borderBottomWidth: 0.5,
-        marginBottom:2,
+        marginBottom: 2,
     },
     containerSearch: {
         flexDirection: 'row',
@@ -587,21 +580,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
     },
-    txtDangNhap: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: '600',
-        paddingVertical: 10
-    },
     btnContinue: {
         marginVertical: 10,
         backgroundColor: '#D8D8D8'
     },
-
-    viewBottom: {
-        height: 30
-    },
-
     bottomKey: {
         height: 20
     },

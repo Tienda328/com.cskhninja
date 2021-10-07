@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: windowHeight/17.8,
     flexDirection: 'row',
     marginTop: isIos ? common.getStatusBarHeight() + 12 : 0,
-    backgroundColor: '#F7941D',
+    backgroundColor: colors.colourStatus,
     justifyContent: 'space-between'
   },
   iconAdd:{ color: '#fff' },

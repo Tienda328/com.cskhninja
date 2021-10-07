@@ -18,6 +18,7 @@ const Guest = {
     resetpassword: (params: Object, message) => config.post(params, message),
     removekey: (params: Object, message) => config.post(params, message),
     reportsale: (params: Object) => config.post(params),
+    resetkey: (params: Object,message) => config.post(params,message),
     
 }
 export default Guest;

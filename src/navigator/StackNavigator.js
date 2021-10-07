@@ -12,9 +12,11 @@ import CustomerScreen from '../screens/customer';
 import DetailCustomerScreen from '../screens/detailCustomer';
 import EditCustomerScreen from '../screens/editCustomer';
 import DetailProfileScreen from '../screens/detailProfile';
+import ListSaleALlScreen from '../screens/listSaleALl';
+import UtilitiesScreen from '../screens/utilities';
+import UpdateMachineCodeScreen from '../screens/updateMachineCode';
 
 const Stack = createNativeStackNavigator();
-
 class StackNavigator extends React.Component {
 
   render() {
@@ -32,8 +34,11 @@ class StackNavigator extends React.Component {
         <Stack.Screen name={'DetailKeyScreen'} component={DetailKeyScreen} />
         <Stack.Screen name={'CustomerScreen'} component={CustomerScreen} />
         <Stack.Screen name={'DetailCustomerScreen'} component={DetailCustomerScreen} />
+        <Stack.Screen name={'ListSaleALlScreen'} component={ListSaleALlScreen} />
+        <Stack.Screen name={'UtilitiesScreen'} component={UtilitiesScreen} />
         <Stack.Screen name={'EditCustomerScreen'} component={EditCustomerScreen} />
         <Stack.Screen name={'DetailProfileScreen'} component={DetailProfileScreen} />
+        <Stack.Screen name={'UpdateMachineCodeScreen'} component={UpdateMachineCodeScreen} />
       </Stack.Navigator>
     );
   }

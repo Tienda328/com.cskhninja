@@ -9,10 +9,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export default function ItemDetailIcon({ nameIcon, txtValue,isIconRight, style,colorss, containerText, iconRight }) {
     return (
         <View style={styles.containerAll}>
-             <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: colorss?'#2E64FE':'gray', marginLeft:20 }} />
+             <MaterialCommunityIcons name={nameIcon} size={20} style={{ color: colorss?'#0000FF':'gray', marginLeft:20 }} />
            <View style={[styles.containerText, containerText]}>
            <Text style={[styles.txtValue,style]} numberOfLines={1} > {txtValue}</Text>
-          {isIconRight ?  <MaterialCommunityIcons name={iconRight} size={20} style={{ color: colorss?'#2E64FE':'gray', marginRight:20 }} />: null}
+          {isIconRight ?  <MaterialCommunityIcons name={iconRight} size={20} style={{ color: colorss?'#0000FF':'gray', marginRight:20 }} />: null}
            </View>
         </View>
     );
@@ -21,7 +21,8 @@ export default function ItemDetailIcon({ nameIcon, txtValue,isIconRight, style,c
 const styles = StyleSheet.create({
     containerAll:{
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        marginBottom:3,
     },
     containerText:{
         flex:1,
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
     },
     txtValue:{
         color:"#000",
+        flex:1,
         paddingVertical:10,
         fontSize:15,
         fontWeight:'400',
