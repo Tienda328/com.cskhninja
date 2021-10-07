@@ -91,8 +91,8 @@ class CopyrightManagement extends React.Component {
       type: 1,
       fromDate: null,
       page: 1,
-      count:null,
-      total:null,
+      count: null,
+      total: null,
       typeApprove: '0',
       typeBill: '0',
       isNoData: true,
@@ -115,7 +115,10 @@ class CopyrightManagement extends React.Component {
       isFetching: false,
       productid: '0',
       visible: false,
-      nameTitleMenu: 'Tháng này'
+      nameTitleMenu: 'Tháng này',
+      startDate: null,
+      endDate: null
+
     };
   }
 
@@ -125,48 +128,48 @@ class CopyrightManagement extends React.Component {
 
   getDay = (id) => {
     const date = new Date();
-  const today = common.formatDate(date);
-    if(id==='1'){
+    const today = common.formatDate(date);
+    if (id === '1') {
       //7 ngày qua
       const day = common.lastDay(5)
-      const itemDay={
-        startdate:day,
+      const itemDay = {
+        startdate: day,
         enddate: today
       }
-       return itemDay
+      return itemDay
     }
-    else if(id==='2'){
+    else if (id === '2') {
       //hôm nay
       const day = common.lastDay(-1)
-      const itemDay={
-        startdate:day,
+      const itemDay = {
+        startdate: day,
         enddate: day
       }
       return itemDay
     }
-    else if(id==='3'){
+    else if (id === '3') {
       //hom qua
       const day = common.lastDay(0)
-      const itemDay={
-        startdate:day,
+      const itemDay = {
+        startdate: day,
         enddate: day
       }
       return itemDay
     }
-    else if(id==='4'){
+    else if (id === '4') {
       //tháng này
       const day = common.firstMonth()
-      const itemDay={
-        startdate:day,
+      const itemDay = {
+        startdate: day,
         enddate: today
       }
       return itemDay
-    }else{
+    } else {
       // tháng trước
-      const dayEnd =common.lastMonth()
+      const dayEnd = common.lastMonth()
       const day = common.firstLastMonth()
-      const itemDay={
-        startdate:day,
+      const itemDay = {
+        startdate: day,
         enddate: dayEnd
       }
       return itemDay
@@ -179,8 +182,10 @@ class CopyrightManagement extends React.Component {
     const today = common.formatDate(date);
     const day = common.firstMonth()
     this.setState({
-      isLoading: true
-    }, () => this.getKey('', day, today, '0', '0', typeBill, typeApprove))
+      isLoading: true,
+      startDate: day,
+      endDate: today
+    }, () => this.getKey('', '0', '0', typeBill, typeApprove))
   }
   clickItemType = async item => {
     if (item.name === 'Phần mềm') {
@@ -259,7 +264,8 @@ class CopyrightManagement extends React.Component {
       price: item.price
     })
   };
-  getKey = async (search, startdate, enddate, userid, productid, bill, approve) => {
+  getKey = async (search, userid, productid, bill, approve) => {
+    const { startDate, endDate } = this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
@@ -272,18 +278,18 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'${startdate}','enddate':'${enddate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
+      variable: `{'keyword':'${search}','startdate':'${startDate}','enddate':'${endDate}','userid':'${userid}','productid':'${productid}','bill':'${bill}','approve':'${approve}','page':'1','pagesize':'50'}`
     }
     try {
       const response = await Guest.viewallkey(objPost);
-     
+
       const data = JSON.parse(response.data)
       this.setState({
         dataKey: data.list_sale,
         isLoading: false,
         isFetching: false,
-        count:data.count,
-        total:data.total,
+        count: data.count,
+        total: data.total,
       })
 
     } catch (e) {
@@ -297,10 +303,7 @@ class CopyrightManagement extends React.Component {
     }, () => this.getataMore())
   }
   getataMore = async () => {
-    const { search, productid, fromDateStart, typeApprove, fromDate, typeBill, page } = this.state;
-    // const dataStart = fromDateStart !== null ? common.formatDate(fromDateStart) : '0'
-    // const dataEnd = fromDate !== null ? common.formatDate(fromDate) : '0'
-    const day = common.lastDay(-1)
+    const { search, productid, startDate, typeApprove, endDate, typeBill, page } = this.state;
     await this.setState({
       isLoading: false,
     })
@@ -315,7 +318,7 @@ class CopyrightManagement extends React.Component {
       function: "viewallkey",
       time: timeStamp,
       token: token,
-      variable: `{'keyword':'${search}','startdate':'${day}','enddate':'${day}','userid':'0','productid':'${productid}','bill':'${typeBill}','approve':'${typeApprove}','page':'${page}','pagesize':'50'}`
+      variable: `{'keyword':'${search}','startdate':'${startDate}','enddate':'${endDate}','userid':'0','productid':'${productid}','bill':'${typeBill}','approve':'${typeApprove}','page':'${page}','pagesize':'50'}`
 
     }
     try {
@@ -357,13 +360,17 @@ class CopyrightManagement extends React.Component {
     const dataEnd = fromDate !== null ? common.formatDate(fromDate) : day
     this.setState({
       modalVisible: false,
-      isLoading: true
-    }, () => this.getKey(search, dataStart, dataEnd, '0', productid, typeBill, typeApprove))
+      isLoading: true,
+      startDate: dataStart,
+      endDate: dataEnd
+    }, () => this.getKey(search, '0', productid, typeBill, typeApprove))
 
   }
 
   onRefresh = () => {
-    const day = common.lastDay(-1)
+    const date = new Date();
+    const today = common.formatDate(date);
+    const day = common.firstMonth()
     this.setState({
       isLoading: true,
       search: '',
@@ -391,18 +398,22 @@ class CopyrightManagement extends React.Component {
       isFetching: false,
       productid: '0',
       visible: false,
-      nameTitleMenu: 'Hôm nay'
-
-    }, () => this.getKey('', day, day, '0', '0', '0', '0'))
+      nameTitleMenu: 'Tháng này',
+      startDate: day,
+      endDate: today,
+    }, () => this.getKey('', '0', '0', '0', '0'))
   }
 
-  onCloseModal = (item) => {
-    this.setState({
+  onCloseModal = async (item) => {
+
+    const day = this.getDay(item.id)
+    await this.setState({
       modalVisibleMenu: false,
-      nameTitleMenu:item.title
+      nameTitleMenu: item.title,
+      startDate: day.startdate,
+      endDate: day.enddate
     });
-    const day =  this.getDay(item.id)
-    this.getKey('', day.startdate, day.enddate, '0', '0', '0', '0')
+    this.getKey('', '0', '0', '0', '0')
   }
   onShow = () => {
     this.setState({
@@ -412,8 +423,8 @@ class CopyrightManagement extends React.Component {
 
   render() {
     const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill, textApprove,
-      dataBQ, disablePhanMem, fromDateStart, modalVisibleMenu, nameTitleMenu,count, total } = this.state;
-      const day = common.lastDay(-1)
+      dataBQ, disablePhanMem, fromDateStart, modalVisibleMenu, nameTitleMenu, count, total } = this.state;
+    const day = common.lastDay(-1)
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
@@ -502,11 +513,11 @@ class CopyrightManagement extends React.Component {
                 <Search value={search}
                   onPressFilter={this.onFilter}
                   showFilter
-                  clickSearch={() => this.getKey(search, day, day, '0', '0', '0', '0')}
+                  clickSearch={() => this.getKey(search, '0', '0', '0', '0')}
                   onChangeText={(text) => this.onChangeTextSearch(text)} />
                 <MenuMain
                   modalVisible={modalVisibleMenu}
-                  style={{marginTop: 90}}
+                  style={{ marginTop: 90 }}
                   ClickShow={this.onShow}
                   ClickHide={this.onCloseModal}
                   dataMenu={dataMenu}
@@ -516,11 +527,11 @@ class CopyrightManagement extends React.Component {
                   <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 20 }}>
 
                     <Text>Hóa đơn : </Text>
-                    <Text style={{ marginLeft: 5 }}>{count? count:'0'}</Text>
+                    <Text style={{ marginLeft: 5 }}>{count ? count : '0'}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 15 }}>
                     <Text>Tổng :</Text>
-                    <Text style={{ marginLeft: 5, color: '#0000FF', marginRight: 20 }}>{total?common.formatNumber(total):'0 đ'}</Text>
+                    <Text style={{ marginLeft: 5, color: '#0000FF', marginRight: 20 }}>{total ? common.formatNumber(total) : '0 đ'}</Text>
                   </TouchableOpacity>
                 </View>
                 {dataKey === null ? <View style={{ alignItems: 'center', height: windowHeight / 1.5, justifyContent: 'center' }}>

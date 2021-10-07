@@ -68,8 +68,6 @@ export default class ListSaleAll extends React.Component {
         const md5 = stringMd5(pass_word);
         const timeStamp = common.timeStamp();
         const token = common.createToken(timeStamp);
-
-
         const objPost = {
             email: email,
             password: md5,
@@ -82,7 +80,6 @@ export default class ListSaleAll extends React.Component {
         try {
             const response = await Guest.reportsale(objPost);
             const data = JSON.parse(response.data)
-            console.log('data', data)
             await this.setState({
                 dataProduct: data.list_reportsoftware,
                 datatBank: data.list_reportbank,

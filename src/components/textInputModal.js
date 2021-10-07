@@ -87,8 +87,8 @@ class TextInputModal extends Component {
             <View style={styles.iconShow}>
               <Text style={styles.txtSelect}>{namePlaceholder}</Text>
 
-              <Ionicons
-                name={'caret-down-outline'}
+              <MaterialCommunityIcons
+                name={'chevron-right'}
                 size={20}
                 style={{ color: 'gray', marginRight: 20 }}
               />

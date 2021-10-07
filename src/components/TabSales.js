@@ -37,7 +37,7 @@ export default class TabViewExample extends React.Component {
       }
       async  componentDidMount() {
         const role = await getLocale(LOCALE_KEY.role);
-        const data = role!== 'Admin' ? routes2:routes1
+        const data = role=== 'Admin' ? routes2:routes1
         this.setState({
             routes: data
         })

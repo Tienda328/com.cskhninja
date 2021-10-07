@@ -95,6 +95,11 @@ class Profile extends React.Component {
               {/* <MaterialCommunityIcons name={'logout'} size={20} style={styles.icLogout} /> */}
               <Text style={styles.txtLogOut}>ĐĂNG XUẤT</Text>
             </TouchableOpacity>
+            <View style={styles.containerVerSon} >
+            <Text style={styles.txtPhienVan} >Phiên bản :</Text>
+            <Text style={styles.txtNumber}>1.0.0</Text>
+            <Text style={{color:'#fff', marginRight:20}} >Phiên bản</Text>
+            </View>
           </View>
         )}
       </AuthContext.Consumer>
@@ -111,6 +116,15 @@ const styles = StyleSheet.create({
   containerALl: {
     flex: 1,
     backgroundColor: '#F2F2F2'
+  },
+  txtNumber:{
+    paddingVertical:10,
+    fontSize:16,
+    fontWeight:'600'
+  },
+  txtPhienVan:{
+    paddingVertical: 10,
+    marginLeft:20,
   },
   icLogout: {
     color: '#848484',
@@ -134,8 +148,14 @@ const styles = StyleSheet.create({
     color: '#FF0000',
     paddingVertical: 10,
     textAlign: 'center',
-    flex: 1,
+    // flex: 1,
     fontWeight: '600'
+  },
+  containerVerSon:{
+    flexDirection:'row',
+    backgroundColor:'#fff',
+    justifyContent:'space-between',
+    marginBottom:20,
   },
   viewName: {
     alignSelf: 'center',
@@ -159,7 +179,7 @@ const styles = StyleSheet.create({
   },
   bntLogOut: {
     backgroundColor: '#fff',
-    marginVertical: 20,
+    marginBottom: 10,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
