@@ -96,9 +96,11 @@ class Profile extends React.Component {
               <Text style={styles.txtLogOut}>ĐĂNG XUẤT</Text>
             </TouchableOpacity>
             <View style={styles.containerVerSon} >
-            <Text style={styles.txtPhienVan} >Phiên bản :</Text>
-            <Text style={styles.txtNumber}>1.0.0</Text>
-            <Text style={{color:'#fff', marginRight:20}} >Phiên bản</Text>
+            <MaterialCommunityIcons name={'toaster-oven'} size={20} style={styles.icon} />
+            <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center', flex:1}}>
+            <Text style={styles.txtTitle} >Phiên bản</Text>
+            <Text style={{marginRight:20,fontStyle: 'italic' }} >( 1.0.0 )</Text>
+            </View>
             </View>
           </View>
         )}
@@ -124,7 +126,6 @@ const styles = StyleSheet.create({
   },
   txtPhienVan:{
     paddingVertical: 10,
-    marginLeft:20,
   },
   icLogout: {
     color: '#848484',
@@ -154,8 +155,8 @@ const styles = StyleSheet.create({
   containerVerSon:{
     flexDirection:'row',
     backgroundColor:'#fff',
-    justifyContent:'space-between',
-    marginBottom:20,
+    alignItems:'center',
+    marginBottom:15,
   },
   viewName: {
     alignSelf: 'center',

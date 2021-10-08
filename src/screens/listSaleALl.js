@@ -242,7 +242,7 @@ export default class ListSaleAll extends React.Component {
                     nameTitle={nameTitle}
                 />
                 <View style={styles.containerTitle}>
-                    <Text style={styles.txtTitle}>Doanh số theo</Text>
+                    <Text style={styles.txtTitle}>Doanh số</Text>
                 </View>
                 <TabView
                     lazy

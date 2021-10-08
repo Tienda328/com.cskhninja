@@ -90,7 +90,7 @@ export default class TabViewExample extends React.Component {
         return (
             <View style={[{ flex: 1, backgroundColor: '#f2f2f2', }, style]}>
                 <View style={styles.containerTitle}>
-                    <Text style={styles.txtTitle}>Doanh số theo</Text>
+                    <Text style={styles.txtTitle}>Doanh số </Text>
                     <TouchableOpacity onPress={clickAll}>
                         <Text style={styles.txtAll}>{'Xem Tất cả'}</Text>
                     </TouchableOpacity>

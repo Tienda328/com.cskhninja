@@ -306,6 +306,9 @@ class AddKey extends React.Component {
             CustomerCode: text,
         });
     };
+    clickAddCustomer = () => {
+        this.props.navigation.navigate('AddCustomerScreen')
+      }
     onChangeTextDiscount = (text) => {
         this.setState({
             disCount: text,
@@ -413,6 +416,11 @@ class AddKey extends React.Component {
                                             onPress={this.clickSearch}
                                         >
                                             <MaterialCommunityIcons name={'magnify'} size={23} style={{ color: 'gray' }} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.bntSearch}
+                                            onPress={this.clickAddCustomer}
+                                        >
+                                            <MaterialCommunityIcons name={'account-plus'} size={25} style={{ color: '#0000FF', marginRight:10 }} />
                                         </TouchableOpacity>
                                     </View>
                                     <ItemDisable nameText={'Mã khách hàng'}

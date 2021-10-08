@@ -174,9 +174,7 @@ export default class DetailKey extends React.Component {
         variable: `{'id':'${id}','type':'${type}','advance':'${this.state.typeNote}'}`
       };
       try {
-        const response = await Guest.removekey(objPost, 'message');
-        console.log('objPost',objPost)
-        console.log('response',response)
+        await Guest.removekey(objPost, 'message');
         this.setState({
           statusErrorLyDo: '',
           modalVisible: false,

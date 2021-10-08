@@ -2,7 +2,7 @@
 import React from 'react';
 import {
   View,
-  Text,
+  Text, 
   StyleSheet,
   ScrollView,
   RefreshControl,
@@ -15,8 +15,13 @@ import Guest from '../api/guest';
 import { stringMd5 } from 'react-native-quick-md5';
 import MenuMain from '../components/menuMain';
 import common from '../utils/common';
+import {
+  getDayMenu,
+} from '../redux/actions';
+import { connect } from 'react-redux';
 import LOCALE_KEY, {
   getLocale,
+  setLocale,
 } from '../repositories/local/appLocale';
 
 const dataMenu = [
@@ -55,8 +60,9 @@ class Main extends React.Component {
       modalVisible: false,
       nameTitle: item.title
     });
-    const day = this.getDay(item.title)
+    const day = this.getDay(this.state.nameTitle)
     this.getData(day.startdate, day.enddate)
+    await  setLocale(LOCALE_KEY.dayMenu, this.state.nameTitle);
   }
   onShow = () => {
     this.setState({
@@ -64,11 +70,14 @@ class Main extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const date = new Date();
-    const today = common.formatDate(date);
-    const day = common.firstMonth()
-    this.getData(day, today)
+  async componentDidMount() {
+    const dayMenu = await getLocale(LOCALE_KEY.dayMenu);
+    await this.setState({
+      nameTitle: dayMenu
+    });
+    const day = this.getDay(this.state.nameTitle)
+    await  setLocale(LOCALE_KEY.dayMenu, this.state.nameTitle);
+    this.getData(day.startdate, day.enddate)
   }
   clickReset=(item)=>{
     this.props.navigation.navigate('UpdateMachineCodeScreen',{item})
@@ -105,10 +114,11 @@ class Main extends React.Component {
     this.props.navigation.navigate('ListSaleALlScreen')
   }
   clickAllUtilites = async () => {
-    const {list_reportmyteam, leader}=this.state
+    const {list_reportmyteam, leader, emailSearch}=this.state
     const item ={
       list_reportmyteam,
-      leader
+      leader,
+      emailSearch
     }
 
     this.props.navigation.navigate('UtilitiesScreen',{item})
@@ -278,7 +288,6 @@ class Main extends React.Component {
   }
 
 };
-
 export default Main;
 const styles = StyleSheet.create({
   containerAll: {

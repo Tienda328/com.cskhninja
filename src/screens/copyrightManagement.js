@@ -354,10 +354,9 @@ class CopyrightManagement extends React.Component {
     )
   }
   onClickFilter = () => {
-    const { search, productid, fromDateStart, typeApprove, fromDate, typeBill } = this.state;
-    const day = common.lastDay(-1)
-    const dataStart = fromDateStart !== null ? common.formatDate(fromDateStart) : day
-    const dataEnd = fromDate !== null ? common.formatDate(fromDate) : day
+    const { search, productid, fromDateStart, typeApprove, fromDate, typeBill,startDate, endDate } = this.state;
+    const dataStart = fromDateStart !== null ? common.formatDate(fromDateStart) : startDate
+    const dataEnd = fromDate !== null ? common.formatDate(fromDate) : endDate
     this.setState({
       modalVisible: false,
       isLoading: true,
@@ -405,7 +404,6 @@ class CopyrightManagement extends React.Component {
   }
 
   onCloseModal = async (item) => {
-
     const day = this.getDay(item.id)
     await this.setState({
       modalVisibleMenu: false,
@@ -450,6 +448,7 @@ class CopyrightManagement extends React.Component {
                     />
                   </TouchableOpacity>
                 </View>
+                <View style={{height:20}} />
                 <TextInputModal
                   dataModal={DataType}
                   nameIcon={'call-merge'}

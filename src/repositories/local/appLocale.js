@@ -10,6 +10,7 @@ const LOCALE_KEY = {
   fcm_token: 'fcm_token',
   role : 'role ',
   leader : 'leader',
+  dayMenu : 'day_menu',
 
 };
 

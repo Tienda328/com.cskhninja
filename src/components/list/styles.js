@@ -57,12 +57,17 @@ export default StyleSheet.create({
     width: 150
   },
   txtRight: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     marginRight: 20,
     paddingVertical: 5,
   },
+  loader: {
+    marginTop: 10,
+    alignItems: 'center'
+  },
   containerText: {
+    flex:1,
     flexDirection: 'row',
     paddingVertical: 5,
     justifyContent: 'space-between'

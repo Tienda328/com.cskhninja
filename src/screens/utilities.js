@@ -3,13 +3,7 @@ import { View, Text, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import NaviHerderFull from '../components/naviHerderFull';
 import ListMyTeam from '../components/list/listMyTeam';
-import ListLicenseActivation from '../components/list/listLicenseActivation';
-import common from '../utils/common';
-import Guest from '../api/guest';
-import { stringMd5 } from 'react-native-quick-md5';
-import LOCALE_KEY, {
-    getLocale,
-} from '../repositories/local/appLocale';
+import FlatListLicense from '../components/list/flatListLicense';
 const LazyPlaceholder = ({ route }) => (
     <View style={styles.scene}>
         <Text> {route.title}</Text>
@@ -28,56 +22,18 @@ const routes2 = [
 export default class ListSaleAll extends React.Component {
     constructor(props) {
         super(props);
-        const { leader, list_reportmyteam} = this.props.route.params.item
+        const { leader, list_reportmyteam, emailSearch} = this.props.route.params.item
+      
         const data = leader=== 'true'?routes2:routes1
         this.state = {
             index: 0,
             routes: data,
-            emailSearch:'',
-            dataRestKey: [],
+            email:emailSearch,
             dataMyTeam: list_reportmyteam,
         };
     }
-
-    onChangeTextEmail = (text) => {
-        this.setState({
-          emailSearch: text,
-        });
-    };
-    clickReset=(item)=>{
-        this.props.navigation.navigate('UpdateMachineCodeScreen',{item})
-      }
     
-
-    getResetKey = async () => {
-        const {emailSearch}=this.state
-        const pass_word = await getLocale(LOCALE_KEY.pass_word);
-        const email = await getLocale(LOCALE_KEY.email);
-        const md5 = stringMd5(pass_word);
-        const timeStamp = common.timeStamp();
-        const token = common.createToken(timeStamp);
-
-        const objPost = {
-            email: email,
-            password: md5,
-            function: "resetkey",
-            time: timeStamp,
-            token: token,
-            variable: `{'keyword':'${emailSearch}','page':'1','pagesize':'10'}`
-        };
-
-        try {
-            const response = await Guest.resetkey(objPost);
-            const data = JSON.parse(response.data)
-            await this.setState({
-                dataRestKey: data,
-              })
-        } catch (e) {
-            console.log(e);
-        }
-    }
     renderScene = ({ route }) => {
-        const { dataRestKey } = this.state
         switch (route.key) {
             // case 'first':
             //     return (
@@ -87,19 +43,18 @@ export default class ListSaleAll extends React.Component {
             //     );
             case 'second':
                 return (
-                    <ListLicenseActivation dataRestKey={dataRestKey}
-                        onChangeText={(text) => this.onChangeTextEmail(text)}
-                        clickSearch={this.getResetKey}
-                        clickReset={this.clickReset}
-                        heightS={400}
+                    <View style={{flex:1}}>
+                    <FlatListLicense navigation={this.props.navigation}
+                    email={this.state.email}
                     />
+                 </View>
                 );
             default:
                 return null;
         }
     };
     renderScene2 = ({ route }) => {
-        const { dataRestKey ,dataMyTeam} = this.state
+        const { dataMyTeam} = this.state
         switch (route.key) {
             // case 'first':
             //     return (
@@ -109,14 +64,11 @@ export default class ListSaleAll extends React.Component {
             //     );
             case 'second':
                 return (
-                    <ScrollView >
-                         <ListLicenseActivation dataRestKey={dataRestKey}
-                        onChangeText={(text) => this.onChangeTextEmail(text)}
-                        clickSearch={this.getResetKey}
-                        clickReset={this.clickReset}
-                        heightS={400}
-                    />
-                    </ScrollView>
+                    <View style={{flex:1}}>
+                       <FlatListLicense navigation={this.props.navigation}
+                       email={this.state.email}
+                       />
+                    </View>
                 );
             case 'three':
                 return (
@@ -142,20 +94,7 @@ export default class ListSaleAll extends React.Component {
             labelStyle={{ fontSize: 12 }}
         />
     );
-    onShow = () => {
-        this.setState({
-            modalVisible: true,
-        });
-    }
 
-    onCloseModal = async (item) => {
-        await this.setState({
-            modalVisible: false,
-            nameTitle: item.title
-        });
-        const day = this.getDay(item.id)
-        this.getData(day.startdate, day.enddate)
-    }
     goBack = () => {
         this.props.navigation.goBack()
     };
@@ -168,7 +107,7 @@ export default class ListSaleAll extends React.Component {
                     buttonLeft={true}
                     onPressRight={this.clickEdit} />
                 <View style={styles.containerTitle}>
-                    <Text style={styles.txtTitle}>Doanh số theo</Text>
+                    <Text style={styles.txtTitle}>Danh sách key</Text>
                 </View>
                 <TabView
                     lazy
