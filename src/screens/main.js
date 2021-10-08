@@ -11,6 +11,7 @@ import NaviHerderFull from '../components/naviHerderFull';
 import TabSales from '../components/TabSales';
 import TabUtilities from '../components/TabUtilities';
 import ChartTest from '../components/chartTest';
+import TESTcamr from '../components/TESTcamr';
 import Guest from '../api/guest';
 import { stringMd5 } from 'react-native-quick-md5';
 import MenuMain from '../components/menuMain';
@@ -262,6 +263,7 @@ class Main extends React.Component {
             </View>
           </View>
           {/* <ChartTest /> */}
+          {/* <TESTcamr /> */}
 
           <TabSales style={{ height: 310 }}
             role={role}

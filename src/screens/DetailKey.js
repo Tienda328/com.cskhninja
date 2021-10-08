@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   Modal,
+  Image,
+  Alert,
   Linking,
   StyleSheet
 } from 'react-native';
@@ -20,6 +22,8 @@ import LOCALE_KEY, {
 } from '../repositories/local/appLocale';
 import Guest from '../api/guest';
 import { stringMd5 } from 'react-native-quick-md5';
+import ActionSheet from 'react-native-actionsheet';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const DataDelete = [
   {
@@ -49,6 +53,7 @@ const DataDelete = [
   },
 ]
 export default class DetailKey extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -75,19 +80,69 @@ export default class DetailKey extends React.Component {
       advance: null,
       hid: null,
       id: null,
+      idImage: null,
       itemKey: null,
+      imageBill: ''
     };
   }
 
   goBack = () => {
     this.props.navigation.goBack()
   };
+
+  showActionSheet = () => {
+    this.ActionSheet.show();
+  }
+  deleteImage = (id, type) => {
+    // Alert.alert(
+    //   "Thông báo",
+    //   "Bạn có muốn xóa hóa đơn không ?",
+    //   [
+    //     {
+    //       text: "XÓA", onPress: () => {
+
+    //       }
+    //     },
+    //     { text: "HỦY", onPress: () => { } }
+    //   ]
+    // );
+    this.setState({
+      imageBill: ''
+    })
+
+  }
   clickItemType = async item => {
     this.setState({
       typeDelete: item.name,
       typeNote: item.type
     })
   };
+
+  openCamera = async (type, idImage) => {
+    await ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      includeBase64: true,
+      cropping: true,
+    }).then(image => {
+      const getImage = 'data:image/jpg;base64,' + image.data
+      console.log(type)
+      this.setState({
+        imageBill: getImage
+      }, () => this.upLoadBill(idImage, type, getImage))
+    });
+  }
+  openGallery = async (type, idImage) => {
+    await ImagePicker.openPicker({
+      includeBase64: true,
+      multiple: true,
+    }).then(async (images) => {
+      const getImage = 'data:image/jpg;base64,' + images[0].data
+      this.setState({
+        imageBill: getImage
+      }, () => this.upLoadBill(idImage, type, getImage))
+    });
+  }
   clickEdit = () => {
     const { itemKey } = this.state
     this.props.navigation.navigate('EditKeyScreen', { itemKey })
@@ -146,12 +201,38 @@ export default class DetailKey extends React.Component {
         advance: data.advance,
         hid: data.hid,
         id: data.id,
+        imageBill: data.bill,
         itemKey: data,
+        idImage: data.id
 
       })
     } catch (e) {
       console.log(e);
     }
+
+  }
+  upLoadBill = async (idImage, type, imageBill) => {
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "uploadbill",
+      time: timeStamp,
+      token: token,
+      variable: `{'id':'${idImage}','type':'${type}','image':'${imageBill}'}`
+    };
+    try {
+      console.log('response', response)
+      const response = await Guest.uploadbill(objPost, 'message');
+      console.log('response', response)
+    } catch (e) {
+      console.log(e);
+    }
+
   }
 
   clickDelete = async (id, type) => {
@@ -189,13 +270,14 @@ export default class DetailKey extends React.Component {
   render() {
     const { customerid, customername, datecreate, customeremail, customerphone, planname,
       productName, expirationdate, conlai, paymentName, messagebill, note, userSeller,
-      id,
+      id, imageBill, idImage,
       price, discount, type, modalVisible, typeDelete, statusErrorLyDo, advance, hid
     } = this.state
+    console.log('imageBill',imageBill)
     const email = customeremail;
     const name = customername;
     const phone = customerphone;
-    const item = { customerid, email, name, phone ,id};
+    const item = { customerid, email, name, phone, id };
     const pricenew = price - discount;
     return (
       <View
@@ -354,13 +436,8 @@ export default class DetailKey extends React.Component {
                     nameIcon={'calendar-text'}
                     styleColour={styles.txtColour} />
                 }
-                <TouchableOpacity style={styles.View}>
-                  <ItemDetailIcon txtValue={'Thêm ảnh hóa đơn'}
-                    nameIcon={'folder-image'}
-                    style={{ color: '#0000FF' }}
-                    colorss={true}
-                    styleColour={styles.txtColour} />
-                </TouchableOpacity>
+
+
                 {advance === '' || advance === null ?
                   <ItemDetailIcon txtValue={'ghi chú nâng cao'}
                     nameIcon={'content-save'}
@@ -374,6 +451,52 @@ export default class DetailKey extends React.Component {
                 }
               </View>
             } />
+          <ItemComponentTitle
+            nameTitle={'Hóa đơn'}
+            drawIconLeft={
+              <View style={{ flexDirection: 'row' }}>
+
+                {imageBill !== '' ? <TouchableOpacity
+                  onPress={() => this.deleteImage()}
+                >
+                  <Image
+                    style={{ width: 50, height: 50, marginLeft: 20, marginTop: 5 }}
+                    source={{
+                      uri: imageBill,
+                    }}
+                  />
+                </TouchableOpacity> : null}
+                <TouchableOpacity style={{ marginLeft: 20 }}
+                  onPress={this.showActionSheet}
+                >
+                  <Image
+                    style={{ width: 60, height: 60 }}
+                    source={require('../resource/image/icon_camera.png')}
+                  />
+                  {/* <Text style={{ fontSize: 10 }}>Thêm hóa đơn</Text> */}
+                </TouchableOpacity>
+              </View>
+            } />
+
+          <ActionSheet
+            ref={o => this.ActionSheet = o}
+            title={'Chọn ảnh'}
+            options={['Chụp ảnh', 'Chọn từ Gallery', 'Huỷ']}
+            cancelButtonIndex={2}
+            destructiveButtonIndex={2}
+            onPress={(index) => {
+              switch (index) {
+                case 0:
+                  this.openCamera(type, idImage);
+                  break;
+                case 1:
+                  this.openGallery(type, idImage);
+                  break;
+                default:
+                  break;
+              }
+            }}
+          />
           <TouchableOpacity style={styles.containerDelete}
             onPress={this.onDelite}
           >

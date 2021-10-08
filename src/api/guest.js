@@ -17,6 +17,7 @@ const Guest = {
     resetpasswordcustomer: (params: Object, message) => config.post(params, message),
     resetpassword: (params: Object, message) => config.post(params, message),
     removekey: (params: Object, message) => config.post(params, message),
+    uploadbill: (params: Object, message) => config.post(params, message),
     reportsale: (params: Object) => config.post(params),
     resetkey: (params: Object,message) => config.post(params,message),
     
