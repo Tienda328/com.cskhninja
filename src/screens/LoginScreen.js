@@ -86,7 +86,7 @@ class LoginScreen extends Component {
 
   onLoginClick = async (toggleLoggedIn) => {
     const { password, email } = this.state;
-    if (password === '' || email === '') {
+    if (password === null || email === null) {
       Alert.alert(
         "Thông báo",
         "Email hoặc mật khẩu không được để trống",
@@ -116,6 +116,7 @@ class LoginScreen extends Component {
             setLocale(LOCALE_KEY.phone_number, userinfo.phone);
             setLocale(LOCALE_KEY.user_name, userinfo.name);
             setLocale(LOCALE_KEY.role, userinfo.role);
+            setLocale(LOCALE_KEY.dayMenu, 'Tháng này');
             await  setLocale(LOCALE_KEY.leader, leader);
           } else {
             clearLocale(LOCALE_KEY.email);

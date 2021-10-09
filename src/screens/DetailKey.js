@@ -93,19 +93,7 @@ export default class DetailKey extends React.Component {
   showActionSheet = () => {
     this.ActionSheet.show();
   }
-  deleteImage = (id, type) => {
-    // Alert.alert(
-    //   "Thông báo",
-    //   "Bạn có muốn xóa hóa đơn không ?",
-    //   [
-    //     {
-    //       text: "XÓA", onPress: () => {
-
-    //       }
-    //     },
-    //     { text: "HỦY", onPress: () => { } }
-    //   ]
-    // );
+  deleteImage = () => {
     this.setState({
       imageBill: ''
     })
@@ -226,9 +214,7 @@ export default class DetailKey extends React.Component {
       variable: `{'id':'${idImage}','type':'${type}','image':'${imageBill}'}`
     };
     try {
-      console.log('response', response)
       const response = await Guest.uploadbill(objPost, 'message');
-      console.log('response', response)
     } catch (e) {
       console.log(e);
     }

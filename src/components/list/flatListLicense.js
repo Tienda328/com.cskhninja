@@ -33,7 +33,6 @@ export default class ListLicenseActivation extends React.Component {
     }
 
      componentDidMount() {
-         console.log('sdsd',this.props.email==='')
          if(this.props.email!==''){
             this.getResetKey()
          }
