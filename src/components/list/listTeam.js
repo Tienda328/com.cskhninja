@@ -7,6 +7,7 @@ import {
   Image
 } from 'react-native';
 import common from '../../utils/common';
+import styles from './styles';
 const windowHeight = Dimensions.get('window').height;
 
 export default class ListRating extends React.Component {
@@ -37,39 +38,3 @@ export default class ListRating extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  containerInput: {
-    flexDirection: 'row',
-    height: windowHeight / 17.8,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    marginBottom: 1
-  },
-  txtTitle: {
-    width: 160,
-    fontSize: 13,
-    fontWeight: '400'
-  },
-  containerName: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  txtStt: {
-    marginHorizontal: 10,
-    textAlign: 'center'
-  },
-  containerItem: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    marginBottom: 11,
-    borderRadius: 10,
-    marginHorizontal: 10,
-
-  }
-
-})
