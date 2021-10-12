@@ -34,10 +34,11 @@ const FilterDateComponent = ({
           }}>
           <Ionicons name={'calendar-outline'} size={23} style={{ color: 'gray', marginHorizontal: 20, }} />
           <Text style={date ? styles.txtDate : styles.txtDate1}>
-            {date
-              ? Platform.OS === 'ios'
-                ? common.formatDateLocale(date)
-                : common.formatDate(date)
+            {date ?
+              // ? Platform.OS === 'ios'
+              //   ? common.formatDateLocale(date)
+              //   : common.formatDate(date)
+              common.formatDate(date)
               : `${title}`}
           </Text>
         </TouchableOpacity>

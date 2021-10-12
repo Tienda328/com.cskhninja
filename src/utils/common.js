@@ -21,6 +21,14 @@ function formatDate(date) {
   }
 }
 
+function formatDateLocale(date) {
+  return new Date(date).toLocaleDateString('vi',{
+    yearL:'numeric',
+    monthL:'2-digit',
+    day:'2-digit',
+  })
+}
+
 function formatDate2(date) {
   if (date) {
     return moment(date).utc().format('DD/MM/YYYY');
@@ -112,6 +120,7 @@ const common = {
   lastMonth,
   lastDay,
   firstLastMonth,
+  formatDateLocale
 };
 
 export default common;
