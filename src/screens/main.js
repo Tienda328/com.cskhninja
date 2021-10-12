@@ -263,7 +263,6 @@ class Main extends React.Component {
             </View>
           </View>
           {/* <ChartTest /> */}
-          {/* <TESTcamr /> */}
 
           <TabSales style={{ height: 310 }}
             role={role}

@@ -344,8 +344,8 @@ class AddKey extends React.Component {
                 email: email,
                 password: md5,
                 function: "seachcustomer",
-                time: `1`,
-                token: 'd1ff52a77a2965156cb8e7e67d4ac931',
+                time: timeStamp,
+                token: token,
                 variable: `{'email':'${this.state.email}'}`
             };
             try {
