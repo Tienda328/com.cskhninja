@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListLicenseActivation from './list/listLicenseActivation';
 import LOCALE_KEY, {
     getLocale,
@@ -82,8 +83,8 @@ export default class TabViewExample extends React.Component {
             <View style={[{ flex: 1, backgroundColor: '#f2f2f2', }, style]}>
                 <View style={styles.containerTitle}>
                     <Text style={styles.txtTitle}>Tiện ích</Text>
-                    <TouchableOpacity onPress={clickUtilites}>
-                        <Text style={styles.txtAll}>{'Xem Tất cả'}</Text>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginRight: 20 }} onPress={clickUtilites}>
+                        <MaterialCommunityIcons name={'chevron-right'} size={30} style={{ color: '#FF8000', }} />
                     </TouchableOpacity>
 
                 </View>

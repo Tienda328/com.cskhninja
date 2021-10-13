@@ -24,13 +24,18 @@ class StackNavigator extends React.Component {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          gestureEnabled:true
         }}>
         <Stack.Screen name={screenName.TabNavigator} component={TabNavigator} />
         <Stack.Screen name={'MainScreen'} component={MainScreen} />
         <Stack.Screen name={'ProFileScreen'} component={ProFileScreen} />
         <Stack.Screen name={'AddKeyScreen'} component={AddKeyScreen} />
         <Stack.Screen name={'AddCustomerScreen'} component={AddCustomerScreen} />
-        <Stack.Screen name={'EditKeyScreen'} component={EditKeyScreen} />
+        <Stack.Screen name={'EditKeyScreen'} component={EditKeyScreen}
+        options={{
+          gestureEnabled: true,
+        }}
+        />
         <Stack.Screen name={'DetailKeyScreen'} component={DetailKeyScreen} />
         <Stack.Screen name={'CustomerScreen'} component={CustomerScreen} />
         <Stack.Screen name={'DetailCustomerScreen'} component={DetailCustomerScreen} />

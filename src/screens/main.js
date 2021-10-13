@@ -11,7 +11,6 @@ import NaviHerderFull from '../components/naviHerderFull';
 import TabSales from '../components/TabSales';
 import TabUtilities from '../components/TabUtilities';
 import ChartTest from '../components/chartTest';
-import TESTcamr from '../components/TESTcamr';
 import Guest from '../api/guest';
 import { stringMd5 } from 'react-native-quick-md5';
 import MenuMain from '../components/menuMain';
@@ -52,7 +51,8 @@ class Main extends React.Component {
       role: null,
       leader: null,
       list_reportmyteam: [],
-      emailSearch:''
+      emailSearch:'',
+      dataReportday:[],
     };
   }
 
@@ -126,8 +126,10 @@ class Main extends React.Component {
   }
 
   _onRefresh() {
-    const day = common.lastDay(-1)
-    this.setState({ refreshing: true, nameTitle: 'Hôm nay', emailSearch:'' }, () => this.getData(day, day));
+    const date = new Date();
+    const today = common.formatDate(date);
+    const day = common.firstMonth()
+    this.setState({ refreshing: true, nameTitle: 'Tháng này', emailSearch:'' }, () => this.getData(day, today));
   }
 
   getDay = (title) => {
@@ -209,7 +211,8 @@ class Main extends React.Component {
         list_reportteam: data.list_reportteam,
         list_reportmyteam: data.list_reportmyteam,
         role: role,
-        leader: leader
+        leader: leader,
+        dataReportday:data.list_reportday,
       })
     } catch (e) {
       console.log(e);
@@ -226,7 +229,7 @@ class Main extends React.Component {
   };
   render() {
     const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,emailSearch,
-      list_reportbank, list_reportsoftware, dataRestKey, leader, list_reportteam, role, list_reportmyteam } = this.state;
+      list_reportbank, list_reportsoftware, dataRestKey, leader,dataReportday, list_reportteam, role, list_reportmyteam } = this.state;
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
@@ -262,8 +265,7 @@ class Main extends React.Component {
               <Text style={styles.txtValue}>{totalmoneyapprove ? common.formatNumber(totalmoneyapprove) : '0 đ'}</Text>
             </View>
           </View>
-          {/* <ChartTest /> */}
-
+          <ChartTest  dataReportday={dataReportday}/>
           <TabSales style={{ height: 310 }}
             role={role}
             dataProduct={list_reportsoftware}

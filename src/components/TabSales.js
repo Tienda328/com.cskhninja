@@ -1,25 +1,26 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListProduct from './list/listProduct';
 import ListPay from './list/listPay';
 import ListRatings from './list/listRatings';
 import LOCALE_KEY, {
     getLocale,
-  } from '../repositories/local/appLocale';
+} from '../repositories/local/appLocale';
 import ListTeam from './list/listTeam';
 const LazyPlaceholder = ({ route }) => (
     <View style={styles.scene}>
         <Text> {route.title}</Text>
     </View>
 );
-const routes1= [
+const routes1 = [
     { key: 'three', title: 'Xếp Hạng' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-   
+
 ];
-const routes2= [
+const routes2 = [
     { key: 'three', title: 'Xếp Hạng' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
@@ -28,21 +29,21 @@ const routes2= [
 export default class TabViewExample extends React.Component {
     constructor(props) {
         super(props);
-       
+
         this.state = {
             index: 0,
-            routes:routes2,
-            leader:''
+            routes: routes2,
+            leader: ''
         };
-      }
-      async  componentDidMount() {
+    }
+    async componentDidMount() {
         const role = await getLocale(LOCALE_KEY.role);
-        const data = role=== 'Admin' ? routes2:routes1
+        const data = role === 'Admin' ? routes2 : routes1
         this.setState({
             routes: data
         })
-       
-      }
+
+    }
     renderScene = ({ route }) => {
         switch (route.key) {
             case 'first':
@@ -80,26 +81,26 @@ export default class TabViewExample extends React.Component {
             indicatorStyle={{ backgroundColor: '#0000FF', fontSize: 10 }}
             style={{ backgroundColor: '#fff', }}
             inactiveColor={'gray'}
-            labelStyle={{ fontSize: 12 }}
+            labelStyle={{ fontSize: 11 }}
         />
     );
 
     render() {
-        const {Role,index, routes, }=this.state
-        const { style ,clickAll} = this.props
+        const { Role, index, routes, } = this.state
+        const { style, clickAll } = this.props
         return (
             <View style={[{ flex: 1, backgroundColor: '#f2f2f2', }, style]}>
                 <View style={styles.containerTitle}>
                     <Text style={styles.txtTitle}>Doanh số </Text>
-                    <TouchableOpacity onPress={clickAll}>
-                        <Text style={styles.txtAll}>{'Xem Tất cả'}</Text>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginRight: 20 }} onPress={clickAll}>
+                        <MaterialCommunityIcons name={'chevron-right'} size={30} style={{ color: '#FF8000', }} />
                     </TouchableOpacity>
 
                 </View>
                 <TabView
                     lazy
-                    navigationState={{index, routes}}
-                    renderScene={Role?this.renderScene:this.renderScene2}
+                    navigationState={{ index, routes }}
+                    renderScene={Role ? this.renderScene : this.renderScene2}
                     renderTabBar={this.renderTabBar}
                     renderLazyPlaceholder={this._renderLazyPlaceholder}
                     onIndexChange={this._handleIndexChange}

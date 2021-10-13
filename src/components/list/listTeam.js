@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import common from '../../utils/common';
 import styles from './styles';
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').width;
 
 export default class ListRating extends React.Component {
   render() {

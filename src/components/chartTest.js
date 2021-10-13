@@ -1,46 +1,46 @@
-import React from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View, processColor
-} from 'react-native';
+import React from "react";
+import { StyleSheet, Dimensions, View, Text, ScrollView } from "react-native";
+import { VictoryBar, VictoryChart, VictoryTheme, VictoryAxis } from "victory-native";
+const windowWidth = Dimensions.get('window').width;
+export default class Chart extends React.Component {
 
-import {LineChart} from 'react-native-charts-wrapper';
-
-export default class ChartTest extends React.Component {
 
   render() {
+    const styless =this.props.dataReportday.length >20 ?600: windowWidth
     return (
-      <View style={styles.containerAll}>
+     <ScrollView style={{flex:1, marginBottom:10}}
+      horizontal={true}
+     >
         <View style={styles.container}>
-          {/* <LineChart style={styles.chart}
-            data={{ dataSets: [
-              {
-                values: [5, 40, 77, 81, 43]
-              },
-              {
-                values: [10, 32, 323, 1, 33]
-              },
-          ]}}
-          /> */}
+        <View style={{ position: 'absolute', left: 35, bottom: 307 }}>
+          <Text style={{ fontSize: 11 }}> triệu</Text>
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          <VictoryChart width={styless} theme={VictoryTheme.material}
+           domainPadding={{x: [20, 0]}}
+          >
+            <VictoryBar 
+            style={{ data: { fill: "#FF8000" } }} 
+            data={this.props.dataReportday} 
+            x='day' 
+            y="money" />
+            
+          </VictoryChart>
+          <View style={{ position: 'absolute', left: 12, top: 310 }}>
+            <Text style={{ fontSize: 11 }}>Ngày</Text>
+          </View>
+
         </View>
       </View>
+     </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF'
-  },
-  containerAll:{
-    flex: 1,
-    borderRadius:10,
-  },
-  chart: {
-    flex: 1
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#fff"
   }
 });
-

@@ -41,10 +41,10 @@ const routes2 = [
 export default class ListSaleAll extends React.Component {
     constructor(props) {
         super(props);
-        const data = this.props.role === 'Admin' ? routes2 : routes1
+        // const data = this.props.role === 'Admin' ? routes2 : routes1
         this.state = {
             index: 0,
-            routes: data,
+            routes: routes2,
             dataProduct: [],
             datatBank: [],
             datatBXH: [],
@@ -53,9 +53,15 @@ export default class ListSaleAll extends React.Component {
             modalVisible: false,
         };
     }
-    componentDidMount() {
+   async componentDidMount() {
+        const role = await getLocale(LOCALE_KEY.role);
+        const data = role=== 'Admin' ? routes2:routes1
         const day = common.lastDay(-1)
         this.getData(day, day)
+        console.log
+        this.setState({
+            routes:data
+        })
         // this.getResetKey()
     }
 
@@ -136,9 +142,12 @@ export default class ListSaleAll extends React.Component {
                     </ScrollView>
                 );
             case 'four':
-                <ScrollView >
+                return (
+                    <ScrollView  >
                     <ListTeam dataTeam={dataTeam} heightS={520} />
                 </ScrollView>
+                );
+                
             default:
                 return null;
         }
@@ -154,7 +163,7 @@ export default class ListSaleAll extends React.Component {
             indicatorStyle={{ backgroundColor: '#0000FF', fontSize: 10 }}
             style={{ backgroundColor: '#fff', }}
             inactiveColor={'gray'}
-            labelStyle={{ fontSize: 12 }}
+            labelStyle={{ fontSize: 11 }}
         />
     );
     onShow = () => {
@@ -272,6 +281,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     containerTitle: {
+        marginBottom:1,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         flexDirection: 'row',
