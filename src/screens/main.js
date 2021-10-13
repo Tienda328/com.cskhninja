@@ -2,6 +2,7 @@
 import React from 'react';
 import {
   View,
+  Alert,
   Text, 
   StyleSheet,
   ScrollView,
@@ -78,7 +79,8 @@ class Main extends React.Component {
     });
     const day = this.getDay(this.state.nameTitle)
     await  setLocale(LOCALE_KEY.dayMenu, this.state.nameTitle);
-    this.getData(day.startdate, day.enddate)
+    this.getData(day.startdate, day.enddate);
+    this.getVersion()
   }
   clickReset=(item)=>{
     this.props.navigation.navigate('UpdateMachineCodeScreen',{item})
@@ -180,6 +182,39 @@ class Main extends React.Component {
       return itemDay
     }
   };
+
+  getVersion = async () => {
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp);
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "checkversion",
+      time: timeStamp,
+      token: token,
+      variable: `{'type':'${'android'}','you':'${'1.0.1'}'}`
+    };
+    try {
+      const response = await Guest.reportsale(objPost);
+      if (response.status === true) {
+        console.log('dung roi')
+      } else if (response.status === false) {
+        console.log('sai roi')
+        // Alert.alert(
+        //   "Thông báo",
+        //   "Email hoặc mật khẩu không đúng, hãy thử lại",
+        //   [
+        //     { text: "OK", onPress: () => { } }
+        //   ]
+        // );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   getData = async (startdate, enddate) => {
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
@@ -291,6 +326,10 @@ class Main extends React.Component {
   }
 
 };
+
+// const mapStateToProps = (state) => ({
+//   appState: state.appState,
+// });
 export default Main;
 const styles = StyleSheet.create({
   containerAll: {

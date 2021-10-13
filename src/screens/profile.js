@@ -99,7 +99,7 @@ class Profile extends React.Component {
             <MaterialCommunityIcons name={'toaster-oven'} size={20} style={styles.icon} />
             <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center', flex:1}}>
             <Text style={styles.txtTitle} >Phiên bản</Text>
-            <Text style={{marginRight:20,fontStyle: 'italic' }} >( 1.0.0 )</Text>
+            <Text style={{marginRight:20,fontStyle: 'italic' }} >( 1.0.1 )</Text>
             </View>
             </View>
           </View>

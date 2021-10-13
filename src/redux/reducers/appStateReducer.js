@@ -4,6 +4,8 @@ const initializedState = {
   isLoading: false,
   fcmRegistered: false,
   isUserInFo:null,
+  isVersionAndroid:'1.0.1',
+  isVersionIos:'1.0.1'
 };
 
 const appStateReducer = (state = initializedState, action) => {
