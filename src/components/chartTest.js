@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, ScrollView } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryAxis } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 const windowWidth = Dimensions.get('window').width;
 export default class Chart extends React.Component {
 

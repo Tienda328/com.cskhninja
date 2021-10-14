@@ -15,3 +15,8 @@ export const getUserInFor = (payload) => ({
   type: actionTypes.USER_INFOR,
   payload: payload,
 });
+
+export const getIsDay = (payload) => ({
+  type: actionTypes.IS_DAY,
+  payload: payload,
+});

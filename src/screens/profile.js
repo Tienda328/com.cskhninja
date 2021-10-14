@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import { AuthContext } from '../context/AuthContext';
@@ -39,6 +40,8 @@ class Profile extends React.Component {
     })
   }
   render() {
+    const {isVersionAndroid,isVersionIos}=this.props.appState
+    const version =   Platform.OS === 'ios'?isVersionIos:isVersionAndroid
     return (
       <AuthContext.Consumer>
         {({ isLoggedIn, toggleLoggedIn }) => (
@@ -99,7 +102,7 @@ class Profile extends React.Component {
             <MaterialCommunityIcons name={'toaster-oven'} size={20} style={styles.icon} />
             <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center', flex:1}}>
             <Text style={styles.txtTitle} >Phiên bản</Text>
-            <Text style={{marginRight:20,fontStyle: 'italic' }} >( 1.0.1 )</Text>
+            <Text style={{marginRight:20,fontStyle: 'italic' }} >{`(${version})`}</Text>
             </View>
             </View>
           </View>

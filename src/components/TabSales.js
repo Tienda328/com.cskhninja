@@ -22,9 +22,9 @@ const routes1 = [
 ];
 const routes2 = [
     { key: 'three', title: 'Xếp Hạng' },
+    { key: 'four', title: 'Theo team' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-    { key: 'four', title: 'Theo team' },
 ];
 export default class TabViewExample extends React.Component {
     constructor(props) {

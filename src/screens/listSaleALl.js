@@ -13,6 +13,12 @@ import { stringMd5 } from 'react-native-quick-md5';
 import LOCALE_KEY, {
     getLocale,
 } from '../repositories/local/appLocale';
+import { connect } from 'react-redux';
+import {
+    getIsDay,
+} from '../redux/actions';
+
+
 const LazyPlaceholder = ({ route }) => (
     <View style={styles.scene}>
         <Text> {route.title}</Text>
@@ -22,7 +28,7 @@ const routes1 = [
     { key: 'three', title: 'Xếp Hạng' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-    
+
 ];
 const dataMenu = [
     { id: '1', title: '7 ngày qua' },
@@ -34,11 +40,12 @@ const dataMenu = [
 
 const routes2 = [
     { key: 'three', title: 'Xếp Hạng' },
+    { key: 'four', title: 'Theo team' },
     { key: 'first', title: 'Sản phẩm' },
     { key: 'second', title: 'Thanh toán' },
-    { key: 'four', title: 'Theo team' },
+   
 ];
-export default class ListSaleAll extends React.Component {
+class ListSaleAll extends React.Component {
     constructor(props) {
         super(props);
         // const data = this.props.role === 'Admin' ? routes2 : routes1
@@ -53,23 +60,23 @@ export default class ListSaleAll extends React.Component {
             modalVisible: false,
         };
     }
-   async componentDidMount() {
+    async componentDidMount() {
+        const {isDay}=this.props.appState
         const role = await getLocale(LOCALE_KEY.role);
-        const data = role=== 'Admin' ? routes2:routes1
-        const day = common.lastDay(-1)
-        this.getData(day, day)
-        console.log
+        const data = role === 'Admin' ? routes2 : routes1
+        this.getData(isDay.startDay, isDay.endDay)
         this.setState({
-            routes:data
+            routes: data,
+            nameTitle:isDay.nameTitle
         })
-        // this.getResetKey()
     }
+    componentWillUnmount() {
+        this.props.route.params.callBack()
+      }
 
 
     getData = async (startdate, enddate) => {
         const pass_word = await getLocale(LOCALE_KEY.pass_word);
-        const role = await getLocale(LOCALE_KEY.role);
-        const leader = await getLocale(LOCALE_KEY.leader);
         const email = await getLocale(LOCALE_KEY.email);
         const md5 = stringMd5(pass_word);
         const timeStamp = common.timeStamp();
@@ -144,10 +151,10 @@ export default class ListSaleAll extends React.Component {
             case 'four':
                 return (
                     <ScrollView  >
-                    <ListTeam dataTeam={dataTeam} heightS={520} />
-                </ScrollView>
+                        <ListTeam dataTeam={dataTeam} heightS={520} />
+                    </ScrollView>
                 );
-                
+
             default:
                 return null;
         }
@@ -171,66 +178,67 @@ export default class ListSaleAll extends React.Component {
             modalVisible: true,
         });
     }
-    getDay = (id) => {
+    getDay = (title) => {
         const date = new Date();
         const today = common.formatDate(date);
-        if (id === '1') {
-            //7 ngày qua
-            const day = common.lastDay(5)
-            const itemDay = {
-                startdate: day,
-                enddate: today
-            }
-
-            return itemDay
+        if (title === '7 ngày qua') {
+          //7 ngày qua
+          const day = common.lastDay(5)
+          const itemDay = {
+            startdate: day,
+            enddate: today
+          }
+          return itemDay
         }
-        else if (id === '2') {
-            //hôm nay
-            const day = common.lastDay(-1)
-            const itemDay = {
-                startdate: day,
-                enddate: day
-            }
-
-            return itemDay
+        else if (title === 'Hôm nay') {
+          //hôm nay
+          const day = common.lastDay(-1)
+          const itemDay = {
+            startdate: day,
+            enddate: day
+          }
+          return itemDay
         }
-        else if (id === '3') {
-            //hom qua
-            const day = common.lastDay(0)
-            const itemDay = {
-                startdate: day,
-                enddate: day
-            }
-
-            return itemDay
+        else if (title === 'Hôm qua') {
+          //hom qua
+          const day = common.lastDay(0)
+          const itemDay = {
+            startdate: day,
+            enddate: day
+          }
+          return itemDay
         }
-        else if (id === '4') {
-            //tháng này
-            const day = common.firstMonth()
-            const itemDay = {
-                startdate: day,
-                enddate: today
-            }
-            return itemDay
+        else if (title === 'Tháng này') {
+          const day = common.firstMonth()
+          const itemDay = {
+            startdate: day,
+            enddate: today
+          }
+          return itemDay
         } else {
-            // tháng trước
-            const dayEnd = common.lastMonth()
-            const day = common.firstLastMonth()
-            const itemDay = {
-                startdate: day,
-                enddate: dayEnd
-            }
-            return itemDay
+          // tháng trước
+          const dayEnd = common.lastMonth()
+          const day = common.firstLastMonth()
+          const itemDay = {
+            startdate: day,
+            enddate: dayEnd
+          }
+          return itemDay
         }
-    };
+      };
 
     onCloseModal = async (item) => {
         await this.setState({
             modalVisible: false,
             nameTitle: item.title
         });
-        const day = this.getDay(item.id)
-        this.getData(day.startdate, day.enddate)
+        const{nameTitle}=this.state
+        const day = this.getDay(nameTitle)
+        const startDay = day.startdate
+        const endDay = day.enddate
+         this.getData(startDay, endDay)
+        const dayRedux = { nameTitle, endDay, startDay }
+        await this.props.getIsDay(dayRedux)
     }
     goBack = () => {
         this.props.navigation.goBack()
@@ -268,6 +276,15 @@ export default class ListSaleAll extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    appState: state.appState,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getIsDay: (payload) => dispatch(getIsDay(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListSaleAll);
 const styles = StyleSheet.create({
     txtTitle: {
         fontSize: 15,
@@ -281,7 +298,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     containerTitle: {
-        marginBottom:1,
+        marginBottom: 1,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         flexDirection: 'row',

@@ -76,8 +76,14 @@ class Customer extends React.Component {
       search: text,
     });
   };
+
+  clickTes =()=> {
+    this.getData()
+  }
+
   addCustomer = () => {
-    this.props.navigation.navigate('AddCustomerScreen')
+    const callBack =this.clickTes.bind(this)
+    this.props.navigation.navigate('AddCustomerScreen',{callBack})
   }
   goBack = () => {
     this.props.navigation.goBack()

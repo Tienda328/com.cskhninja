@@ -21,6 +21,7 @@ const Guest = {
     reportsale: (params: Object) => config.post(params),
     resetkey: (params: Object,message) => config.post(params,message),
     checkversion: (params: Object,message) => config.post(params,message),
+    loaduser: (params: Object,message) => config.post(params,message),
     
 }
 export default Guest;

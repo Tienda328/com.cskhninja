@@ -16,8 +16,8 @@ const routes1 = [
     { key: 'first', title: 'Kích hoạt lại bản quyền' },
 ];
 const routes2 = [
-    { key: 'first', title: 'Kích hoạt lại bản quyền' },
     { key: 'second', title: 'My Team' },
+    { key: 'first', title: 'Kích hoạt lại bản quyền' },
 ];
 export default class TabViewExample extends React.Component {
     constructor(props) {

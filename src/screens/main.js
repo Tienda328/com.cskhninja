@@ -3,10 +3,13 @@ import React from 'react';
 import {
   View,
   Alert,
-  Text, 
+  Text,
   StyleSheet,
+  Linking,
   ScrollView,
   RefreshControl,
+  TouchableHighlightBase,
+  TouchableOpacity,
 } from 'react-native';
 import NaviHerderFull from '../components/naviHerderFull';
 import TabSales from '../components/TabSales';
@@ -17,7 +20,7 @@ import { stringMd5 } from 'react-native-quick-md5';
 import MenuMain from '../components/menuMain';
 import common from '../utils/common';
 import {
-  getDayMenu,
+  getDayMenu, getIsDay,
 } from '../redux/actions';
 import { connect } from 'react-redux';
 import LOCALE_KEY, {
@@ -52,8 +55,8 @@ class Main extends React.Component {
       role: null,
       leader: null,
       list_reportmyteam: [],
-      emailSearch:'',
-      dataReportday:[],
+      emailSearch: '',
+      dataReportday: [],
     };
   }
 
@@ -62,9 +65,14 @@ class Main extends React.Component {
       modalVisible: false,
       nameTitle: item.title
     });
-    const day = this.getDay(this.state.nameTitle)
-    this.getData(day.startdate, day.enddate)
-    await  setLocale(LOCALE_KEY.dayMenu, this.state.nameTitle);
+    const { nameTitle } = this.state
+    const day = this.getDay(nameTitle)
+    const startDay = day.startdate
+    const endDay = day.enddate
+    this.getData(startDay, endDay)
+    const dayRedux = { nameTitle, endDay, startDay }
+    await this.props.getIsDay(dayRedux)
+    await setLocale(LOCALE_KEY.dayMenu, nameTitle);
   }
   onShow = () => {
     this.setState({
@@ -73,21 +81,26 @@ class Main extends React.Component {
   }
 
   async componentDidMount() {
+    const { nameTitle } = this.state
     const dayMenu = await getLocale(LOCALE_KEY.dayMenu);
     await this.setState({
       nameTitle: dayMenu
     });
-    const day = this.getDay(this.state.nameTitle)
-    await  setLocale(LOCALE_KEY.dayMenu, this.state.nameTitle);
-    this.getData(day.startdate, day.enddate);
+    const day = this.getDay(nameTitle)
+    const startDay = day.startdate
+    const endDay = day.enddate
+    await setLocale(LOCALE_KEY.dayMenu, nameTitle);
+    this.getData(startDay, endDay);
     this.getVersion()
+    const dayRedux = { nameTitle, endDay, startDay }
+    this.props.getIsDay(dayRedux)
   }
-  clickReset=(item)=>{
-    this.props.navigation.navigate('UpdateMachineCodeScreen',{item})
+  clickReset = (item) => {
+    this.props.navigation.navigate('UpdateMachineCodeScreen', { item })
   }
 
   getResetKey = async () => {
-    const {emailSearch}=this.state
+    const { emailSearch } = this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
@@ -112,26 +125,34 @@ class Main extends React.Component {
       console.log(e);
     }
   }
+  clickTes =()=> {
+    const {isDay}=this.props.appState;
+    this.setState({
+      nameTitle:isDay.nameTitle
+    })
+    this.getData(isDay.startDay, isDay.endDay);
+  }
 
   clickAllSale = async () => {
-    this.props.navigation.navigate('ListSaleALlScreen')
+    const callBack =this.clickTes.bind(this)
+    this.props.navigation.navigate('ListSaleALlScreen',{callBack})
   }
   clickAllUtilites = async () => {
-    const {list_reportmyteam, leader, emailSearch}=this.state
-    const item ={
+    const { list_reportmyteam, leader, emailSearch } = this.state
+    const item = {
       list_reportmyteam,
       leader,
       emailSearch
     }
 
-    this.props.navigation.navigate('UtilitiesScreen',{item})
+    this.props.navigation.navigate('UtilitiesScreen', { item })
   }
 
   _onRefresh() {
     const date = new Date();
     const today = common.formatDate(date);
     const day = common.firstMonth()
-    this.setState({ refreshing: true, nameTitle: 'Tháng này', emailSearch:'' }, () => this.getData(day, today));
+    this.setState({ refreshing: true, nameTitle: 'Tháng này', emailSearch: '' }, () => this.getData(day, today));
   }
 
   getDay = (title) => {
@@ -184,6 +205,9 @@ class Main extends React.Component {
   };
 
   getVersion = async () => {
+    const { isVersionAndroid, isVersionIos } = this.props.appState
+    const version = Platform.OS === 'ios' ? isVersionIos : isVersionAndroid
+    const typeSystem = Platform.OS === 'ios' ? 'ios' : 'android'
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
@@ -195,21 +219,22 @@ class Main extends React.Component {
       function: "checkversion",
       time: timeStamp,
       token: token,
-      variable: `{'type':'${'android'}','you':'${'1.0.1'}'}`
+      variable: `{'type':'${typeSystem}','you':'${version}'}`
     };
     try {
-      const response = await Guest.reportsale(objPost);
+      const response = await Guest.checkversion(objPost);
       if (response.status === true) {
-        console.log('dung roi')
-      } else if (response.status === false) {
-        console.log('sai roi')
-        // Alert.alert(
-        //   "Thông báo",
-        //   "Email hoặc mật khẩu không đúng, hãy thử lại",
-        //   [
-        //     { text: "OK", onPress: () => { } }
-        //   ]
-        // );
+        Alert.alert(
+          "Thông báo",
+          response.message,
+          [
+            {
+              text: "OK", onPress: () => {
+                Linking.openURL(response.data)
+              }
+            }
+          ]
+        );
       }
     } catch (e) {
       console.log(e);
@@ -247,7 +272,7 @@ class Main extends React.Component {
         list_reportmyteam: data.list_reportmyteam,
         role: role,
         leader: leader,
-        dataReportday:data.list_reportday,
+        dataReportday: data.list_reportday,
       })
     } catch (e) {
       console.log(e);
@@ -257,14 +282,14 @@ class Main extends React.Component {
     this.setState({
       emailSearch: text,
     });
-};
+  };
 
   currentPage = (currentpage) => {
     this.indexPage = currentpage.i;
   };
   render() {
-    const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh,emailSearch,
-      list_reportbank, list_reportsoftware, dataRestKey, leader,dataReportday, list_reportteam, role, list_reportmyteam } = this.state;
+    const { modalVisible, nameTitle, totalmoney, totalmoneyapprove, totalkey, list_reportbxh, emailSearch,
+      list_reportbank, list_reportsoftware, dataRestKey, leader, dataReportday, list_reportteam, role, list_reportmyteam } = this.state;
     return (
       <View style={[styles.containerAll]}>
         <NaviHerderFull title={'TRANG CHỦ'}
@@ -300,8 +325,8 @@ class Main extends React.Component {
               <Text style={styles.txtValue}>{totalmoneyapprove ? common.formatNumber(totalmoneyapprove) : '0 đ'}</Text>
             </View>
           </View>
-          <ChartTest  dataReportday={dataReportday}/>
-          <TabSales style={{ height: 310 }}
+          <ChartTest dataReportday={dataReportday} />
+          <TabSales style={{ height: 378 }}
             role={role}
             dataProduct={list_reportsoftware}
             datatBank={list_reportbank}
@@ -327,10 +352,14 @@ class Main extends React.Component {
 
 };
 
-// const mapStateToProps = (state) => ({
-//   appState: state.appState,
-// });
-export default Main;
+const mapStateToProps = (state) => ({
+  appState: state.appState,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getIsDay: (payload) => dispatch(getIsDay(payload)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
 const styles = StyleSheet.create({
   containerAll: {
     flex: 1,

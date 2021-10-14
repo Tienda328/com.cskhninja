@@ -24,7 +24,12 @@ import FilterDateComponent from '../components/FilterDateComponent';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../utils/common';
 import { stringMd5 } from 'react-native-quick-md5';
+import { connect } from 'react-redux';
+import {
+    getIsDay,
+} from '../redux/actions';
 import MenuMain from '../components/menuMain';
+import LoadingComponent from '../components/LoadingComponent';
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
@@ -99,6 +104,9 @@ class CopyrightManagement extends React.Component {
       typeBQ: 'Chọn loại bản quyền',
       textBill: 'Chọn loại hóa đơn',
       textApprove: 'Chọn loại duyệt thanh toán',
+      valueUser:'Chọn nhân viên',
+      userid:'0',
+      dataUser:[],
       modalVisible: false,
       modalVisibleMenu: false,
       dataKey: [],
@@ -117,15 +125,24 @@ class CopyrightManagement extends React.Component {
       visible: false,
       nameTitleMenu: 'Tháng này',
       startDate: null,
-      endDate: null
+      endDate: null,
+      role:null,
 
     };
   }
 
-  renderItem = ({ item, index }) => (
-    <ItemManage navigation={this.props.navigation} item={item} index={index} />
-  );
+  clickCall =()=> {
+    const { typeBill, typeApprove } = this.state;
+    this.getKey('', '0', typeBill, typeApprove)
+  }
+  clickItemId = (item) => {
+    const callBack =this.clickCall.bind(this)
+    this.props.navigation.navigate('DetailKeyScreen',{item})
+};
 
+  renderItem = ({ item, index }) => (
+    <ItemManage navigation={this.props.navigation} clickItemId={this.clickItemId} item={item} index={index} />
+  );
   getDay = (id) => {
     const date = new Date();
     const today = common.formatDate(date);
@@ -176,16 +193,27 @@ class CopyrightManagement extends React.Component {
     }
   };
 
-  componentDidMount() {
-    const { typeBill, typeApprove } = this.state;
+async  componentDidMount() {
+    const { typeBill, typeApprove, userid } = this.state;
     const date = new Date();
     const today = common.formatDate(date);
+    const role = await getLocale(LOCALE_KEY.role);
+    if(role==='Admin'){
+       this.getLoaduser();
+    }
     const day = common.firstMonth()
     this.setState({
       isLoading: true,
       startDate: day,
-      endDate: today
-    }, () => this.getKey('', '0', '0', typeBill, typeApprove))
+      endDate: today,
+      role:role,
+    }, () => this.getKey('', '0', typeBill, typeApprove))
+  }
+  clickItemUser=item=>{
+    this.setState({
+      valueUser: item.name,
+      userid: item.id,
+    })
   }
   clickItemType = async item => {
     if (item.name === 'Phần mềm') {
@@ -264,8 +292,8 @@ class CopyrightManagement extends React.Component {
       price: item.price
     })
   };
-  getKey = async (search, userid, productid, bill, approve) => {
-    const { startDate, endDate } = this.state
+  getKey = async (search, productid, bill, approve) => {
+    const { startDate, endDate,userid } = this.state
     const pass_word = await getLocale(LOCALE_KEY.pass_word);
     const email = await getLocale(LOCALE_KEY.email);
     const md5 = stringMd5(pass_word);
@@ -290,6 +318,32 @@ class CopyrightManagement extends React.Component {
         isFetching: false,
         count: data.count,
         total: data.total,
+      })
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getLoaduser = async () => {
+    const pass_word = await getLocale(LOCALE_KEY.pass_word);
+    const email = await getLocale(LOCALE_KEY.email);
+    const md5 = stringMd5(pass_word);
+    const timeStamp = common.timeStamp();
+    const token = common.createToken(timeStamp)
+
+    const objPost = {
+      email: email,
+      password: md5,
+      function: "loaduser",
+      time: timeStamp,
+      token: token,
+    }
+    try {
+      const response = await Guest.loaduser(objPost);
+      const data = JSON.parse(response.data)
+      this.setState({
+        dataUser:data
       })
 
     } catch (e) {
@@ -362,7 +416,7 @@ class CopyrightManagement extends React.Component {
       isLoading: true,
       startDate: dataStart,
       endDate: dataEnd
-    }, () => this.getKey(search, '0', productid, typeBill, typeApprove))
+    }, () => this.getKey(search, productid, typeBill, typeApprove))
 
   }
 
@@ -400,7 +454,10 @@ class CopyrightManagement extends React.Component {
       nameTitleMenu: 'Tháng này',
       startDate: day,
       endDate: today,
-    }, () => this.getKey('', '0', '0', '0', '0'))
+      valueUser:'Chọn nhân viên',
+      userid:'0',
+      dataUser:[],
+    }, () => this.getKey('', '0', '0', '0'))
   }
 
   onCloseModal = async (item) => {
@@ -411,7 +468,7 @@ class CopyrightManagement extends React.Component {
       startDate: day.startdate,
       endDate: day.enddate
     });
-    this.getKey('', '0', '0', '0', '0')
+    this.getKey('', '0', '0', '0')
   }
   onShow = () => {
     this.setState({
@@ -420,9 +477,8 @@ class CopyrightManagement extends React.Component {
   }
 
   render() {
-    const { search, modalVisible, dataKey, typeBQ, phanmem, fromDate, textBill, textApprove,
-      dataBQ, disablePhanMem, fromDateStart, modalVisibleMenu, nameTitleMenu, count, total } = this.state;
-    const day = common.lastDay(-1)
+    const { search, modalVisible, dataKey, typeBQ, phanmem,role, fromDate, textBill, textApprove,valueUser,
+      dataBQ, disablePhanMem, fromDateStart, modalVisibleMenu,dataUser, nameTitleMenu, count, total } = this.state;
     return (
       <View style={styles.containerAll}>
         <NaviHerderFull title={'QUẢN LÝ'} />
@@ -449,6 +505,13 @@ class CopyrightManagement extends React.Component {
                   </TouchableOpacity>
                 </View>
                 <View style={{height:20}} />
+               {role ==='Admin'? <TextInputModal
+                  dataModal={dataUser}
+                  nameIcon={'code-equal'}
+                  valueItem={valueUser}
+                  noData
+                  click={this.clickItemUser}
+                  namePlaceholder={valueUser} />:null}
                 <TextInputModal
                   dataModal={DataType}
                   nameIcon={'call-merge'}
@@ -512,7 +575,7 @@ class CopyrightManagement extends React.Component {
                 <Search value={search}
                   onPressFilter={this.onFilter}
                   showFilter
-                  clickSearch={() => this.getKey(search, '0', '0', '0', '0')}
+                  clickSearch={() => this.getKey(search, '0', '0', '0')}
                   onChangeText={(text) => this.onChangeTextSearch(text)} />
                 <MenuMain
                   modalVisible={modalVisibleMenu}
@@ -588,19 +651,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // backgroundColor: '#FAFAFA',
-    // marginHorizontal: 20,
-    // marginTop: 20,
-    // borderRadius: 10,
-    // borderColor: '#fff',
-    // shadowColor: '#000',
-    // shadowRadius: 6,
-    // shadowOpacity: 0.16,
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 5,
-    // },
-    // elevation: 3,
   },
   btnClose: {
     marginRight: 10,
@@ -650,4 +700,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default CopyrightManagement;
+export default connect()(CopyrightManagement);

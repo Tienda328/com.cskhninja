@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import common from '../utils/common';
-export default function ItemManage({ navigation, item, index ,isclick}) {
+export default function ItemManage({ navigation, item, index ,isclick,clickItemId}) {
 
     const ItemIndex =index +1;
     const clickItem =(item)=>{
         if(!isclick){
-            navigation.navigate('DetailKeyScreen',{item})
+            clickItemId(item)
+            // navigation.navigate('DetailKeyScreen',{item})
         }
        
     }

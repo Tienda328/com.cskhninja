@@ -16,8 +16,8 @@ const routes1 = [
 
 const routes2 = [
     // { key: 'first', title: 'Sản phẩm' },
-    { key: 'second',title: 'Kích hoạt lại bản quyền'},
     { key: 'three', title: 'My Team'  },
+    { key: 'second',title: 'Kích hoạt lại bản quyền'},
 ];
 export default class ListSaleAll extends React.Component {
     constructor(props) {

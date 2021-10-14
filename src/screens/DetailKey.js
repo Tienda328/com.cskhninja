@@ -214,7 +214,7 @@ export default class DetailKey extends React.Component {
       variable: `{'id':'${idImage}','type':'${type}','image':'${imageBill}'}`
     };
     try {
-      const response = await Guest.uploadbill(objPost, 'message');
+     await Guest.uploadbill(objPost, 'message');
     } catch (e) {
       console.log(e);
     }
@@ -259,7 +259,6 @@ export default class DetailKey extends React.Component {
       id, imageBill, idImage,
       price, discount, type, modalVisible, typeDelete, statusErrorLyDo, advance, hid
     } = this.state
-    console.log('imageBill',imageBill)
     const email = customeremail;
     const name = customername;
     const phone = customerphone;

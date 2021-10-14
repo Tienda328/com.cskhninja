@@ -163,6 +163,11 @@ export default class AddCustomer extends React.Component {
     goBack = () => {
         this.props.navigation.goBack()
     };
+
+    componentWillUnmount() {
+        this.props.route.params.callBack()
+      }
+
     onChangeTextSurName = (text) => {
         this.setState({
             surName: text,
