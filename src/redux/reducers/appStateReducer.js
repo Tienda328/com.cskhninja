@@ -4,7 +4,7 @@ const initializedState = {
   isLoading: false,
   fcmRegistered: false,
   isUserInFo: null,
-  isVersionAndroid: '1.0.1',
+  isVersionAndroid: '1.0.6',
   isVersionIos: '1.0.1',
   isDay: null,
 };

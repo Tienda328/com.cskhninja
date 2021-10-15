@@ -457,7 +457,7 @@ async  componentDidMount() {
       valueUser:'Chọn nhân viên',
       userid:'0',
       dataUser:[],
-    }, () => this.getKey('', '0', '0', '0'))
+    }, () => this.getKey('', '0', '0', '0'), this.getLoaduser())
   }
 
   onCloseModal = async (item) => {

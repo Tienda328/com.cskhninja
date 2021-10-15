@@ -306,8 +306,12 @@ class AddKey extends React.Component {
             CustomerCode: text,
         });
     };
+    clickTes =()=> {
+        // this.getData()
+      }
     clickAddCustomer = () => {
-        this.props.navigation.navigate('AddCustomerScreen')
+        const callBack =this.clickTes.bind(this)
+        this.props.navigation.navigate('AddCustomerScreen',{callBack})
       }
     onChangeTextDiscount = (text) => {
         this.setState({

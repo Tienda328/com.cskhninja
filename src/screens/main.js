@@ -326,7 +326,7 @@ class Main extends React.Component {
             </View>
           </View>
           <ChartTest dataReportday={dataReportday} />
-          <TabSales style={{ height: 378 }}
+          <TabSales style={{ height: 381 }}
             role={role}
             dataProduct={list_reportsoftware}
             datatBank={list_reportbank}
